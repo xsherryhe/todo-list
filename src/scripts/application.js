@@ -1,13 +1,19 @@
+import './storage';
+import './views/views';
+import './dom-events';
+import './projects';
+import './todo-items';
+import './checklist-items';
+
 import PubSub from 'pubsub-js';
-
-//run modules
-import * as storage from './storage';
-import * as views from './views';
-
 import { INITIALIZE, DATA_INITIALIZED, ANY_UPDATED } from './pubsub-event-types';
-import { ProjectsList } from './projects';
 
-export let applicationData;
+import { ProjectsList } from './projects';
+import { TodoItemsList } from './todo-items';
+import { ChecklistItemsList } from './checklist-items';
+const applicationDataLists = { ProjectsList, TodoItemsList, ChecklistItemsList };
+
+export let applicationData = {};
 
 function initialize() {
   PubSub.publish(INITIALIZE);
@@ -15,7 +21,8 @@ function initialize() {
 
 PubSub.subscribe(DATA_INITIALIZED, populateData);
 function populateData(_, data) {
-  applicationData = ProjectsList(data);
+  for(const key in data)
+    applicationData[key] = applicationDataLists[key[0].toUpperCase() + key.slice(1)](data[key]);
   PubSub.publish(ANY_UPDATED);
 }
 

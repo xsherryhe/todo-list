@@ -7,7 +7,10 @@ import * as localStorage from './storage-providers/local-storage-provider';
 PubSub.subscribe(INITIALIZE, initializeDataFn(localStorage.getData));
 function initializeDataFn(getDataFn = localStorage.getData) {
   return function() {
-    const storageData = getDataFn() || [{ id: 0, title: 'My Project' }];
+    const storageData = getDataFn() || 
+      { projectsList: [{ id: 0, title: "My To-Dos" }], 
+        todoItemsList: [], 
+        checklistItemsList: [] };
     PubSub.publish(DATA_INITIALIZED, storageData);
   }
 }

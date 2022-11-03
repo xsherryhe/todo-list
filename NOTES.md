@@ -64,12 +64,11 @@ Modules
   -deal with API details of localStorage
 
 -DOMEvents
-  -sub indexProjectsRendered
-    -add new project button click: pub newProject
-    -delete project button click: pub deleteProject, type of 'project' + project id
-    -add new todo item button click: pub newTodoItem, project id = 0/default
-    -project button click: pub showProject, project id
-    -text (button) click: pub editText, type of item + item id + button class
+  //-sub indexProjectsRendered
+    //-add new project button click: pub newProject
+    //-delete project button click: pub deleteProject, type of 'project' + project id
+    //-add new todo item button click: pub newTodoItem, project id = 0/default
+    //-project button click: pub showProject, project id
   -sub showProjectRendered
     -add new todo item button click: pub newTodoItem, project id
     -delete todo item button click: pub deleteTodoItem, type of 'todoItem' + todoItemid
@@ -104,8 +103,8 @@ Modules
     -render error message under relevant DOM dataset attribute
 
   //-sub indexProjects, indexProjectsView
-  -indexProjectsView
-    -render using renderData variable
+  //-indexProjectsView
+    //-render using renderData variable
     //-pub indexProjectsRendered
   -sub newProject, newProjectView: pub newProjectRendered
   -sub showProject, showProjectView(project)

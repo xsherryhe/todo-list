@@ -45,10 +45,10 @@ export function Belongable(obj, belongType) {
   delete obj[belongType + 'Id'];
 }
 
-export function Listable(obj, itemList = []) {
-  const list = obj.itemType + 's';
-  obj[list] ||= itemList;
+export function Listable(obj, rawItemList = []) {
   let nextId = 1;
+  const list = obj.itemType + 's';
+  obj[list] ||= rawItemList.map(rawItem => obj.itemFactory(Object.assign({ id: nextId++ }, rawItem)));
 
   PubSub.subscribe(BELONG_UPDATED(obj.itemType), updateListBelongs);
   function updateListBelongs(_, data) {
@@ -64,20 +64,22 @@ export function Listable(obj, itemList = []) {
 
   PubSub.subscribe(CREATE(obj.itemType), createListItem);
   function createListItem(_, data) {
-    const newListItem = obj.itemFactory(Object.assign({ id: nextId++ }, data.attributes));
-    obj[list].push(newListItem);
+    const newListItem = obj.itemFactory(Object.assign({ id: nextId++ }, data));
+    obj[list].unshift(newListItem);
     publishListUpdatedWithBelongData(newListItem);
   }
 
   PubSub.subscribe(DESTROY(obj.itemType), destroyListItem);
   function destroyListItem(_, data) {
+    if(data.id == 0) return;
+    
     const item = obj[list].find(item => item.id == data.id);
     obj[list].splice(obj[list].indexOf(item), 1);
     publishListUpdatedWithBelongData(item);
   }
 
   function publishListUpdatedWithBelongData(item) {
-    const belongData = Object.entries(item.belongs).reduce((data, [belongType, belongId]) =>
+    const belongData = Object.entries(item.belongs || {}).reduce((data, [belongType, belongId]) =>
       Object.assign(data,
         {
           [belongType]: {

@@ -9,8 +9,8 @@ export function Project(attributes) {
 }
 
 //may change depending on storage data format
-export function ProjectsList(itemList) {
+export function ProjectsList(rawItemList) {
   const obj = { itemFactory: Project, itemType: 'project' }
-  Listable(obj, itemList);
+  Listable(obj, rawItemList);
   return obj;
 }

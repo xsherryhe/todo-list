@@ -9,8 +9,8 @@ export function TodoItem(attributes) {
   return obj;
 }
 
-export function TodoItemsList(itemList) {
+export function TodoItemsList(rawItemList) {
   const obj = { itemFactory: TodoItem, itemType: 'todoItem' };
-  Listable(obj, itemList);
+  Listable(obj, rawItemList);
   return obj;
 }

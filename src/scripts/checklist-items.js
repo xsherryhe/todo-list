@@ -8,8 +8,8 @@ export function ChecklistItem(attributes) {
   return obj;
 }
 
-export function ChecklistItemsList(itemList) {
+export function ChecklistItemsList(rawItemList) {
   const obj = { itemFactory: ChecklistItem, itemType: 'checklistItem' };
-  Listable(obj, itemList);
+  Listable(obj, rawItemList);
   return obj;
 }
