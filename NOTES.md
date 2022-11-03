@@ -92,21 +92,21 @@ Modules
 -views
   *todos and projects have datasets with type of item (todo or project) and id
   private renderingData variable -- export from application?
-  
+
   currPageView variable that changes with each new render -- this variable is a fn that calls the last applicable rendered page view function; default set to indexProjectsView
 
-  -sub newData, updateData, updateView
-  -updateData
-    -update private data variable with new data
+  -sub newData, updateData?, updateView
+  -updateData?
+    -update private data variable with new data?
   -updateView
     -re-render currPageView
   -sub updateFailed, renderError
     -render error message under relevant DOM dataset attribute
 
-  -sub indexProjects, indexProjectsView
+  //-sub indexProjects, indexProjectsView
   -indexProjectsView
-    -render using private data variable
-    -pub indexProjectsRendered
+    -render using renderData variable
+    //-pub indexProjectsRendered
   -sub newProject, newProjectView: pub newProjectRendered
   -sub showProject, showProjectView(project)
   -showProjectView(project)

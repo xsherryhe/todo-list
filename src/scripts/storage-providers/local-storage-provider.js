@@ -2,6 +2,6 @@ export function getData() {
   
 }
 
-export function saveData() {
+export function saveData(data) {
   
 }

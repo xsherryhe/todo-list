@@ -1,5 +1,5 @@
 import PubSub from 'pubsub-js';
-import { UPDATE, UPDATE_STATUS, UPDATE_PRIORITY, UPDATED, LIST_UPDATED } from './pubsub-event-types';
+import { CREATE, DESTROY, UPDATE, UPDATE_STATUS, UPDATE_PRIORITY, UPDATED, BELONG_UPDATED, LIST_UPDATED } from './pubsub-event-types';
 
 export function Updatable(obj) {
   PubSub.subscribe(UPDATE(obj.type), update);

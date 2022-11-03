@@ -13,6 +13,5 @@ export const UPDATED = type => `updated.${type}`;
 export const BELONG_UPDATED = type => `updated.${type}.belong`;
 export const LIST_UPDATED = type => `updated.${type}.list`;
 
-export const UPDATED = type => `${type}.updated`;
-export const BELONG_UPDATED = type => `${type}.belong.updated`;
-export const LIST_UPDATED = type => `${type}.list.updated`;
+export const INDEX_PROJECTS_VIEW = 'view.projects.index';
+export const INDEX_PROJECTS_VIEW_RENDERED = 'rendered.projects.index';
