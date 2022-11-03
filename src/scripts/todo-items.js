@@ -1,5 +1,4 @@
-import { Updatable, Statusable, Prioritizable, Collectionable } from 'composition-units'
-import { Belongable } from './composition-units';
+import { Updatable, Statusable, Prioritizable, Collectionable, Belongable, Listable } from './composition-units';
 
 export function TodoItem(attributes) {
   const obj = Object.assign({ type: 'todoItem' }, attributes);
@@ -10,8 +9,8 @@ export function TodoItem(attributes) {
   return obj;
 }
 
-export function TodoItemList() {
+export function TodoItemsList(itemList) {
   const obj = { itemFactory: TodoItem, itemType: 'todoItem' };
-  Listable(obj);
+  Listable(obj, itemList);
   return obj;
 }
