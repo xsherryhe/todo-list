@@ -1,11 +1,12 @@
-import PubSub from 'pubsub-js'
-import { UPDATE, UPDATE_STATUS, UPDATE_PRIORITY, LIST_UPDATED } from 'pubsub-event-types'
+import PubSub from 'pubsub-js';
+import { UPDATE, UPDATE_STATUS, UPDATE_PRIORITY, UPDATED, LIST_UPDATED } from './pubsub-event-types';
 
 export function Updatable(obj) {
   PubSub.subscribe(UPDATE(obj.type), update);
   function update(_, data) {
     if(data.type != obj.type || data.id != obj.id) return;
     for(key in data) obj[attribute] = data[attribute];
+    PubSub.publish(UPDATED(obj.type));
   }
 }
 
@@ -13,7 +14,8 @@ export function Statusable(obj) {
   const statuses = ['incomplete', 'complete'];
   PubSub.subscribe(UPDATE_STATUS(obj.type), incrementStatus)
   function incrementStatus() {
-    obj.status = (obj.status + 1) % statuses.length;
+    obj.status = statuses[(statuses.indexOf(obj.status )+ 1) % statuses.length];
+    PubSub.publish(UPDATED(obj.type));
   }
 }
 
@@ -21,7 +23,8 @@ export function Prioritizable(obj) {
   const priorities = ['low', 'medium', 'high'];
   PubSub.subscribe(UPDATE_PRIORITY(obj.type), updatePriority)
   function updatePriority(_, data) {
-    obj.priority = Math.max(Math.min(obj.priority + data, 0), priorities.length - 1);
+    obj.priority = priorities[Math.max(Math.min(priorities.indexOf(obj.priority) + data, 0), priorities.length - 1)];
+    PubSub.publish(UPDATED(obj.type));
   }
 }
 
@@ -42,9 +45,9 @@ export function Belongable(obj, belongType) {
   delete obj[belongType + 'Id'];
 }
 
-export function Listable(obj) {
+export function Listable(obj, itemList = []) {
   const list = obj.itemType + 's';
-  obj[list] ||= [];
+  obj[list] ||= itemList;
   let nextId = 1;
 
   PubSub.subscribe(BELONG_UPDATED(obj.itemType), updateListBelongs);

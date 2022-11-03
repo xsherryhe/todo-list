@@ -2,25 +2,25 @@ Composition Units
 //-Prioritizable
   //-priorities private variable with array of priorities (low 0, medium 1, high 2)
   //-sub changeItemPriority, changePriority
-  //-changePriority: priority = Math.max(Math.min(priority + data, 0), priorities.length - 1); updateAttr(priority)?
+  //-changePriority: priority = Math.max(Math.min(priority + data, 0), priorities.length - 1); pub type + updated
 
 //-Statusable
   //-statuses private variable with array of statuses (0 incomplete, 1 complete)
   //-sub changeItemStatus, changeStatus
-  //-changeStatus: status = (status + 1) % statuses.length; updateAttr(status)?
+  //-changeStatus: status = (status + 1) % statuses.length; pub type + updated
 
 //-Updatable
   //-sub update + type, updateAttrs(details of update)
   //-updateAttrs(details of update)
     //-return if item type and item id don't match the data
-    -for each detail in update, set the attribute; pub type + 'Changed' (if successful)? or pub updateFailed with error message(s), item type + id, and failed attr (if failed)
+    -for each detail in update, set the attribute; pub type + 'updated' (if successful) or pub updateFailed with error message(s), item type + id, and failed attr (if failed)
 
 //-Belongable
 -BelongChangeable(parent type)
   -sub change + 'parent type', changeParentId: pub type + 'ParentChanged' with old and new parent ids
 
 //-Collectionable(collection type)
-  //-sub collectionType + ListChanged, updateCollectionItems: pub todoItemChanged?
+  //-sub collectionType + ListChanged, updateCollectionItems: pub type + Changed?
 
 //-Listable(type of item)
   //-array of items
@@ -30,39 +30,38 @@ Composition Units
   //-sub delete + 'type', delete, then pub type + 'ListChanged'
 
 Factories
--ChecklistItem: id, title, statusable, updatable, todoItem id
+//-ChecklistItem: id, title, statusable, updatable, belongable to todoItem id
 
--ChecklistItemsList: Listable with item type of ChecklistItem
+//-ChecklistItemsList: Listable with item type of ChecklistItem
 
-//-TodoItem: id, title, description, dueDate, notes, project id, checklistItems, prioritizable, statusable, updatable, project id, parentChangeable, collectionable
+//-TodoItem: id, title, description, dueDate, notes, belongable to project id, prioritizable, statusable, updatable, collectionable with checklistItems
+  -belongChangeable
 
 //TodoItemsList: Listable with item type of TodoItem
 
--Project: id, title
-  -todoItems (initially populated from storage)
-  -sub todoItemListChanged, update todoItems variable: pub projectChanged
+//-Project: id, title, collectionable with todoItems
 
--ProjectsList: Listable with item type of Project
-
--localStorageProvider
-  -deal with API details of localStorage
+//-ProjectsList: Listable with item type of Project
 
 Modules
 -application (index.js)
-  -initialize: pub initialize
-  -sub dataInitialized, populateData
-  -sub projectChanged, emitData
-  -emitData: pub newData
+  //-initialize: pub initialize
+  //-sub dataInitialized, populateData
+  -sub any updated, emitData?
+  -emitData: pub newData?
+
+-PubSub event types (constants)
 
 -storage
-  -sub initialize, initializeData
+  //-sub initialize, initializeData
   -initializeData(storageProvider = localStorageProvider)
     -pub dataInitialized, storageData
-  -sub newData, saveToStorage
+  //-sub any updated, saveToStorage
   -saveToStorage(storageProvider = localStorageProvider)
     -update storageData
 
--PubSub event types (constants)
+-localStorageProvider
+  -deal with API details of localStorage
 
 -DOMEvents
   -sub indexProjectsRendered
@@ -92,7 +91,8 @@ Modules
 
 -views
   *todos and projects have datasets with type of item (todo or project) and id
-  private renderingData variable
+  private renderingData variable -- export from application?
+  
   currPageView variable that changes with each new render -- this variable is a fn that calls the last applicable rendered page view function; default set to indexProjectsView
 
   -sub newData, updateData, updateView
