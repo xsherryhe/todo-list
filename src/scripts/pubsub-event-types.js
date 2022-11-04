@@ -6,6 +6,8 @@ export const INDEX = type => `index.${type}`;
 export const NEW = type => `new.${type}`;
 export const CREATE = type => `create.${type}`;
 export const SHOW = type => `show.${type}`;
+export const ANY_EDIT_ATTRIBUTE = 'edit.attribute';
+export const EDIT_ATTRIBUTE = type => `edit.attribute.${type}`;
 export const DESTROY = type => `destroy.${type}`;
 
 export const UPDATE = (type, id) => `update.${type}.${id}`;
@@ -26,3 +28,7 @@ export const ANY_NEW_RENDERED = 'rendered.view.new';
 export const NEW_RENDERED = type => `rendered.view.new.${type}`;
 export const ANY_SHOW_RENDERED = 'rendered.view.show';
 export const SHOW_RENDERED = type => `rendered.view.show.${type}`;
+export const ANY_EDIT_RENDERED = 'rendered.view.edit';
+export const EDIT_RENDERED = type => `rendered.view.edit.${type}`;
+export const ANY_EDIT_ATTRIBUTE_RENDERED = 'rendered.view.edit.attribute';
+export const EDIT_ATTRIBUTE_RENDERED = type => `rendered.view.edit.attribute.${type}`

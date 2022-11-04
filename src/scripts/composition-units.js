@@ -5,7 +5,7 @@ import { CREATE, DESTROY, UPDATE, UPDATE_STATUS, UPDATE_PRIORITY, UPDATE_BELONG,
 export function Updatable(obj) {
   PubSub.subscribe(UPDATE(obj.type, obj.id), update);
   function update(_, data) {
-    for(key in data) obj[attribute] = data[attribute];
+    for(const attribute in data) obj[attribute] = data[attribute];
     PubSub.publish(UPDATED(obj.type, obj.id));
   }
 }

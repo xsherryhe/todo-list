@@ -15,7 +15,7 @@ export default function newProjectView() {
      <input type="text" name="title" id="title">
      <button class="submit">Submit</button>`;
 
-  addProjectButton.parentNode.append(backButton, projectFormElement);
-  addProjectButton.remove();
+  addProjectButton.replaceWith(backButton, projectFormElement);
+  //addProjectButton.remove();
   PubSub.publish(NEW_RENDERED('project'));
 }

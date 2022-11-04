@@ -1,8 +1,9 @@
 import './index-projects-view'
 import './new-project-view'
-import './show-project-view'
 import './new-todoItem-view'
+import './show-project-view'
 import './show-todoItem-view'
+import './edit-view'
 
 import PubSub from 'pubsub-js';
 import { PAGE_RENDERED, ANY_UPDATED, BACK } from '../pubsub-event-types';

@@ -72,7 +72,7 @@ Modules
     //-add new todo item button click: pub newTodoItem, project id
     //-delete todo item button click: pub deleteTodoItem, type of 'todoItem' + todoItemid
     //-all projects button click: pub indexProjects
-    -text (button) click: pub editText, type of item + item id + button class
+    //-text (button) click: pub editText, type of item + item id + button class
     //-for each todo item:
       //-expand button click: pub showTodoItem, todoItem data
   -sub showTodoItemRendered
@@ -107,8 +107,8 @@ Modules
     //-pub indexProjectsRendered
   //-sub newProject, newProjectView: pub newProjectRendered
   //-sub showProject, showProjectView(project)
-  -showProjectView(project)
-    -pub showProjectRendered, project id
+  //-showProjectView(project)
+    //-pub showProjectRendered, project id
 
   -sub newTodoItem, newTodoItemView: pub newTodoItemRendered
   -sub showTodoItem, showTodoItemView(todoItem)
@@ -117,10 +117,10 @@ Modules
   -sub hideTodoItem, hideTodoItemView(todoItem)
   -sub editText, editTextView
   -sub editDate, editDateView
-  -editTextView(item id, type)
-    -pub editInputRendered, item type + id
-  -editDateView(item id, type)
-    -pub editInputRendered, item type + id
+  //-editTextView(item id, type)
+    //-pub editInputRendered, item type + id
+  //-editDateView(item id, type)
+    //-pub editInputRendered, item type + id
   -sub newChecklistItem, newChecklistItemView: pub newChecklistItemRendered
 
   -getColors(array, color1, color2): split color range evenly and divide between number of items in array, return array items mapped to colors
