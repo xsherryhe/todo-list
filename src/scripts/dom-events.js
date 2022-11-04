@@ -12,16 +12,13 @@ const indexButtons = () => document.querySelectorAll('.index'),
       inputElements = () => document.querySelectorAll('input'),
       submitButtons = () => document.querySelectorAll('.submit');
 
-function _bindButtons(buttons, pubSubEvent, extraDataAttrs = []) {
+function _bindButtons(buttons, pubSubEvent) {
   buttons.forEach(button => {
-    const clearedButton = button.cloneNode(true);
-    button.replaceWith(clearedButton);
-    const extraData = extraDataAttrs.reduce((data, attr) => 
-      Object.assign(data, { [attr]: button[attr] }), {});
-    clearedButton.addEventListener('click', 
+    button = _clearEventListeners(button);
+    button.addEventListener('click', 
       e => PubSub.publish(typeof pubSubEvent == 'function' ? 
                             pubSubEvent(e.target.dataset.type) : pubSubEvent,
-                          Object.assign(e.target.dataset, extraData)));
+                          e.target.dataset));
   });
 }
 
@@ -30,16 +27,15 @@ function bindActionButtons() {
   _bindButtons(indexButtons(), INDEX);
   _bindButtons(newButtons(), NEW);
   _bindButtons(showButtons(), SHOW);
-  _bindButtons(editAttributeButtons(), EDIT_ATTRIBUTE, ['textContent']);
+  _bindButtons(editAttributeButtons(), EDIT_ATTRIBUTE);
   _bindButtons(destroyButtons(), DESTROY);
   _bindButtons(backButtons(), BACK);
 }
 
 function _bindFormSubmitButtons(pubSubEvent, dataAttrs) {
   submitButtons().forEach(button => { 
-    const clearedButton = button.cloneNode(true);
-    button.replaceWith(clearedButton);
-    clearedButton.addEventListener('click', e => {
+    button = _clearEventListeners(button);
+    button.addEventListener('click', e => {
       e.preventDefault();
       const form = e.target.closest('form'),
             args = dataAttrs.map(attr => form.dataset[attr]);
@@ -58,24 +54,32 @@ function bindUpdateButtons() {
   _bindFormSubmitButtons(UPDATE, ['type', 'id']);
 }
 
+const textLike = ['text'];
 PubSub.subscribe(ANY_EDIT_ATTRIBUTE_RENDERED, bindEditAttributeEvents);
-function bindEditAttributeEvents() {
+function bindEditAttributeEvents(_, data) {
   inputElements().forEach(input => {
-    const clearedInput = input.cloneNode(true);
-    input.replaceWith(clearedInput);
-    _focusInput(clearedInput);
-    clearedInput.addEventListener('keydown', e => {
+    input = _clearEventListeners(input);
+    const form = input.closest('form');
+    if(Object.entries(data).every(([key, val]) => form.dataset[key] == val)) 
+      _focusInput(input);
+    input.addEventListener('keydown', e => {
       if(!(e.key == 'Enter' && document.activeElement == input)) return;
-      const form = e.target.closest('form');
       PubSub.publish(UPDATE(form.type, form.id), Object.fromEntries(new FormData(form)));
     })
 
-    clearedInput.addEventListener('focusout', () => PubSub.publish(BACK));
+    if(textLike.includes(input.type)) 
+      input.addEventListener('focusout', () => PubSub.publish(BACK));
   })
 }
 
 function _focusInput(input) {
   input.focus();
-  if(input.type == 'text')
+  if(textLike.includes(input.type))
     input.selectionStart = input.selectionEnd = input.value.length;
+}
+
+function _clearEventListeners(element) {
+  const clearedElement = element.cloneNode(true);
+  element.replaceWith(clearedElement);
+  return clearedElement;
 }

@@ -1,6 +1,7 @@
 import PubSub from 'pubsub-js';
 import { SHOW, SHOW_RENDERED, PAGE_RENDERED } from '../pubsub-event-types';
 import { applicationData as renderData } from '../application';
+import { formatRelative } from 'date-fns';
 
 PubSub.subscribe(SHOW('project'), showProjectView);
 
@@ -27,6 +28,7 @@ function _renderIntro(project) {
   editButton.dataset.id = project.id;
   editButton.dataset.attribute = 'title';
   editButton.dataset.attributeType = 'text';
+  editButton.dataset.attributeValue = project.title;
   editButton.textContent = project.title;
 
   newTodoItemButton.classList.add('new');
@@ -48,7 +50,7 @@ function _renderTodoItems(project) {
           destroyButton = document.createElement('button');
 
     todoItemElement.classList.add(todoItem.priority);
-    dueDateElement.textContent = 'Due Date: ';
+    dueDateElement.textContent = 'Due: ';
 
     [showButton, editTitleButton, editDueDateButton, destroyButton].forEach(button => {
       button.dataset.type = todoItem.type;
@@ -60,11 +62,13 @@ function _renderTodoItems(project) {
     [editTitleButton, editDueDateButton].forEach(button => button.classList.add('edit-attribute'));
     editTitleButton.dataset.attribute = 'title';
     editTitleButton.dataset.attributeType = 'text';
+    editTitleButton.dataset.attributeValue = todoItem.title;
     editTitleButton.textContent = todoItem.title;
 
     editDueDateButton.dataset.attribute = 'dueDate';
-    editDueDateButton.dataset.attributeType = 'date';
-    editDueDateButton.textContent = todoItem.dueDate;
+    editDueDateButton.dataset.attributeType = 'datetime-local';
+    editDueDateButton.dataset.attributeValue = todoItem.dueDate;
+    editDueDateButton.textContent = formatRelative(new Date(todoItem.dueDate), new Date());
 
     destroyButton.classList.add('destroy');
     destroyButton.textContent = '-';
