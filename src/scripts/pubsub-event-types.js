@@ -8,18 +8,21 @@ export const CREATE = type => `create.${type}`;
 export const SHOW = type => `show.${type}`;
 export const DESTROY = type => `destroy.${type}`;
 
-export const UPDATE = type => `update.${type}`;
-export const UPDATE_STATUS = type => `update.${type}.status`;
-export const UPDATE_PRIORITY = type => `update.${type}.priority`;
+export const UPDATE = (type, id) => `update.${type}.${id}`;
+export const UPDATE_STATUS = (type, id) => `update.${type}.status.${id}`;
+export const UPDATE_PRIORITY = (type, id) => `update.${type}.priority.${id}`;
+export const UPDATE_BELONG = (type, id, belongType) => `update.${type}.belong.${belongType}.${id}`;
 
 export const ANY_UPDATED = 'updated';
-export const UPDATED = type => `updated.${type}`;
+export const UPDATED = (type, id) => `updated.${type}.${id}`;
 export const BELONG_UPDATED = type => `updated.${type}.belong`;
 export const LIST_UPDATED = type => `updated.${type}.list`;
 
 export const PAGE_RENDERED = 'rendered.page';
-export const ANY_INDEX_RENDERED = 'rendered.index';
-export const INDEX_RENDERED = type => `rendered.index.${type}`;
-export const ANY_NEW_RENDERED = 'rendered.new';
-export const NEW_RENDERED = type => `rendered.new.${type}`;
-export const SHOW_RENDERED = type => `rendered.show.${type}`;
+export const VIEW_RENDERED = 'rendered.view';
+export const ANY_INDEX_RENDERED = 'rendered.view.index';
+export const INDEX_RENDERED = type => `rendered.view.index.${type}`;
+export const ANY_NEW_RENDERED = 'rendered.view.new';
+export const NEW_RENDERED = type => `rendered.view.new.${type}`;
+export const ANY_SHOW_RENDERED = 'rendered.view.show';
+export const SHOW_RENDERED = type => `rendered.view.show.${type}`;

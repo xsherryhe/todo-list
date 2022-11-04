@@ -8,9 +8,9 @@ PubSub.subscribe(INITIALIZE, initializeDataFn(localStorage.getData));
 function initializeDataFn(getDataFn = localStorage.getData) {
   return function() {
     const storageData = getDataFn() || 
-      { projectsList: [{ id: 0, title: "My To-Dos" }], 
-        todoItemsList: [], 
-        checklistItemsList: [] };
+    { projectsList: [{ id: 0, title: 'My To-Dos', todoItemIds: [1] }], 
+      todoItemsList: [{ id: 1, title: 'Sample To-Do', priority: 'low', status: 'incomplete', dueDate: Date() }], 
+      checklistItemsList: [] };
     PubSub.publish(DATA_INITIALIZED, storageData);
   }
 }

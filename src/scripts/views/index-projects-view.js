@@ -5,63 +5,71 @@ import * as settings from '../settings';
 
 PubSub.subscribe(INDEX('project'), indexProjectsView)
 export default function indexProjectsView() {
-  _indexProjectsRenderIntro();
-  _indexProjectsRenderProjects();
+  document.body.innerHTML = '';
+  _renderIntro();
+  _renderProjects();
   PubSub.publish(PAGE_RENDERED, indexProjectsView);
-  PubSub.publish(INDEX_RENDERED('project'), 'project');
+  PubSub.publish(INDEX_RENDERED('project'));
 }
 
-function _indexProjectsRenderIntro() {
+function _renderIntro() {
   const headingElement = document.createElement('h1'),
         bylineElement = document.createElement('h2'),
-        addTodoButton = document.createElement('button');
+        newTodoItemButton = document.createElement('button');
   headingElement.textContent = 'Actionality';
   bylineElement.textContent = 'Your one-stop to-do app';
-  addTodoButton.classList.add('add-todo');
-  addTodoButton.textContent = 'Add a New To-Do';
+  newTodoItemButton.classList.add('new');
+  newTodoItemButton.dataset.type = 'todoItem';
+  newTodoItemButton.dataset.projectId = 0;
+  newTodoItemButton.textContent = 'Add a New To-Do';
 
-  document.body.append(headingElement, bylineElement, addTodoButton);
+  document.body.append(headingElement, bylineElement, newTodoItemButton);
 }
 
-function _indexProjectsRenderProjects() {
-  _indexProjectsRenderProjectsHeading();
-  _indexProjectsRenderProjectsList();
+function _renderProjects() {
+  _renderProjectsHeading();
+  _renderProjectsList();
 }
 
-function _indexProjectsRenderProjectsHeading() {
+function _renderProjectsHeading() {
   const projectsHeadingElement = document.createElement('div'),
         projectsHeadingTextElement = document.createElement('h2'),
-        addProjectButton = document.createElement('button');
+        newProjectButton = document.createElement('button');
 
   projectsHeadingTextElement.textContent = 'My Projects';
-  addProjectButton.classList.add('add-project');
-  addProjectButton.textContent = '+';
+  newProjectButton.classList.add('new');
+  newProjectButton.dataset.type = 'project';
+  newProjectButton.textContent = '+';
 
-  projectsHeadingElement.append(projectsHeadingTextElement, addProjectButton);
+  projectsHeadingElement.append(projectsHeadingTextElement, newProjectButton);
   document.body.append(projectsHeadingElement);
 }
 
-function _indexProjectsRenderProjectsList() {
+function _renderProjectsList() {
   renderData.projectsList.projects.forEach(project => {
     const projectElement = document.createElement('div'),
           showButton = document.createElement('button'),
-          deleteButton = document.createElement('button'),
+          destroyButton = document.createElement('button'),
           previewElement = document.createElement('ul');
 
+    [showButton, destroyButton].forEach(button => {
+      button.dataset.type = project.type;
+      button.dataset.id = project.id;
+    })
     showButton.classList.add('show');
-    showButton.dataset.id = project.id;
     showButton.textContent = project.title;
-    deleteButton.classList.add('delete');
-    deleteButton.dataset.id = project.id;
-    deleteButton.textContent = '-';
-    project.todoItems.slice(0, settings.previewNum).forEach(todoItem => {
+    destroyButton.classList.add('destroy');
+    destroyButton.textContent = '-';
+
+    renderData.todoItemsList.withIds(project.todoItemIds)
+              .slice(0, settings.previewNum).forEach(todoItem => {
       const todoItemElement = document.createElement('li');
       todoItemElement.textContent = todoItem.title;
       previewElement.appendChild(todoItemElement);
     });
 
     projectElement.appendChild(showButton);
-    if (project.id) projectElement.appendChild(deleteButton);
+    if (project.id) projectElement.appendChild(destroyButton);
     projectElement.append(previewElement);
     document.body.appendChild(projectElement);
   })

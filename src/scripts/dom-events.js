@@ -1,34 +1,36 @@
 import PubSub from 'pubsub-js';
-import { BACK, ANY_INDEX_RENDERED, INDEX_RENDERED, NEW, ANY_NEW_RENDERED, 
+import { BACK, VIEW_RENDERED, INDEX, NEW, ANY_NEW_RENDERED, 
          CREATE, SHOW, DESTROY } from './pubsub-event-types';
 
-const addButton = type => document.querySelector(`.add-${type}`),
-      addTodoButton = () => document.querySelector('.add-todo'),
+const indexButtons = () => document.querySelectorAll('.index'),
+      newButtons = () => document.querySelectorAll('.new'),
       showButtons = () => document.querySelectorAll('.show'),
-      deleteButtons = () => document.querySelectorAll('.delete'),
+      destroyButtons = () => document.querySelectorAll('.destroy'),
       backButton = () => document.querySelector('.back'),
       newForm = () => document.querySelector('.new-form'),
       submitButton = () => document.querySelector('.submit');
 
-PubSub.subscribe(ANY_INDEX_RENDERED, bindIndexEvents)
-function bindIndexEvents(_, type) {
-  addButton(type).addEventListener('click', () => PubSub.publish(NEW(type)));
-  showButtons().forEach(button =>
-    button.addEventListener('click', e => PubSub.publish(SHOW(type), { id: e.target.dataset.id })));
-  deleteButtons().forEach(button => 
-    button.addEventListener('click', e => PubSub.publish(DESTROY(type), { id: e.target.dataset.id })));
-}
-
-PubSub.subscribe(ANY_NEW_RENDERED, bindNewEvents)
-function bindNewEvents(_, type) {
-  backButton().addEventListener('click', () => PubSub.publish(BACK));
-  submitButton().addEventListener('click', e => {
-    e.preventDefault();
-    PubSub.publish(CREATE(type), Object.fromEntries(new FormData(newForm())));
+function _bindButtons(buttons, pubSubEvent) {
+  buttons.forEach(button => {
+    const clearedButton = button.cloneNode(true);
+    button.replaceWith(clearedButton);
+    clearedButton.addEventListener('click', e => PubSub.publish(pubSubEvent(e.target.dataset.type), e.target.dataset));
   });
 }
 
-PubSub.subscribe(INDEX_RENDERED('project'), bindIndexProjectsEvents)
-function bindIndexProjectsEvents() {
-  addTodoButton().addEventListener('click', () => PubSub.publish(NEW('todoItem')));
+PubSub.subscribe(VIEW_RENDERED, bindActionButtons);
+function bindActionButtons() {
+  _bindButtons(indexButtons(), INDEX);
+  _bindButtons(newButtons(), NEW);
+  _bindButtons(showButtons(), SHOW);
+  _bindButtons(destroyButtons(), DESTROY);
+}
+
+PubSub.subscribe(ANY_NEW_RENDERED, bindNewEvents);
+function bindNewEvents() {
+  backButton().addEventListener('click', () => PubSub.publish(BACK));
+  submitButton().addEventListener('click', e => {
+    e.preventDefault();
+    PubSub.publish(CREATE(newForm().dataset.type), Object.fromEntries(new FormData(newForm())));
+  });
 }

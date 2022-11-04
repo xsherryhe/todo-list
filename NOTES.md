@@ -16,8 +16,8 @@ Composition Units
     -for each detail in update, set the attribute; pub type + 'updated' (if successful) or pub updateFailed with error message(s), item type + id, and failed attr (if failed)
 
 //-Belongable
--BelongChangeable(parent type)
-  -sub change + 'parent type', changeParentId: pub type + 'ParentChanged' with old and new parent ids
+//-BelongUpdatable(belong type)
+  //-sub update + 'belong type', updateBelong: pub type + 'BelongUpdated' with old and new parent ids
 
 //-Collectionable(collection type)
   //-sub collectionType + ListChanged, updateCollectionItems: pub type + Changed?
@@ -34,8 +34,7 @@ Factories
 
 //-ChecklistItemsList: Listable with item type of ChecklistItem
 
-//-TodoItem: id, title, description, dueDate, notes, belongable to project id, prioritizable, statusable, updatable, collectionable with checklistItems
-  -belongChangeable
+//-TodoItem: id, title, description, dueDate, notes, belongable to project id, belongUpdatable for project, prioritizable, statusable, updatable, collectionable with checklistItems
 
 //TodoItemsList: Listable with item type of TodoItem
 
@@ -70,14 +69,14 @@ Modules
     //-add new todo item button click: pub newTodoItem, project id = 0/default
     //-project button click: pub showProject, project id
   -sub showProjectRendered
-    -add new todo item button click: pub newTodoItem, project id
-    -delete todo item button click: pub deleteTodoItem, type of 'todoItem' + todoItemid
-    -all projects button click: pub indexProjects
+    //-add new todo item button click: pub newTodoItem, project id
+    //-delete todo item button click: pub deleteTodoItem, type of 'todoItem' + todoItemid
+    //-all projects button click: pub indexProjects
     -text (button) click: pub editText, type of item + item id + button class
-    -for each todo item:
-      -expand button click: pub showTodoItem, todoItem data
-      -shrink button click: pub hideTodoItem, todoItem id
+    //-for each todo item:
+      //-expand button click: pub showTodoItem, todoItem data
   -sub showTodoItemRendered
+    -shrink button click: pub hideTodoItem, todoItem id
     -add new checklist item button click: pub newChecklistItem, todoItem id
     -delete checklist item button click: pub deleteChecklistItem, type of 'checklistItem' + checklistItemid
     -project select change: pub changeProject
@@ -97,8 +96,8 @@ Modules
   -sub newData, updateData?, updateView
   -updateData?
     -update private data variable with new data?
-  -updateView
-    -re-render currPageView
+  //-updateView
+    //-re-render currPageView
   -sub updateFailed, renderError
     -render error message under relevant DOM dataset attribute
 
@@ -106,8 +105,8 @@ Modules
   //-indexProjectsView
     //-render using renderData variable
     //-pub indexProjectsRendered
-  -sub newProject, newProjectView: pub newProjectRendered
-  -sub showProject, showProjectView(project)
+  //-sub newProject, newProjectView: pub newProjectRendered
+  //-sub showProject, showProjectView(project)
   -showProjectView(project)
     -pub showProjectRendered, project id
 
