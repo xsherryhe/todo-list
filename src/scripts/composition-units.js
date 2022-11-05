@@ -105,7 +105,7 @@ export function Listable(obj, rawItemList = []) {
       Object.assign(data,
         {
           [belongType]: {
-            [belongId]: obj[list].filter(item => item.belongs[belongType] == belongId)
+            [belongId]: obj[list].filter(item => item.belongs[belongType] == belongId).map(item => item.id)
           }
         }), {});
     PubSub.publish(LIST_UPDATED(obj.itemType), belongData);
