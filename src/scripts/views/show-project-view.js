@@ -41,7 +41,7 @@ function _renderIntro(project) {
 }
 
 function _renderTodoItems(project) {
-  renderData.todoItemsList.withIds(project.todoItemIds).forEach(todoItem => {
+  renderData.todoItemsList.withIds(project.todoItems).forEach(todoItem => {
     const todoItemElement = document.createElement('div'),
           editTitleButton = document.createElement('button'),
           dueDateElement = document.createElement('div'),

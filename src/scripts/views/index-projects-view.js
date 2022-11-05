@@ -60,7 +60,7 @@ function _renderProjectsList() {
     destroyButton.classList.add('destroy');
     destroyButton.textContent = '-';
 
-    renderData.todoItemsList.withIds(project.todoItemIds)
+    renderData.todoItemsList.withIds(project.todoItems)
               .slice(0, settings.previewNum).forEach(todoItem => {
       const todoItemElement = document.createElement('li');
       todoItemElement.textContent = todoItem.title;
@@ -68,7 +68,7 @@ function _renderProjectsList() {
     });
 
     projectElement.appendChild(showButton);
-    if (project.id) projectElement.appendChild(destroyButton);
+    if(project.id) projectElement.appendChild(destroyButton);
     projectElement.append(previewElement);
     document.body.appendChild(projectElement);
   })

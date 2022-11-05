@@ -91,7 +91,7 @@ Modules
   *todos and projects have datasets with type of item (todo or project) and id
   private renderingData variable -- export from application?
 
-  currPageView variable that changes with each new render -- this variable is a fn that calls the last applicable rendered page view function; default set to indexProjectsView
+  //currPageView variable that changes with each new render -- this variable is a fn that calls the last applicable rendered page view function; default set to indexProjectsView
 
   -sub newData, updateData?, updateView
   -updateData?
@@ -110,13 +110,13 @@ Modules
   //-showProjectView(project)
     //-pub showProjectRendered, project id
 
-  -sub newTodoItem, newTodoItemView: pub newTodoItemRendered
+  //-sub newTodoItem, newTodoItemView: pub newTodoItemRendered
   -sub showTodoItem, showTodoItemView(todoItem)
   -showTodoItemView(todoItem)
     -pub showTodoItemRendered, todoItem id
   -sub hideTodoItem, hideTodoItemView(todoItem)
-  -sub editText, editTextView
-  -sub editDate, editDateView
+  //-sub editText, editTextView
+  //-sub editDate, editDateView
   //-editTextView(item id, type)
     //-pub editInputRendered, item type + id
   //-editDateView(item id, type)
