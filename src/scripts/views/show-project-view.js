@@ -68,7 +68,7 @@ function _renderTodoItems(project) {
     editDueDateButton.dataset.attribute = 'dueDate';
     editDueDateButton.dataset.attributeType = 'datetime-local';
     editDueDateButton.dataset.attributeValue = todoItem.dueDate;
-    editDueDateButton.textContent = formatRelative(new Date(todoItem.dueDate), new Date());
+    editDueDateButton.textContent = todoItem.dueDate ? formatRelative(new Date(todoItem.dueDate), new Date()) : 'None';
 
     destroyButton.classList.add('destroy');
     destroyButton.textContent = '-';

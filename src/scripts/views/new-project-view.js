@@ -3,19 +3,18 @@ import { NEW, NEW_RENDERED } from '../pubsub-event-types';
 
 PubSub.subscribe(NEW('project'), newProjectView);
 export default function newProjectView() {
-  const addProjectButton = document.querySelector('.new[data-type="project"]'),
+  const newProjectButton = document.querySelector('.new[data-type="project"]'),
         backButton = document.createElement('button'),
-        projectFormElement = document.createElement('form');
+        formElement = document.createElement('form');
   backButton.classList.add('back');
   backButton.textContent = 'Back';
-  projectFormElement.classList.add('new-form');
-  projectFormElement.dataset.type = 'project';
-  projectFormElement.innerHTML =
+  formElement.dataset.type = 'project';
+  formElement.innerHTML =
     `<label for="title">New Project</label>
      <input type="text" name="title" id="title">
      <button class="submit">Submit</button>`;
 
-  addProjectButton.replaceWith(backButton, projectFormElement);
+  newProjectButton.replaceWith(backButton, formElement);
   //addProjectButton.remove();
   PubSub.publish(NEW_RENDERED('project'));
 }

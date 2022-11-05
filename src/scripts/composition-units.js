@@ -1,6 +1,7 @@
 import PubSub from 'pubsub-js';
 import { CREATE, DESTROY, UPDATE, UPDATE_STATUS, UPDATE_PRIORITY, UPDATE_BELONG, 
          UPDATED, BELONG_UPDATED, LIST_UPDATED } from './pubsub-event-types';
+import { applicationSettings as settings } from './application'
 
 export function Updatable(obj) {
   PubSub.subscribe(UPDATE(obj.type, obj.id), update);
@@ -11,7 +12,7 @@ export function Updatable(obj) {
 }
 
 export function Statusable(obj) {
-  const statuses = ['incomplete', 'complete'];
+  const statuses = settings.statuses;
   PubSub.subscribe(UPDATE_STATUS(obj.type, obj.id), incrementStatus)
   function incrementStatus() {
     obj.status = statuses[(statuses.indexOf(obj.status )+ 1) % statuses.length];
@@ -20,7 +21,7 @@ export function Statusable(obj) {
 }
 
 export function Prioritizable(obj) {
-  const priorities = ['low', 'medium', 'high'];
+  const priorities = settings.priorities;
   PubSub.subscribe(UPDATE_PRIORITY(obj.type, obj.id), updatePriority)
   function updatePriority(_, data) {
     obj.priority = priorities[Math.max(Math.min(priorities.indexOf(obj.priority) + data, 0), priorities.length - 1)];
@@ -29,7 +30,7 @@ export function Prioritizable(obj) {
 }
 
 export function Collectionable(obj, collectionType) {
-  const collection = collectionType + 'Ids';
+  const collection = collectionType + 's';
   obj[collection] ||= [];
 
   PubSub.subscribe(LIST_UPDATED(collectionType), updateCollectionItems);
@@ -83,6 +84,8 @@ export function Listable(obj, rawItemList = []) {
 
   PubSub.subscribe(CREATE(obj.itemType), createListItem);
   function createListItem(_, data) {
+    //did belongs assign correctly?? if not must code manually
+    console.log(data);
     const newListItem = obj.itemFactory(Object.assign({ id: nextId++ }, data));
     obj[list].unshift(newListItem);
     publishListUpdatedWithBelongData(newListItem);

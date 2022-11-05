@@ -14,6 +14,7 @@ import { ChecklistItemsList } from './checklist-items';
 const applicationDataLists = { ProjectsList, TodoItemsList, ChecklistItemsList };
 
 export let applicationData = {};
+export * as applicationSettings from './settings';
 
 function initialize() {
   PubSub.publish(INITIALIZE);

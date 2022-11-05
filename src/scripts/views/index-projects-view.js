@@ -1,7 +1,6 @@
 import PubSub from 'pubsub-js';
 import { INDEX, INDEX_RENDERED, PAGE_RENDERED } from '../pubsub-event-types';
-import { applicationData as renderData } from '../application';
-import * as settings from '../settings';
+import { applicationData as renderData, applicationSettings as settings } from '../application';
 
 PubSub.subscribe(INDEX('project'), indexProjectsView)
 export default function indexProjectsView() {

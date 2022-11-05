@@ -1,4 +1,5 @@
-import { Updatable, Statusable, Prioritizable, Collectionable, Belongable, Listable, BelongUpdatable } from './composition-units';
+import { Updatable, Statusable, Prioritizable, Collectionable, 
+         Belongable, Listable, BelongUpdatable } from './composition-units';
 
 export function TodoItem(attributes) {
   const obj = Object.assign({ type: 'todoItem' }, attributes);
