@@ -2,6 +2,7 @@ import PubSub from 'pubsub-js';
 import { BACK, VIEW_RENDERED, INDEX, NEW, ANY_NEW_RENDERED, CREATE, 
          SHOW, ANY_EDIT_RENDERED, EDIT_ATTRIBUTE, ANY_EDIT_ATTRIBUTE_RENDERED, 
          UPDATE, DESTROY } from './pubsub-event-types';
+import { applicationSettings as settings } from './application';
 
 const indexButtons = () => document.querySelectorAll('.index'),
       newButtons = () => document.querySelectorAll('.new'),
@@ -67,14 +68,14 @@ function bindEditAttributeEvents(_, data) {
       PubSub.publish(UPDATE(form.type, form.id), Object.fromEntries(new FormData(form)));
     })
 
-    if(textLike.includes(input.type)) 
+    if(settings.clickOut.includes(input.type)) 
       input.addEventListener('focusout', () => PubSub.publish(BACK));
   })
 }
 
 function _focusInput(input) {
   input.focus();
-  if(textLike.includes(input.type))
+  if(input.selectionStart)
     input.selectionStart = input.selectionEnd = input.value.length;
 }
 
