@@ -4,6 +4,8 @@ import { applicationData as renderData, applicationSettings as settings } from '
 
 PubSub.subscribe(NEW('todoItem'), newTodoItemView);
 export default function newTodoItemView(_, data) {
+  document.querySelectorAll('button').forEach(button => button.disabled = true);
+  
   const newTodoItemButton = document.querySelector('.new[data-type="todoItem"]'),
         backButton = document.createElement('button'),
         formElement = document.createElement('form');

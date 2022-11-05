@@ -39,7 +39,7 @@ export function Collectionable(obj, collectionType) {
     if(newCollectionItems) obj[collection] = newCollectionItems;
   }
 
-  Object.values((obj[collectionType + 'sData'] || {})).forEach(itemData => {
+  Object.values((obj[collectionType + 'sCollectionData'] || {})).forEach(itemData => {
     PubSub.publish(CREATE(collectionType), 
                    Object.assign(itemData, { [`belongs[${obj.type}]`]: obj.id }));
   })

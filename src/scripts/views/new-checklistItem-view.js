@@ -10,7 +10,7 @@ export default function newChecklistItemView(_, data) {
   
   const labelIndex = document.querySelectorAll('.checklist-item').length + 1,
         index = +data.index,
-        prefix = `checklistItemsData[${index}]`;
+        prefix = `checklistItemsCollectionData[${index}]`;
   checklistItemFieldElement.classList.add('field', 'checklist-item');
   checklistItemFieldElement.dataset.index = `${index}`;
 
