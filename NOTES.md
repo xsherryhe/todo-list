@@ -84,8 +84,8 @@ Modules
     -change priority button click: pub changeItemPriority, item type + item id + button data-direction property (1 or -1)
      -text (button) click: pub editText, type of item + item id + button class
     -date (button) click: pub editDate
-  -sub new(type)Rendered, other buttons (e.g. show new checklistItem input field) + submit button click: pub create(type), item type + item id + details of create
-  -sub editInputRendered, enter key or update button click: pub update + type of item, item id + details of update
+  //-sub new(type)Rendered, other buttons (e.g. show new checklistItem input field) + submit button click: pub create(type), item type + item id + details of create
+  //-sub editInputRendered, enter key or update button click: pub update + type of item, item id + details of update
 
 -views
   *todos and projects have datasets with type of item (todo or project) and id

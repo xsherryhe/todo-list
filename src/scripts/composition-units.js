@@ -43,6 +43,7 @@ export function Collectionable(obj, collectionType) {
 //may change depending on storage
 export function Belongable(obj, belongType) {
   obj.belongs ||= { [belongType]: 0 };
+  Object.keys(obj.belongs).forEach(key => obj.belongs[key] = +obj.belongs[key]);
   //obj.belongs[belongType] = obj[belongType + 'Id'];
   //delete obj[belongType + 'Id'];
 }
@@ -84,11 +85,21 @@ export function Listable(obj, rawItemList = []) {
 
   PubSub.subscribe(CREATE(obj.itemType), createListItem);
   function createListItem(_, data) {
-    //did belongs assign correctly?? if not must code manually
     console.log(data);
+    _assignNested(data);
     const newListItem = obj.itemFactory(Object.assign({ id: nextId++ }, data));
     obj[list].unshift(newListItem);
     publishListUpdatedWithBelongData(newListItem);
+  }
+
+  function _assignNested(data) {
+    const reg = /(.+)\[(.+)\]/;
+    Object.keys(data).filter(key => reg.test(key)).forEach(key => {
+      const [outer, inner] = key.match(reg).slice(1);
+      data[outer] ||= {};
+      data[outer][inner] = data[key];
+      delete data[key];
+    })
   }
 
   PubSub.subscribe(DESTROY(obj.itemType), destroyListItem);
