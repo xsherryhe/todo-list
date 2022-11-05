@@ -1,12 +1,13 @@
 import PubSub from 'pubsub-js';
 import { BACK, VIEW_RENDERED, INDEX, NEW, ANY_NEW_RENDERED, CREATE, 
-         SHOW, ANY_EDIT_RENDERED, EDIT_ATTRIBUTE, ANY_EDIT_ATTRIBUTE_RENDERED, 
+         SHOW, HIDE, ANY_EDIT_RENDERED, EDIT_ATTRIBUTE, ANY_EDIT_ATTRIBUTE_RENDERED, 
          UPDATE, DESTROY } from './pubsub-event-types';
 import { applicationSettings as settings } from './application';
 
 const indexButtons = () => document.querySelectorAll('.index'),
       newButtons = () => document.querySelectorAll('.new'),
       showButtons = () => document.querySelectorAll('.show'),
+      hideButtons = () => document.querySelectorAll('.hide'),
       editAttributeButtons = () => document.querySelectorAll('.edit-attribute'),
       destroyButtons = () => document.querySelectorAll('.destroy'),
       backButtons = () => document.querySelectorAll('.back'),
@@ -16,11 +17,13 @@ const indexButtons = () => document.querySelectorAll('.index'),
 function _bindButtons(buttons, pubSubEvent) {
   buttons.forEach(button => {
     button = _clearEventListeners(button);
-    button.addEventListener('click', 
-      e => PubSub.publish(typeof pubSubEvent == 'function' ? 
-                            pubSubEvent(e.target.dataset.type) : pubSubEvent,
-                          e.target.dataset));
-  });
+    button.addEventListener('click', e => {
+      e.preventDefault();
+      PubSub.publish(typeof pubSubEvent == 'function' ? 
+                      pubSubEvent(e.target.dataset.type) : pubSubEvent,
+                     e.target.dataset);
+    })
+  })
 }
 
 PubSub.subscribe(VIEW_RENDERED, bindActionButtons);
@@ -28,6 +31,7 @@ function bindActionButtons() {
   _bindButtons(indexButtons(), INDEX);
   _bindButtons(newButtons(), NEW);
   _bindButtons(showButtons(), SHOW);
+  _bindButtons(hideButtons(), HIDE);
   _bindButtons(editAttributeButtons(), EDIT_ATTRIBUTE);
   _bindButtons(destroyButtons(), DESTROY);
   _bindButtons(backButtons(), BACK);
@@ -42,7 +46,7 @@ function _bindFormSubmitButtons(pubSubEvent, dataAttrs) {
             args = dataAttrs.map(attr => form.dataset[attr]);
       PubSub.publish(pubSubEvent(...args), Object.fromEntries(new FormData(form)));
     })
-  });
+  })
 }
 
 PubSub.subscribe(ANY_NEW_RENDERED, bindCreateButtons);
@@ -55,7 +59,6 @@ function bindUpdateButtons() {
   _bindFormSubmitButtons(UPDATE, ['type', 'id']);
 }
 
-const textLike = ['text'];
 PubSub.subscribe(ANY_EDIT_ATTRIBUTE_RENDERED, bindEditAttributeEvents);
 function bindEditAttributeEvents(_, data) {
   inputElements().forEach(input => {

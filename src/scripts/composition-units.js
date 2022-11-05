@@ -38,6 +38,12 @@ export function Collectionable(obj, collectionType) {
     const newCollectionItems = data?.[obj.type]?.[obj.id];
     if(newCollectionItems) obj[collection] = newCollectionItems;
   }
+
+  Object.values((obj[collectionType + 'sData'] || {})).forEach(itemData => {
+    PubSub.publish(CREATE(collectionType), 
+                   Object.assign(itemData, { [`belongs[${obj.type}]`]: obj.id }));
+  })
+  delete obj[collectionType + 'sData'];
 }
 
 //may change depending on storage
@@ -94,12 +100,15 @@ export function Listable(obj, rawItemList = []) {
 
   function _assignNested(data) {
     const reg = /(.+)\[(.+)\]/;
-    Object.keys(data).filter(key => reg.test(key)).forEach(key => {
-      const [outer, inner] = key.match(reg).slice(1);
-      data[outer] ||= {};
-      data[outer][inner] = data[key];
-      delete data[key];
-    })
+    let keys, targetKeys = () => Object.keys(data).filter(key => reg.test(key));
+    while((keys = targetKeys()).length > 0) {
+      keys.forEach(key => {
+        const [outer, inner] = key.match(reg).slice(1);
+        data[outer] ||= {};
+        data[outer][inner] = data[key];
+        delete data[key];
+      })
+    }
   }
 
   PubSub.subscribe(DESTROY(obj.itemType), destroyListItem);

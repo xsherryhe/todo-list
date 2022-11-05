@@ -6,6 +6,7 @@ export const INDEX = type => `index.${type}`;
 export const NEW = type => `new.${type}`;
 export const CREATE = type => `create.${type}`;
 export const SHOW = type => `show.${type}`;
+export const HIDE = type => `hide.${type}`;
 export const ANY_EDIT_ATTRIBUTE = 'edit.attribute';
 export const EDIT_ATTRIBUTE = type => `edit.attribute.${type}`;
 export const DESTROY = type => `destroy.${type}`;
