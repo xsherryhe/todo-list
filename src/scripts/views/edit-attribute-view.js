@@ -5,8 +5,8 @@ PubSub.subscribe(ANY_EDIT_ATTRIBUTE, editAttributeView)
 function editAttributeView(_, { type, id, attribute, attributeType, attributeValue }) {
   document.querySelectorAll('button').forEach(button => button.disabled = true);
 
-  const editAttributeButtonSelector = `.edit-attribute[data-type="${type}"][data-id="${id}"][data-attribute="${attribute}"]`,
-        editAttributeButton = document.querySelector(editAttributeButtonSelector),
+  const attrElementSelector = `.attribute[data-type="${type}"][data-id="${id}"][data-attribute="${attribute}"]`,
+        attrElement = document.querySelector(attrElementSelector),
         backButton = document.createElement('button'), 
         formElement = document.createElement('form');
 
@@ -16,11 +16,13 @@ function editAttributeView(_, { type, id, attribute, attributeType, attributeVal
   formElement.dataset.type = type;
   formElement.dataset.id = id;
   formElement.dataset.attribute = attribute;
+  const isTextarea = attributeType == 'textarea';
   formElement.innerHTML =
-    `<input type="${attributeType}" name="${attribute}" id="${attribute}" value="${attributeValue}">
+    `<${isTextarea ? 'textarea' : 'input'} 
+      type="${attributeType}" name="${attribute}" id="${attribute}" value="${attributeValue}">
+     ${isTextarea ? `${attributeValue}</textarea>` : ''}
      <button class="submit">✓</button>`;
 
-  editAttributeButton.replaceWith(backButton, formElement);
-  //editAttributeButton.remove();
+  attrElement.replaceWith(backButton, formElement);
   PubSub.publish(EDIT_ATTRIBUTE_RENDERED(type), { type, id, attribute });
 }
