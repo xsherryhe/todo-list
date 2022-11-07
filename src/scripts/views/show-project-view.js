@@ -1,6 +1,6 @@
 import PubSub from 'pubsub-js';
 import { SHOW, SHOW_RENDERED, PAGE_RENDERED } from '../pubsub-event-types';
-import { applicationData as renderData } from '../application';
+import { applicationData as renderData, applicationSettings as settings } from '../application';
 import { renderEditableAttribute } from './view-helpers';
 import { formatRelative } from 'date-fns';
 
@@ -38,6 +38,7 @@ function _renderTodoItems(project, todoItemsShow) {
   const todoItemsShowArr = todoItemsShow.split(' ').filter(item => item).map(Number);
   renderData.todoItemsList.withIds(project.todoItems).forEach(todoItem => {
     const todoItemElement = document.createElement('div'),
+          updateStatusButton = document.createElement('button'),
           showButton = document.createElement('button'),
           hideButton = document.createElement('button'),
           destroyButton = document.createElement('button');
@@ -46,6 +47,14 @@ function _renderTodoItems(project, todoItemsShow) {
     todoItemElement.dataset.id = todoItem.id;
 
     renderEditableAttribute(todoItem, 'title', 'text', { parentElement: todoItemElement });
+
+    updateStatusButton.classList.add('update-status');
+    updateStatusButton.dataset.type = todoItem.type;
+    updateStatusButton.dataset.id = todoItem.id;
+    //TO DO: Change check to icon image
+    updateStatusButton.textContent = settings.statuses.indexOf(todoItem.status) ? '✓' : '';
+    todoItemElement.append(updateStatusButton);
+
     renderEditableAttribute(todoItem, 'dueDate', 'datetime-local',
                             { parentElement: todoItemElement, elementText: 'Due: ',
                               attributeText: todoItem.dueDate ? formatRelative(new Date(todoItem.dueDate), new Date())
