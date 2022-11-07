@@ -24,7 +24,7 @@ export function Prioritizable(obj) {
   const priorities = settings.priorities;
   PubSub.subscribe(UPDATE_PRIORITY(obj.type, obj.id), updatePriority)
   function updatePriority(_, data) {
-    obj.priority = priorities[Math.max(Math.min(priorities.indexOf(obj.priority) + data, 0), priorities.length - 1)];
+    obj.priority = priorities[Math.min(Math.max(priorities.indexOf(obj.priority) + +data.direction, 0), priorities.length - 1)];
     PubSub.publish(ITEM_UPDATED(obj.type, obj.id));
   }
 }

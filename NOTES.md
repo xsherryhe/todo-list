@@ -80,8 +80,8 @@ Modules
     -add new checklist item button click: pub newChecklistItem, todoItem id
     -delete checklist item button click: pub deleteChecklistItem, type of 'checklistItem' + checklistItemid
     //-project select change: pub changeProject, edit_attribute_belongs (make select form)
-    -change status button/checkbox click: pub changeItemStatus, item type + item id
-    -change priority button click: pub changeItemPriority, item type + item id + button data-direction property (1 or -1)
+    //-change status button/checkbox click: pub changeItemStatus, item type + item id
+    //-change priority button click: pub changeItemPriority, item type + item id + button data-direction property (1 or -1)
      //-text (button) click: pub editText, type of item + item id + button class
     //-date (button) click: pub editDate
   //-sub new(type)Rendered, other buttons (e.g. show new checklistItem input field) + submit button click: pub create(type), item type + item id + details of create

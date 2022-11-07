@@ -1,7 +1,7 @@
 import PubSub from 'pubsub-js';
 import { BACK, VIEW_RENDERED, INDEX, NEW, ANY_NEW_RENDERED, CREATE, SHOW, HIDE, 
          EDIT_ATTRIBUTE, ANY_EDIT_ATTRIBUTE_RENDERED, EDIT_BELONG, ANY_EDIT_BELONG_RENDERED, 
-         UPDATE, UPDATE_BELONG, DESTROY } from './pubsub-event-types';
+         UPDATE, UPDATE_BELONG, UPDATE_STATUS, UPDATE_PRIORITY, DESTROY } from './pubsub-event-types';
 import { applicationSettings as settings } from './application';
 
 const indexButtons = () => document.querySelectorAll('.index'),
@@ -10,18 +10,22 @@ const indexButtons = () => document.querySelectorAll('.index'),
       hideButtons = () => document.querySelectorAll('.hide'),
       editAttributeButtons = () => document.querySelectorAll('.edit-attribute'),
       editBelongButtons = () => document.querySelectorAll('.edit-belong'),
+      updateStatusButtons = () => document.querySelectorAll('.update-status'),
+      updatePriorityButtons = () => document.querySelectorAll('.update-priority'),
       destroyButtons = () => document.querySelectorAll('.destroy'),
       backButtons = () => document.querySelectorAll('.back'),
       inputElements = () => document.querySelectorAll('input,textarea'),
       submitButtons = () => document.querySelectorAll('.submit');
 
-function _bindButtons(buttons, pubSubEvent) {
+function _bindButtons(buttons, pubSubEvent, options = {}) {
   buttons.forEach(button => {
     button = _clearEventListeners(button);
     button.addEventListener('click', e => {
       e.preventDefault();
+      const args = [e.target.dataset.type]
+                   .concat((options.extraArgs || []).map(arg => e.target.dataset[arg]));
       PubSub.publish(typeof pubSubEvent == 'function' ? 
-                      pubSubEvent(e.target.dataset.type) : pubSubEvent,
+                      pubSubEvent(...args) : pubSubEvent,
                      e.target.dataset);
     })
   })
@@ -35,6 +39,8 @@ function bindActionButtons() {
   _bindButtons(hideButtons(), HIDE);
   _bindButtons(editAttributeButtons(), EDIT_ATTRIBUTE);
   _bindButtons(editBelongButtons(), EDIT_BELONG);
+  _bindButtons(updateStatusButtons(), UPDATE_STATUS, { extraArgs: ['id'] });
+  _bindButtons(updatePriorityButtons(), UPDATE_PRIORITY, { extraArgs: ['id'] });
   _bindButtons(destroyButtons(), DESTROY);
   _bindButtons(backButtons(), BACK);
 }

@@ -11,26 +11,44 @@ export default function showTodoItemView(_, data) {
         hideButton = document.querySelector(`.hide-todoItem[data-todo-item-id="${data.id}"]`),
         todoItemElement = document.querySelector(`.todo-item[data-id="${data.id}"]`),
         editProjectButton = document.createElement('button'),
-        updateStatusButton = document.createElement('button'),
-        priorityElement = document.createElement('div');
+        statusElement = document.createElement('div'),
+        statusLabel = document.createElement('label'),
+        updateStatusCheckbox = document.createElement('input'),
+        priorityElement = document.createElement('div'),
+        decrementPriorityButton = document.createElement('button'),
+        incrementPriorityButton = document.createElement('button');
 
   renderEditableAttribute(todoItem, 'description', 'textarea', { parentElement: todoItemElement, elementText: 'Description: ' });
   renderEditableAttribute(todoItem, 'notes', 'textarea', { parentElement: todoItemElement, elementText: 'Notes: ' });
 
+  [editProjectButton, updateStatusCheckbox, decrementPriorityButton, incrementPriorityButton].forEach(element => {
+    element.dataset.type = todoItem.type;
+    element.dataset.id = todoItem.id;
+  })
   editProjectButton.classList.add('edit-belong');
-  editProjectButton.dataset.type = todoItem.type;
-  editProjectButton.dataset.id = todoItem.id;
   editProjectButton.dataset.belongType = 'project';
   editProjectButton.dataset.belongId = todoItem.belongs.project;
   editProjectButton.textContent = 'Change Project';
 
-  const statuses = settings.statuses;
-  updateStatusButton.textContent = `Mark as ${statuses[statuses.indexOf(todoItem.status) ^ 1]}`;
-  priorityElement.innerHTML = 
-    `Priority: ${todoItem.priority} <button>v</button> <button>^</button>`;
+  statusLabel.setAttribute('for', `status-${todoItem.type}-${todoItem.id}`);
+  statusLabel.textContent = 'Complete';
+  updateStatusCheckbox.type = 'checkbox';
+  updateStatusCheckbox.id = `status-${todoItem.type}-${todoItem.id}`;
+  updateStatusCheckbox.classList.add('update-status');
+  updateStatusCheckbox.checked = settings.statuses.indexOf(todoItem.status);
+  statusElement.append(statusLabel, updateStatusCheckbox);
+
+  priorityElement.textContent = `Priority: ${todoItem.priority}`;
+  [decrementPriorityButton, incrementPriorityButton].forEach(button => button.classList.add('update-priority'));
+  decrementPriorityButton.dataset.direction = -1;
+  decrementPriorityButton.textContent = 'v';
+  incrementPriorityButton.dataset.direction = 1;
+  incrementPriorityButton.textContent = '^';
+  priorityElement.append(decrementPriorityButton, incrementPriorityButton);
+
   showButton.classList.add('hidden');
   hideButton.classList.remove('hidden');
-  todoItemElement.append(editProjectButton, updateStatusButton, priorityElement);
+  todoItemElement.append(editProjectButton, statusElement, priorityElement);
   _renderChecklistItems(todoItem);
 
   PubSub.publish(SHOW_RENDERED('todoItem'));

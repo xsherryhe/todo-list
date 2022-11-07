@@ -42,7 +42,7 @@ function _renderTodoItems(project, todoItemsShow) {
           hideButton = document.createElement('button'),
           destroyButton = document.createElement('button');
 
-    todoItemElement.classList.add(todoItem.priority, 'todo-item');
+    todoItemElement.classList.add(todoItem.priority, todoItem.status, 'todo-item');
     todoItemElement.dataset.id = todoItem.id;
 
     renderEditableAttribute(todoItem, 'title', 'text', { parentElement: todoItemElement });
