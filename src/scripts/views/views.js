@@ -3,22 +3,22 @@ import './new-project-view'
 import './new-todoItem-view'
 import './show-project-view'
 import './show-todoItem-view'
-import './edit-attribute-view'
+import './edit-view'
 import './new-checklistItem-view'
 
 import PubSub from 'pubsub-js';
-import { PAGE_RENDERED, ANY_UPDATED, BACK } from '../pubsub-event-types';
+import { PAGE_RENDERED, DATA_UPDATED, BACK } from '../pubsub-event-types';
 import defaultView from './index-projects-view';
 
 let currPageView = defaultView;
 
-PubSub.subscribe(PAGE_RENDERED, setCurrPageView)
+PubSub.subscribe(PAGE_RENDERED, setCurrPageView);
 function setCurrPageView(_, view) {
   currPageView = view;
 }
 
-PubSub.subscribe(ANY_UPDATED, updateView)
-PubSub.subscribe(BACK, updateView)
+PubSub.subscribe(DATA_UPDATED, updateView);
+PubSub.subscribe(BACK, updateView);
 function updateView() {
   document.body.innerHTML = '';
   currPageView();

@@ -9,6 +9,8 @@ export const SHOW = type => `show.${type}`;
 export const HIDE = type => `hide.${type}`;
 export const ANY_EDIT_ATTRIBUTE = 'edit.attribute';
 export const EDIT_ATTRIBUTE = type => `edit.attribute.${type}`;
+export const ANY_EDIT_BELONG = 'edit.belong';
+export const EDIT_BELONG = type => `edit.belong.${type}`;
 export const DESTROY = type => `destroy.${type}`;
 
 export const UPDATE = (type, id) => `update.${type}.${id}`;
@@ -17,9 +19,11 @@ export const UPDATE_PRIORITY = (type, id) => `update.${type}.priority.${id}`;
 export const UPDATE_BELONG = (type, id, belongType) => `update.${type}.belong.${belongType}.${id}`;
 
 export const ANY_UPDATED = 'updated';
-export const UPDATED = (type, id) => `updated.${type}.${id}`;
+export const DATA_UPDATED = 'updated.data';
+export const ITEM_UPDATED = (type, id) => `updated.data.item.${type}.${id}`;
+export const LIST_UPDATED = type => `updated.data.list.${type}`;
 export const BELONG_UPDATED = type => `updated.${type}.belong`;
-export const LIST_UPDATED = type => `updated.${type}.list`;
+export const COLLECTION_UPDATED = type => `updated.${type}.collection`;
 
 export const PAGE_RENDERED = 'rendered.page';
 export const VIEW_RENDERED = 'rendered.view';
@@ -29,7 +33,7 @@ export const ANY_NEW_RENDERED = 'rendered.view.new';
 export const NEW_RENDERED = type => `rendered.view.new.${type}`;
 export const ANY_SHOW_RENDERED = 'rendered.view.show';
 export const SHOW_RENDERED = type => `rendered.view.show.${type}`;
-export const ANY_EDIT_RENDERED = 'rendered.view.edit';
-export const EDIT_RENDERED = type => `rendered.view.edit.${type}`;
 export const ANY_EDIT_ATTRIBUTE_RENDERED = 'rendered.view.edit.attribute';
-export const EDIT_ATTRIBUTE_RENDERED = type => `rendered.view.edit.attribute.${type}`
+export const EDIT_ATTRIBUTE_RENDERED = type => `rendered.view.edit.attribute.${type}`;
+export const ANY_EDIT_BELONG_RENDERED = 'rendered.view.edit.belong';
+export const EDIT_BELONG_RENDERED = type => `rendered.view.edit.belong.${type}`;

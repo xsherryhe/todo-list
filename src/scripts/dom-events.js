@@ -1,7 +1,7 @@
 import PubSub from 'pubsub-js';
-import { BACK, VIEW_RENDERED, INDEX, NEW, ANY_NEW_RENDERED, CREATE, 
-         SHOW, HIDE, ANY_EDIT_RENDERED, EDIT_ATTRIBUTE, ANY_EDIT_ATTRIBUTE_RENDERED, 
-         UPDATE, DESTROY } from './pubsub-event-types';
+import { BACK, VIEW_RENDERED, INDEX, NEW, ANY_NEW_RENDERED, CREATE, SHOW, HIDE, 
+         EDIT_ATTRIBUTE, ANY_EDIT_ATTRIBUTE_RENDERED, EDIT_BELONG, ANY_EDIT_BELONG_RENDERED, 
+         UPDATE, UPDATE_BELONG, DESTROY } from './pubsub-event-types';
 import { applicationSettings as settings } from './application';
 
 const indexButtons = () => document.querySelectorAll('.index'),
@@ -9,6 +9,7 @@ const indexButtons = () => document.querySelectorAll('.index'),
       showButtons = () => document.querySelectorAll('.show'),
       hideButtons = () => document.querySelectorAll('.hide'),
       editAttributeButtons = () => document.querySelectorAll('.edit-attribute'),
+      editBelongButtons = () => document.querySelectorAll('.edit-belong'),
       destroyButtons = () => document.querySelectorAll('.destroy'),
       backButtons = () => document.querySelectorAll('.back'),
       inputElements = () => document.querySelectorAll('input,textarea'),
@@ -33,6 +34,7 @@ function bindActionButtons() {
   _bindButtons(showButtons(), SHOW);
   _bindButtons(hideButtons(), HIDE);
   _bindButtons(editAttributeButtons(), EDIT_ATTRIBUTE);
+  _bindButtons(editBelongButtons(), EDIT_BELONG);
   _bindButtons(destroyButtons(), DESTROY);
   _bindButtons(backButtons(), BACK);
 }
@@ -49,14 +51,15 @@ function _bindFormSubmitButtons(pubSubEvent, dataAttrs) {
   })
 }
 
+function _clearEventListeners(element) {
+  const clearedElement = element.cloneNode(true);
+  element.replaceWith(clearedElement);
+  return clearedElement;
+}
+
 PubSub.subscribe(ANY_NEW_RENDERED, bindCreateButtons);
 function bindCreateButtons() {
   _bindFormSubmitButtons(CREATE, ['type']);
-}
-
-PubSub.subscribe(ANY_EDIT_RENDERED, bindUpdateButtons);
-function bindUpdateButtons() {
-  _bindFormSubmitButtons(UPDATE, ['type', 'id']);
 }
 
 PubSub.subscribe(ANY_EDIT_ATTRIBUTE_RENDERED, bindEditAttributeEvents);
@@ -75,6 +78,8 @@ function bindEditAttributeEvents(_, data) {
       input.addEventListener('focusout', () => 
         PubSub.publish(UPDATE(form.dataset.type, form.dataset.id), Object.fromEntries(new FormData(form))));
   })
+
+  _bindFormSubmitButtons(UPDATE, ['type', 'id']);
 }
 
 function _focusInput(input) {
@@ -83,8 +88,7 @@ function _focusInput(input) {
     input.selectionStart = input.selectionEnd = input.value.length;
 }
 
-function _clearEventListeners(element) {
-  const clearedElement = element.cloneNode(true);
-  element.replaceWith(clearedElement);
-  return clearedElement;
+PubSub.subscribe(ANY_EDIT_BELONG_RENDERED, bindEditBelongEvents);
+function bindEditBelongEvents() {
+  _bindFormSubmitButtons(UPDATE_BELONG, ['type', 'id', 'belongType']);
 }

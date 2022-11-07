@@ -1,5 +1,5 @@
 import PubSub from 'pubsub-js';
-import { SHOW, SHOW_RENDERED, PAGE_RENDERED, HIDE_COLLECTION_ITEM } from '../pubsub-event-types';
+import { SHOW, SHOW_RENDERED, PAGE_RENDERED } from '../pubsub-event-types';
 import { applicationData as renderData } from '../application';
 import { renderEditableAttribute } from './view-helpers';
 import { formatRelative } from 'date-fns';

@@ -17,7 +17,13 @@ export default function showTodoItemView(_, data) {
   renderEditableAttribute(todoItem, 'description', 'textarea', { parentElement: todoItemElement, elementText: 'Description: ' });
   renderEditableAttribute(todoItem, 'notes', 'textarea', { parentElement: todoItemElement, elementText: 'Notes: ' });
 
+  editProjectButton.classList.add('edit-belong');
+  editProjectButton.dataset.type = todoItem.type;
+  editProjectButton.dataset.id = todoItem.id;
+  editProjectButton.dataset.belongType = 'project';
+  editProjectButton.dataset.belongId = todoItem.belongs.project;
   editProjectButton.textContent = 'Change Project';
+
   const statuses = settings.statuses;
   updateStatusButton.textContent = `Mark as ${statuses[statuses.indexOf(todoItem.status) ^ 1]}`;
   priorityElement.innerHTML = 
@@ -30,6 +36,5 @@ export default function showTodoItemView(_, data) {
   PubSub.publish(SHOW_RENDERED('todoItem'));
 }
 
-function _renderChecklistItems(todoItem) {
-
+function _renderChecklistItems(todoItem) { 
 }

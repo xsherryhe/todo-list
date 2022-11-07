@@ -1,13 +1,13 @@
 import PubSub from 'pubsub-js';
 import { CREATE, DESTROY, UPDATE, UPDATE_STATUS, UPDATE_PRIORITY, UPDATE_BELONG, 
-         UPDATED, BELONG_UPDATED, LIST_UPDATED } from './pubsub-event-types';
+         ITEM_UPDATED, BELONG_UPDATED, COLLECTION_UPDATED, LIST_UPDATED } from './pubsub-event-types';
 import { applicationSettings as settings } from './application'
 
 export function Updatable(obj) {
   PubSub.subscribe(UPDATE(obj.type, obj.id), update);
   function update(_, data) {
     for(const attribute in data) obj[attribute] = data[attribute];
-    PubSub.publish(UPDATED(obj.type, obj.id));
+    PubSub.publish(ITEM_UPDATED(obj.type, obj.id));
   }
 }
 
@@ -16,7 +16,7 @@ export function Statusable(obj) {
   PubSub.subscribe(UPDATE_STATUS(obj.type, obj.id), incrementStatus)
   function incrementStatus() {
     obj.status = statuses[(statuses.indexOf(obj.status )+ 1) % statuses.length];
-    PubSub.publish(UPDATED(obj.type, obj.id));
+    PubSub.publish(ITEM_UPDATED(obj.type, obj.id));
   }
 }
 
@@ -25,7 +25,7 @@ export function Prioritizable(obj) {
   PubSub.subscribe(UPDATE_PRIORITY(obj.type, obj.id), updatePriority)
   function updatePriority(_, data) {
     obj.priority = priorities[Math.max(Math.min(priorities.indexOf(obj.priority) + data, 0), priorities.length - 1)];
-    PubSub.publish(UPDATED(obj.type, obj.id));
+    PubSub.publish(ITEM_UPDATED(obj.type, obj.id));
   }
 }
 
@@ -33,10 +33,11 @@ export function Collectionable(obj, collectionType) {
   const collection = collectionType + 's';
   obj[collection] ||= [];
 
-  PubSub.subscribe(LIST_UPDATED(collectionType), updateCollectionItems);
+  PubSub.subscribe(COLLECTION_UPDATED(collectionType), updateCollectionItems);
   function updateCollectionItems(_, data) {
     const newCollectionItems = data?.[obj.type]?.[obj.id];
     if(newCollectionItems) obj[collection] = newCollectionItems;
+    PubSub.publish(ITEM_UPDATED(obj.type, obj.id));
   }
 
   Object.values((obj[collectionType + 'sCollectionData'] || {})).forEach(itemData => {
@@ -61,6 +62,7 @@ export function BelongUpdatable(obj, belongType) {
           newBelongId = data.belongId;
     obj.belongs[belongType] = newBelongId;
     PubSub.publish(BELONG_UPDATED(obj.type), { id: obj.id, belongType, oldBelongId, newBelongId });
+    PubSub.publish(ITEM_UPDATED(obj.type, obj.id));
   }
 }
 
@@ -77,12 +79,12 @@ export function Listable(obj, rawItemList = []) {
     return obj[list].filter(item => ids.includes(item.id));
   }
 
-  PubSub.subscribe(BELONG_UPDATED(obj.itemType), updateListBelongs);
-  function updateListBelongs(_, data) {
+  PubSub.subscribe(BELONG_UPDATED(obj.itemType), publishCollectionsUpdate);
+  function publishCollectionsUpdate(_, data) {
     const belongType = data.belongType, oldBelongId = data.oldBelongId, newBelongId = data.newBelongId;
     const item = obj[list].find(item => item.id == data.id);
     item.belongs[belongType] = newBelongId;
-    PubSub.publish(LIST_UPDATED(obj.itemType), 
+    PubSub.publish(COLLECTION_UPDATED(obj.itemType), 
                   { [belongType]: { 
                       [oldBelongId]: obj[list].filter(item => item.belongs[belongType] == oldBelongId).map(item => item.id),
                       [newBelongId]: obj[list].filter(item => item.belongs[belongType] == newBelongId).map(item => item.id)
@@ -95,7 +97,8 @@ export function Listable(obj, rawItemList = []) {
     _assignNested(data);
     const newListItem = obj.itemFactory(Object.assign({ id: nextId++ }, data));
     obj[list].unshift(newListItem);
-    publishListUpdatedWithBelongData(newListItem);
+    _publishCollectionUpdate(newListItem);
+    PubSub.publish(LIST_UPDATED(obj.itemType));
   }
 
   function _assignNested(data) {
@@ -117,10 +120,11 @@ export function Listable(obj, rawItemList = []) {
     
     const item = obj[list].find(item => item.id == data.id);
     obj[list].splice(obj[list].indexOf(item), 1);
-    publishListUpdatedWithBelongData(item);
+    _publishCollectionUpdate(item);
+    PubSub.publish(LIST_UPDATED(obj.itemType));
   }
 
-  function publishListUpdatedWithBelongData(item) {
+  function _publishCollectionUpdate(item) {
     const belongData = Object.entries(item.belongs || {}).reduce((data, [belongType, belongId]) =>
       Object.assign(data,
         {
@@ -128,6 +132,6 @@ export function Listable(obj, rawItemList = []) {
             [belongId]: obj[list].filter(item => item.belongs[belongType] == belongId).map(item => item.id)
           }
         }), {});
-    PubSub.publish(LIST_UPDATED(obj.itemType), belongData);
+    PubSub.publish(COLLECTION_UPDATED(obj.itemType), belongData);
   }
 }
