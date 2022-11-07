@@ -56,7 +56,7 @@ function _renderProjectsList() {
       button.dataset.id = project.id;
     })
     showButton.classList.add('show');
-    showButton.dataset.todoItemsShow = '';
+    showButton.dataset.todoItemsFull = '';
     showButton.textContent = project.title;
     destroyButton.classList.add('destroy');
     destroyButton.textContent = '-';

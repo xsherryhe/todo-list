@@ -29,3 +29,7 @@ export function renderSelectablesDisabled() {
   document.querySelectorAll('button,input[type="checkbox"],input[type="radio"]')
           .forEach(selectable => selectable.disabled = true);
 }
+
+export function parseNumberList(list) {
+  return list.split(' ').filter(item => item).map(Number);
+}
