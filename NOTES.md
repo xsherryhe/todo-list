@@ -76,13 +76,13 @@ Modules
     //-for each todo item:
       //-expand button click: pub showTodoItem, todoItem data
   -sub showTodoItemRendered
-    -shrink button click: pub hideTodoItem, todoItem id
+    //-shrink button click: pub hideTodoItem, todoItem id
     -add new checklist item button click: pub newChecklistItem, todoItem id
     -delete checklist item button click: pub deleteChecklistItem, type of 'checklistItem' + checklistItemid
     -project select change: pub changeProject
     -change status button/checkbox click: pub changeItemStatus, item type + item id
     -change priority button click: pub changeItemPriority, item type + item id + button data-direction property (1 or -1)
-     -text (button) click: pub editText, type of item + item id + button class
+     //-text (button) click: pub editText, type of item + item id + button class
     //-date (button) click: pub editDate
   //-sub new(type)Rendered, other buttons (e.g. show new checklistItem input field) + submit button click: pub create(type), item type + item id + details of create
   //-sub editInputRendered, enter key or update button click: pub update + type of item, item id + details of update
@@ -119,6 +119,7 @@ Modules
   //-sub editText, editTextView
   //-sub editDate, editDateView
   //-editTextView(item id, type)
+    -consider getting rid of back button for click-out edit views
     //-pub editInputRendered, item type + id
   //-editDateView(item id, type)
     //-pub editInputRendered, item type + id

@@ -11,7 +11,7 @@ const indexButtons = () => document.querySelectorAll('.index'),
       editAttributeButtons = () => document.querySelectorAll('.edit-attribute'),
       destroyButtons = () => document.querySelectorAll('.destroy'),
       backButtons = () => document.querySelectorAll('.back'),
-      inputElements = () => document.querySelectorAll('input'),
+      inputElements = () => document.querySelectorAll('input,textarea'),
       submitButtons = () => document.querySelectorAll('.submit');
 
 function _bindButtons(buttons, pubSubEvent) {
@@ -68,11 +68,12 @@ function bindEditAttributeEvents(_, data) {
       _focusInput(input);
     input.addEventListener('keydown', e => {
       if(!(e.key == 'Enter' && document.activeElement == input)) return;
-      PubSub.publish(UPDATE(form.type, form.id), Object.fromEntries(new FormData(form)));
+      PubSub.publish(UPDATE(form.dataset.type, form.dataset.id), Object.fromEntries(new FormData(form)));
     })
 
     if(settings.clickOut.includes(input.type)) 
-      input.addEventListener('focusout', () => PubSub.publish(BACK));
+      input.addEventListener('focusout', () => 
+        PubSub.publish(UPDATE(form.dataset.type, form.dataset.id), Object.fromEntries(new FormData(form))));
   })
 }
 

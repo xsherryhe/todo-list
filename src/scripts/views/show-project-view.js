@@ -1,5 +1,5 @@
 import PubSub from 'pubsub-js';
-import { SHOW, SHOW_RENDERED, PAGE_RENDERED } from '../pubsub-event-types';
+import { SHOW, SHOW_RENDERED, PAGE_RENDERED, HIDE_COLLECTION_ITEM } from '../pubsub-event-types';
 import { applicationData as renderData } from '../application';
 import { renderEditableAttribute } from './view-helpers';
 import { formatRelative } from 'date-fns';
@@ -10,7 +10,7 @@ export default function showProjectView(_, data) {
   document.body.innerHTML = '';
   const project = renderData.projectsList.withId(data.id);
   _renderIntro(project);
-  _renderTodoItems(project);
+  _renderTodoItems(project, data.todoItemsShow);
   PubSub.publish(PAGE_RENDERED, showProjectView.bind(null, _, data));
   PubSub.publish(SHOW_RENDERED('project'));
 }
@@ -34,10 +34,12 @@ function _renderIntro(project) {
   document.body.append(indexButton, headingElement);
 }
 
-function _renderTodoItems(project) {
+function _renderTodoItems(project, todoItemsShow) {
+  const todoItemsShowArr = todoItemsShow.split(' ').filter(item => item).map(Number);
   renderData.todoItemsList.withIds(project.todoItems).forEach(todoItem => {
     const todoItemElement = document.createElement('div'),
           showButton = document.createElement('button'),
+          hideButton = document.createElement('button'),
           destroyButton = document.createElement('button');
 
     todoItemElement.classList.add(todoItem.priority, 'todo-item');
@@ -49,16 +51,29 @@ function _renderTodoItems(project) {
                               attributeText: todoItem.dueDate ? formatRelative(new Date(todoItem.dueDate), new Date())
                                                               : 'None' });
 
-    [showButton, destroyButton].forEach(button => {
-      button.dataset.type = todoItem.type;
-      button.dataset.id = todoItem.id;
-    })
-    showButton.classList.add('show');
+    [showButton, hideButton].forEach(button => {
+      button.dataset.type = project.type;
+      button.dataset.id = project.id;
+      button.dataset.todoItemId = todoItem.id;
+      button.classList.add('show');
+    })                                                         
+    showButton.classList.add('show-todoItem');
+    showButton.dataset.todoItemsShow = todoItemsShow + ` ${todoItem.id}`;
     showButton.textContent = 'Expand';
+
+    hideButton.classList.add('hide-todoItem', 'hidden');
+    hideButton.dataset.todoItemsShow = todoItemsShowArr.filter(id => id !== +todoItem.id).join(' ');
+    hideButton.textContent = 'Shrink';
+
+    destroyButton.dataset.type = todoItem.type;
+    destroyButton.dataset.id = todoItem.id;
     destroyButton.classList.add('destroy');
     destroyButton.textContent = '-';
+
+    if(todoItemsShowArr.includes(todoItem.id))
+      PubSub.publish(SHOW('todoItem'), { id: todoItem.id });
     
-    todoItemElement.append(showButton, destroyButton);
+    todoItemElement.append(showButton, hideButton, destroyButton);
     document.body.append(todoItemElement);
   })
 }

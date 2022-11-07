@@ -1,3 +1,5 @@
+import '../styles/application.css';
+
 import './storage';
 import './views/views';
 import './dom-events';

@@ -19,8 +19,8 @@ function editAttributeView(_, { type, id, attribute, attributeType, attributeVal
   const isTextarea = attributeType == 'textarea';
   formElement.innerHTML =
     `<${isTextarea ? 'textarea' : 'input'} 
-      type="${attributeType}" name="${attribute}" id="${attribute}" value="${attributeValue}">
-     ${isTextarea ? `${attributeValue}</textarea>` : ''}
+      type="${attributeType}" name="${attribute}" id="${attribute}" 
+      value="${attributeValue}">${isTextarea ? `${attributeValue}</textarea>` : ''}
      <button class="submit">✓</button>`;
 
   attrElement.replaceWith(backButton, formElement);
