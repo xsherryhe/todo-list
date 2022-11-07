@@ -36,7 +36,7 @@ function _renderIntro(project) {
 function _renderTodoItems(project, todoItemsFull) {
   const todoItemsFullArr = parseNumberList(todoItemsFull);
   const todoItemsElement = document.createElement('div');
-  todoItemsElement.classList.add('todo-items')
+  todoItemsElement.classList.add('todo-items');
   todoItemsElement.dataset.todoItemsFull = todoItemsFull;
   renderData.todoItemsList.withIds(project.todoItems).forEach(todoItem =>
     PubSub.publish(SHOW('todoItem'), { id: todoItem.id, full: todoItemsFullArr.includes(todoItem.id), parentElement: todoItemsElement }));

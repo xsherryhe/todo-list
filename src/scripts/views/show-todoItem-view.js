@@ -9,7 +9,7 @@ PubSub.subscribe(SHOW('todoItem'), showTodoItemView);
 export default function showTodoItemView(_, data) {
   const todoItem = renderData.todoItemsList.withId(data.id);
   _renderTodoItem(todoItem, data.parentElement);
-  if(data.full) _renderFull(todoItem);
+  if(data.full) _renderFull(todoItem, data.parentElement);
   PubSub.publish(SHOW_RENDERED('todoItem'));
 }
 
@@ -61,8 +61,8 @@ function _renderTodoItem(todoItem, parentElement) {
   (parentElement || document.body).append(todoItemElement);
 }
 
-function _renderFull(todoItem) {
-  const todoItemElement = document.querySelector(`.todo-item[data-id="${todoItem.id}"]`),
+function _renderFull(todoItem, parentElement) {
+  const todoItemElement = parentElement.querySelector(`.todo-item[data-id="${todoItem.id}"]`),
         showButton = todoItemElement.querySelector(`.show[data-type="${todoItem.type + 'Full'}"]`),
         hideButton = todoItemElement.querySelector(`.hide[data-type="${todoItem.type + 'Full'}"]`),
         editProjectButton = document.createElement('button'),
