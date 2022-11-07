@@ -1,10 +1,11 @@
 import PubSub from 'pubsub-js';
 import { NEW, NEW_RENDERED } from '../pubsub-event-types';
 import { applicationData as renderData, applicationSettings as settings } from '../application';
+import { renderSelectablesDisabled } from './view-helpers';
 
 PubSub.subscribe(NEW('todoItem'), newTodoItemView);
 export default function newTodoItemView(_, data) {
-  document.querySelectorAll('button').forEach(button => button.disabled = true);
+  renderSelectablesDisabled();
   
   const newTodoItemButton = document.querySelector('.new[data-type="todoItem"]'),
         backButton = document.createElement('button'),

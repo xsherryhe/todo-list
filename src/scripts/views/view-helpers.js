@@ -24,3 +24,8 @@ export function renderEditableAttribute(obj, attribute, attributeType, options =
   attrElement.append(attrContentElement, editAttrButton);
   (options.parentElement || document.body).append(attrElement);
 }
+
+export function renderSelectablesDisabled() {
+  document.querySelectorAll('button,input[type="checkbox"],input[type="radio"]')
+          .forEach(selectable => selectable.disabled = true);
+}

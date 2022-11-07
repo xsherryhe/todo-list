@@ -1,10 +1,11 @@
 import PubSub from 'pubsub-js';
 import { ANY_EDIT_ATTRIBUTE, EDIT_ATTRIBUTE_RENDERED, ANY_EDIT_BELONG, EDIT_BELONG_RENDERED } from '../pubsub-event-types';
 import { applicationData as renderData } from '../application';
+import { renderSelectablesDisabled } from './view-helpers';
 
 PubSub.subscribe(ANY_EDIT_ATTRIBUTE, editAttributeView)
 function editAttributeView(_, { type, id, attribute, attributeType, attributeValue }) {
-  document.querySelectorAll('button').forEach(button => button.disabled = true);
+  renderSelectablesDisabled();
 
   const attrElementSelector = `.attribute[data-type="${type}"][data-id="${id}"][data-attribute="${attribute}"]`,
         attrElement = document.querySelector(attrElementSelector),
@@ -30,7 +31,7 @@ function editAttributeView(_, { type, id, attribute, attributeType, attributeVal
 
 PubSub.subscribe(ANY_EDIT_BELONG, editBelongView)
 function editBelongView(_, { type, id, belongType, belongId }) {
-  document.querySelectorAll('button').forEach(button => button.disabled = true);
+  renderSelectablesDisabled();
   
   const editBelongButtonSelector = `.edit-belong[data-belong-type="${belongType}"][data-type="${type}"][data-id="${id}"]`,
         editBelongButton = document.querySelector(editBelongButtonSelector),
