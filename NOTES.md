@@ -78,7 +78,7 @@ Modules
   -sub showTodoItemRendered
     //-shrink button click: pub hideTodoItem, todoItem id
     //-add new checklist item button click: pub newChecklistItem, todoItem id
-    -edit checklist item button
+    //-edit checklist item button
     //-delete checklist item button click: pub deleteChecklistItem, type of 'checklistItem' + checklistItemid
     //-project select change: pub changeProject, edit_attribute_belongs (make select form)
     //-change status button/checkbox click: pub changeItemStatus, item type + item id

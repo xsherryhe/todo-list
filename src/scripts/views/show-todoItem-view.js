@@ -118,17 +118,27 @@ function _renderChecklistItems(todoItem, todoItemElement) {
   headingElement.textContent = 'Checklist';
 
   checklistItems.forEach(checklistItem => {
-    const checklistItemElement = document.createElement('li');
-    //TO DO: Change check to icon image
+    const checklistItemElement = document.createElement('li'),
+          updateStatusButton = document.createElement('button'),
+          destroyButton = document.createElement('button');
+
     checklistItemElement.classList.add(checklistItem.status, 'checklist-item');
     checklistItemElement.dataset.id = checklistItem.id;
-    checklistItemElement.innerHTML =
-      `${checklistItem.title}
-       <button class="update-status" data-type="${checklistItem.type}" data-id="${checklistItem.id}">
-        ${settings.statuses.indexOf(checklistItem.status) ? '✓' : ''}
-       </button>
-       <button class="destroy" data-type="${checklistItem.type}" data-id="${checklistItem.id}">-</button>`;
 
+    renderEditableAttribute(checklistItem, 'title', 'text', { parentElement: checklistItemElement });
+
+    [updateStatusButton, destroyButton].forEach(button => {
+      button.dataset.type = checklistItem.type;
+      button.dataset.id = checklistItem.id;
+    })
+    updateStatusButton.classList.add('update-status');
+    //TO DO: Change check to icon image
+    updateStatusButton.textContent = settings.statuses.indexOf(checklistItem.status) ? '✓' : '';
+
+    destroyButton.classList.add('destroy');
+    destroyButton.textContent = '-';
+
+    checklistItemElement.append(updateStatusButton, destroyButton);
     listElement.append(checklistItemElement);
   })
 
