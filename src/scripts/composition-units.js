@@ -36,7 +36,13 @@ export function Collectionable(obj, collectionType) {
   PubSub.subscribe(COLLECTION_UPDATED(collectionType), updateCollectionItems);
   function updateCollectionItems(_, data) {
     const newCollectionItems = data?.[obj.type]?.[obj.id];
-    if(newCollectionItems) obj[collection] = newCollectionItems;
+    if(newCollectionItems) {
+      obj[collection] = newCollectionItems.map(collectionItem => collectionItem.id);
+      const objIndex = obj.type + 'Index';
+      if(newCollectionItems?.[0]?.[objIndex])
+        newCollectionItems.sort((a, b) => +a[objIndex] - +b[objIndex])
+                          .forEach((collectionItem, i) => collectionItem[objIndex] = i + 1);
+    }
     PubSub.publish(ITEM_UPDATED(obj.type, obj.id));
   }
 
@@ -95,8 +101,8 @@ export function Listable(obj, rawItemList = []) {
     item.belongs[belongType] = newBelongId;
     PubSub.publish(COLLECTION_UPDATED(obj.itemType), 
                   { [belongType]: { 
-                      [oldBelongId]: obj[list].filter(item => item.belongs[belongType] == oldBelongId).map(item => item.id),
-                      [newBelongId]: obj[list].filter(item => item.belongs[belongType] == newBelongId).map(item => item.id)
+                      [oldBelongId]: obj[list].filter(item => item.belongs[belongType] == oldBelongId),
+                      [newBelongId]: obj[list].filter(item => item.belongs[belongType] == newBelongId)
                   } })
   }
 
@@ -125,7 +131,7 @@ export function Listable(obj, rawItemList = []) {
       Object.assign(data,
         {
           [belongType]: {
-            [belongId]: obj[list].filter(item => item.belongs[belongType] == belongId).map(item => item.id)
+            [belongId]: obj[list].filter(item => item.belongs[belongType] == belongId)
           }
         }), {});
     PubSub.publish(COLLECTION_UPDATED(obj.itemType), belongData);

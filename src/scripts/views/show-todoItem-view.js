@@ -108,7 +108,9 @@ function _renderChecklistItems(todoItem, todoItemElement) {
      </button>
      <button class="submit hidden">✓</button>`;
 
-  const checklistItems = renderData.checklistItemsList.withIds(todoItem.checklistItems).sort((a, b) => +a.index - +b.index);
+  const checklistItems = renderData.checklistItemsList
+                                   .withIds(todoItem.checklistItems)
+                                   .sort((a, b) => +a.todoItemIndex - +b.todoItemIndex);
   if(!checklistItems.length) return todoItemElement.append(newChecklistItemFormElement);
 
   const headingElement = document.createElement('h3'),
