@@ -1,5 +1,5 @@
 import PubSub from 'pubsub-js';
-import { SHOW, SHOW_RENDERED, HIDE } from '../pubsub-event-types';
+import { SHOW, SHOW_RENDERED } from '../pubsub-event-types';
 import { applicationData as renderData, applicationSettings as settings } from '../application';
 import { renderEditableAttribute } from './view-helpers';
 import { formatRelative } from 'date-fns';
@@ -68,8 +68,7 @@ function _renderFull(todoItem, parentElement) {
         editProjectButton = document.createElement('button'),
         priorityElement = document.createElement('div'),
         decrementPriorityButton = document.createElement('button'),
-        incrementPriorityButton = document.createElement('button'),
-        newChecklistItemButton = document.createElement('button');
+        incrementPriorityButton = document.createElement('button');
 
   renderEditableAttribute(todoItem, 'description', 'textarea', { parentElement: todoItemElement, elementText: 'Description: ' });
   renderEditableAttribute(todoItem, 'notes', 'textarea', { parentElement: todoItemElement, elementText: 'Notes: ' });
@@ -85,33 +84,36 @@ function _renderFull(todoItem, parentElement) {
 
   priorityElement.textContent = `Priority: ${todoItem.priority}`;
   [decrementPriorityButton, incrementPriorityButton].forEach(button => button.classList.add('update-priority'));
-  decrementPriorityButton.dataset.direction = -1;
-  decrementPriorityButton.textContent = 'v';
-  incrementPriorityButton.dataset.direction = 1;
-  incrementPriorityButton.textContent = '^';
-  priorityElement.append(decrementPriorityButton, incrementPriorityButton);
-
-  newChecklistItemButton.classList.add('new');
-  newChecklistItemButton.dataset.type = 'checklistItem';
-  newChecklistItemButton.dataset.todoItem = todoItem.id;
-  newChecklistItemButton.dataset.index = 1;
-  newChecklistItemButton.textContent = 'Add a Checklist Item';
+   decrementPriorityButton.dataset.direction = -1;
+   decrementPriorityButton.textContent = 'v';
+   incrementPriorityButton.dataset.direction = 1;
+   incrementPriorityButton.textContent = '^';
+   priorityElement.append(decrementPriorityButton, incrementPriorityButton);
 
   showButton.classList.add('hidden');
   hideButton.classList.remove('hidden');
-  todoItemElement.append(editProjectButton, priorityElement, newChecklistItemButton);
+  todoItemElement.append(editProjectButton, priorityElement);
 
   _renderChecklistItems(todoItem, todoItemElement);
 }
 
 function _renderChecklistItems(todoItem, todoItemElement) {
-  const checklistItems = renderData.checklistItemsList.withIds(todoItem.checklistItems);
-  if (!checklistItems.length) return;
+  const newChecklistItemFormElement = document.createElement('form'); 
+  newChecklistItemFormElement.dataset.type = todoItem.type;
+  newChecklistItemFormElement.dataset.id = todoItem.id;
+  newChecklistItemFormElement.dataset.collectionType = 'checklistItem';
+  newChecklistItemFormElement.innerHTML =
+    `<button class="new" data-type="checklistItem" data-todo-item="${todoItem.id}">
+      Add a Checklist Item
+     </button>
+     <button class="submit hidden">✓</button>`;
+
+  const checklistItems = renderData.checklistItemsList.withIds(todoItem.checklistItems).sort((a, b) => +a.index - +b.index);
+  if(!checklistItems.length) return todoItemElement.append(newChecklistItemFormElement);
 
   const headingElement = document.createElement('h3'),
         listElement = document.createElement('ol');
   headingElement.textContent = 'Checklist';
-  todoItemElement.append(headingElement, listElement);
 
   checklistItems.forEach(checklistItem => {
     const checklistItemElement = document.createElement('li');
@@ -122,8 +124,11 @@ function _renderChecklistItems(todoItem, todoItemElement) {
       `${checklistItem.title}
        <button class="update-status" data-type="${checklistItem.type}" data-id="${checklistItem.id}">
         ${settings.statuses.indexOf(checklistItem.status) ? '✓' : ''}
-       </button>`;
+       </button>
+       <button class="destroy" data-type="${checklistItem.type}" data-id="${checklistItem.id}">-</button>`;
 
     listElement.append(checklistItemElement);
   })
+
+  todoItemElement.append(headingElement, listElement, newChecklistItemFormElement);
 }

@@ -52,6 +52,5 @@ export default function newTodoItemView(_, data) {
      <button class="submit">Submit</button>`;
 
   newTodoItemButton.replaceWith(backButton, formElement);
-  //addProjectButton.remove();
   PubSub.publish(NEW_RENDERED('todoItem'));
 }

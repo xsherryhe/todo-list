@@ -1,7 +1,7 @@
 import PubSub from 'pubsub-js';
-import { BACK, VIEW_RENDERED, INDEX, NEW, ANY_NEW_RENDERED, CREATE, SHOW, HIDE, 
+import { BACK, VIEW_RENDERED, INDEX, NEW, ANY_NEW_RENDERED, ANY_NEW_COLLECTION_ITEM_RENDERED, CREATE, SHOW, HIDE, 
          EDIT_ATTRIBUTE, ANY_EDIT_ATTRIBUTE_RENDERED, EDIT_BELONG, ANY_EDIT_BELONG_RENDERED, 
-         UPDATE, UPDATE_BELONG, UPDATE_STATUS, UPDATE_PRIORITY, DESTROY } from './pubsub-event-types';
+         UPDATE, UPDATE_BELONG, UPDATE_STATUS, UPDATE_PRIORITY, DESTROY, CREATE_COLLECTION_ITEMS } from './pubsub-event-types';
 import { applicationSettings as settings } from './application';
 
 const indexButtons = () => document.querySelectorAll('.index'),
@@ -66,6 +66,11 @@ function _clearEventListeners(element) {
 PubSub.subscribe(ANY_NEW_RENDERED, bindCreateButtons);
 function bindCreateButtons() {
   _bindFormSubmitButtons(CREATE, ['type']);
+}
+
+PubSub.subscribe(ANY_NEW_COLLECTION_ITEM_RENDERED, bindCreateCollectionItemsButtons);
+function bindCreateCollectionItemsButtons() {
+  _bindFormSubmitButtons(CREATE_COLLECTION_ITEMS, ['type', 'id', 'collectionType']);
 }
 
 PubSub.subscribe(ANY_EDIT_ATTRIBUTE_RENDERED, bindEditAttributeEvents);

@@ -25,9 +25,9 @@ export function renderEditableAttribute(obj, attribute, attributeType, options =
   (options.parentElement || document.body).append(attrElement);
 }
 
-export function renderSelectablesDisabled() {
-  document.querySelectorAll('button,input[type="checkbox"],input[type="radio"]')
-          .forEach(selectable => selectable.disabled = true);
+export function renderSelectablesDisabled(node = document, disabled = true) {
+  node.querySelectorAll('button,input[type="checkbox"],input[type="radio"]')
+      .forEach(selectable => selectable.disabled = disabled);
 }
 
 export function parseNumberList(list) {

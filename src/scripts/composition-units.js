@@ -1,6 +1,6 @@
 import PubSub from 'pubsub-js';
-import { CREATE, DESTROY, UPDATE, UPDATE_STATUS, UPDATE_PRIORITY, UPDATE_BELONG, 
-         ITEM_UPDATED, BELONG_UPDATED, COLLECTION_UPDATED, LIST_UPDATED } from './pubsub-event-types';
+import { CREATE, DESTROY, UPDATE, ITEM_UPDATED, UPDATE_STATUS, UPDATE_PRIORITY, 
+         UPDATE_BELONG, BELONG_UPDATED, CREATE_COLLECTION_ITEMS, COLLECTION_UPDATED, LIST_UPDATED } from './pubsub-event-types';
 import { applicationSettings as settings } from './application'
 
 export function Updatable(obj) {
@@ -40,11 +40,20 @@ export function Collectionable(obj, collectionType) {
     PubSub.publish(ITEM_UPDATED(obj.type, obj.id));
   }
 
-  Object.values((obj[collectionType + 'sCollectionData'] || {})).forEach(itemData => {
-    PubSub.publish(CREATE(collectionType), 
-                   Object.assign(itemData, { [`belongs[${obj.type}]`]: obj.id }));
-  })
-  delete obj[collectionType + 'sData'];
+  function createCollectionItems(data) {
+    Object.values(data[collectionType + 'sCollectionData'] || {}).forEach(itemData => {
+      PubSub.publish(CREATE(collectionType),
+        Object.assign(itemData, { [`belongs[${obj.type}]`]: obj.id }));
+    })
+  }
+  createCollectionItems(obj);
+  delete obj[collectionType + 'sCollectionData'];
+
+  PubSub.subscribe(CREATE_COLLECTION_ITEMS(obj.type, obj.id, collectionType), createCollectionItemsFromData);
+  function createCollectionItemsFromData(_, data) {
+    _assignNested(data);
+    createCollectionItems(data);
+  }
 }
 
 //may change depending on storage
@@ -101,19 +110,6 @@ export function Listable(obj, rawItemList = []) {
     PubSub.publish(LIST_UPDATED(obj.itemType));
   }
 
-  function _assignNested(data) {
-    const reg = /(.+)\[(.+)\]/;
-    let keys, targetKeys = () => Object.keys(data).filter(key => reg.test(key));
-    while((keys = targetKeys()).length > 0) {
-      keys.forEach(key => {
-        const [outer, inner] = key.match(reg).slice(1);
-        data[outer] ||= {};
-        data[outer][inner] = data[key];
-        delete data[key];
-      })
-    }
-  }
-
   PubSub.subscribe(DESTROY(obj.itemType), destroyListItem);
   function destroyListItem(_, data) {
     if(data.id == 0) return;
@@ -133,5 +129,18 @@ export function Listable(obj, rawItemList = []) {
           }
         }), {});
     PubSub.publish(COLLECTION_UPDATED(obj.itemType), belongData);
+  }
+}
+
+function _assignNested(data) {
+  const reg = /(.+)\[(.+)\]/;
+  let keys, targetKeys = () => Object.keys(data).filter(key => reg.test(key));
+  while ((keys = targetKeys()).length > 0) {
+    keys.forEach(key => {
+      const [outer, inner] = key.match(reg).slice(1);
+      data[outer] ||= {};
+      data[outer][inner] = data[key];
+      delete data[key];
+    })
   }
 }
