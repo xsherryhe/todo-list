@@ -1,10 +1,11 @@
 import './index-projects-view'
 import './new-project-view'
 import './new-todoItem-view'
+import './new-checklistItem-view'
 import './show-project-view'
 import './show-todoItem-view'
 import './edit-view'
-import './new-checklistItem-view'
+import './error-view'
 
 import PubSub from 'pubsub-js';
 import { PAGE_RENDERED, DATA_UPDATED, BACK } from '../pubsub-event-types';
@@ -19,7 +20,7 @@ function setCurrPageView(_, view) {
 
 PubSub.subscribe(DATA_UPDATED, updateView);
 PubSub.subscribe(BACK, updateView);
-function updateView() {
+function updateView(_) {
   document.body.innerHTML = '';
   currPageView();
 }

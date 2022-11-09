@@ -1,8 +1,10 @@
-import { Updatable, Collectionable, Listable } from './composition-units';
+import { Validatable, PresenceValidatable, Updatable, Collectionable, Listable } from './composition-units';
 
 export function Project(attributes) {
   const obj = Object.assign({ type: 'project' }, attributes);
   Updatable(obj);
+  Validatable(obj);
+  PresenceValidatable(obj, ['title']);
   Collectionable(obj, 'todoItem');
 
   return obj;

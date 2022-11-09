@@ -1,8 +1,9 @@
-import { Updatable, Statusable, Belongable, Listable } from './composition-units';
+import { Validatable, PresenceValidatable, Updatable, Statusable, Belongable, Listable } from './composition-units';
 
 export function ChecklistItem(attributes) {
   const obj = Object.assign({ type: 'checklistItem' }, attributes);
-  [Updatable, Statusable].forEach(compFn => compFn(obj));
+  [Validatable, Updatable, Statusable].forEach(compFn => compFn(obj));
+  PresenceValidatable(obj, ['title']);
   Belongable(obj, 'todoItem');
 
   return obj;

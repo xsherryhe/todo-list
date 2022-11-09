@@ -5,7 +5,8 @@ export const BACK = 'back';
 export const INDEX = type => `index.${type}`;
 export const NEW = type => `new.${type}`;
 export const CREATE = type => `create.${type}`;
-export const CREATE_COLLECTION_ITEMS = (type, id, collectionType) => `create.collection.${type}.${id}.${collectionType}`;
+export const CREATE_COLLECTION_ITEMS = (type, id, collectionType) => `create.collection.${collectionType}.${type}.${id}`;
+//export const CREATE_TO_COLLECTION = type => `create.to-collection.${type}`;
 export const SHOW = type => `show.${type}`;
 export const HIDE = type => `hide.${type}`;
 export const ANY_EDIT_ATTRIBUTE = 'edit.attribute';
@@ -13,6 +14,10 @@ export const EDIT_ATTRIBUTE = type => `edit.attribute.${type}`;
 export const ANY_EDIT_BELONG = 'edit.belong';
 export const EDIT_BELONG = type => `edit.belong.${type}`;
 export const DESTROY = type => `destroy.${type}`;
+
+export const COLLECTION_ITEMS_CREATED = collectionType => `created.collection.${collectionType}`;
+
+export const VALIDATION_ERROR = 'error.validation';
 
 export const UPDATE = (type, id) => `update.${type}.${id}`;
 export const UPDATE_STATUS = (type, id) => `update.${type}.status.${id}`;

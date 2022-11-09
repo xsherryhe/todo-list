@@ -82,7 +82,7 @@ function _renderFull(todoItem, parentElement) {
   editProjectButton.dataset.belongId = todoItem.belongs.project;
   editProjectButton.textContent = 'Change Project';
 
-  priorityElement.textContent = `Priority: ${todoItem.priority}`;
+  priorityElement.textContent = `Priority: ${todoItem.priority || 'None'}`;
   [decrementPriorityButton, incrementPriorityButton].forEach(button => button.classList.add('update-priority'));
    decrementPriorityButton.dataset.direction = -1;
    decrementPriorityButton.textContent = 'v';

@@ -49,7 +49,7 @@ Modules
   -sub any updated, emitData?
   -emitData: pub newData?
 
--PubSub event types (constants)
+//-PubSub event types (constants)
 
 -storage
   //-sub initialize, initializeData
@@ -115,7 +115,7 @@ Modules
   //-sub showTodoItem, showTodoItemView(todoItem)
   //-showTodoItemView(todoItem)
     //-pub showTodoItemRendered, todoItem id
-  -sub hideTodoItem, hideTodoItemView(todoItem)
+  //-sub hideTodoItem, hideTodoItemView(todoItem)
   -sub editTodoItem, editTodoItemView(todoItem)?
   //-sub editText, editTextView
   //-sub editDate, editDateView

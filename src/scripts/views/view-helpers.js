@@ -33,3 +33,7 @@ export function renderSelectablesDisabled(node = document, disabled = true) {
 export function parseNumberList(list) {
   return list.split(' ').filter(item => item).map(Number);
 }
+
+export function capitalize(string) {
+  return string[0].toUpperCase() + string.slice(1).toLowerCase()
+}
