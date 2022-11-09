@@ -4,9 +4,24 @@ import { CREATE, DESTROY, UPDATE, ITEM_UPDATED, UPDATE_STATUS, UPDATE_PRIORITY,
          COLLECTION_UPDATED, LIST_UPDATED, VALIDATION_ERROR } from './pubsub-event-types';
 import { applicationSettings as settings } from './application'
 
+export function Storageable(obj) {
+  obj.tempKeys = [...(obj.tempKeys || []), 'tempKeys'];
+  obj.toStorage = function() {
+    const storageObj = {};
+    for(const key in obj) {
+      if(typeof obj[key] == 'function' || obj.tempKeys.includes(key)) continue;
+      storageObj[key] = obj[key];
+    }
+    return storageObj;
+  }
+}
+
 export function Validatable(obj) {
   obj.validations ||= {};
+  obj.associatedValidations ||= [];
   obj.errors ||= [];
+
+  obj.tempKeys = [...(obj.tempKeys || []), 'validations', 'associatedValidations', 'errors'];
 
   obj.validate = function(data = obj) {
     obj.errors = [];
@@ -150,10 +165,10 @@ export function BelongUpdatable(obj, belongType) {
   }
 }
 
-export function Listable(obj, rawItemList = []) {
+export function Listable(obj, fromStorageList = []) {
   let nextId = 1;
   const list = obj.itemType + 's';
-  obj[list] ||= rawItemList.map(rawItem => obj.itemFactory(Object.assign({ id: nextId++ }, rawItem)));
+  obj[list] ||= fromStorageList.map(storageItem => obj.itemFactory(Object.assign({ id: nextId++ }, storageItem)));
 
   obj.withId = function(id) {
     return obj[list].find(item => id == item.id);
@@ -161,6 +176,10 @@ export function Listable(obj, rawItemList = []) {
 
   obj.withIds = function(ids) {
     return obj[list].filter(item => ids.includes(item.id));
+  }
+
+  obj.toStorage = function() {
+    return obj[list].map(item => item.toStorage());
   }
 
   PubSub.subscribe(BELONG_UPDATED(obj.itemType), publishCollectionsUpdate);
@@ -177,7 +196,6 @@ export function Listable(obj, rawItemList = []) {
 
   PubSub.subscribe(CREATE(obj.itemType), createListItem);
   function createListItem(_, data) {
-    console.log(data);
     _assignNested(data);
     const newListItem = obj.itemFactory(Object.assign({ id: nextId++ }, data));
     if(!newListItem.valid())

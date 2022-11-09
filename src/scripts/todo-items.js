@@ -1,10 +1,10 @@
-import { Validatable, PresenceValidatable, Updatable, Statusable, Prioritizable, 
+import { Storageable, Validatable, PresenceValidatable, Updatable, Statusable, Prioritizable, 
          Collectionable, Belongable, Listable, BelongUpdatable } from './composition-units';
 import { ChecklistItem } from './checklist-items';
 
 export function TodoItem(attributes) {
   const obj = Object.assign({ type: 'todoItem' }, attributes);
-  [Validatable, Updatable, Statusable, Prioritizable].forEach(compFn => compFn(obj));
+  [Storageable, Validatable, Updatable, Statusable, Prioritizable].forEach(compFn => compFn(obj));
   [Belongable, BelongUpdatable].forEach(compFn => compFn(obj, 'project'));
   PresenceValidatable(obj, ['title']);
   Collectionable(obj, 'checklistItem', ChecklistItem);
@@ -12,8 +12,8 @@ export function TodoItem(attributes) {
   return obj;
 }
 
-export function TodoItemsList(rawItemList) {
+export function TodoItemsList(fromStorageList) {
   const obj = { itemFactory: TodoItem, itemType: 'todoItem' };
-  Listable(obj, rawItemList);
+  Listable(obj, fromStorageList);
   return obj;
 }

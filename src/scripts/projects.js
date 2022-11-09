@@ -1,9 +1,8 @@
-import { Validatable, PresenceValidatable, Updatable, Collectionable, Listable } from './composition-units';
+import { Storageable, Validatable, PresenceValidatable, Updatable, Collectionable, Listable } from './composition-units';
 
 export function Project(attributes) {
   const obj = Object.assign({ type: 'project' }, attributes);
-  Updatable(obj);
-  Validatable(obj);
+  [Storageable, Validatable, Updatable].forEach(compFn => compFn(obj));
   PresenceValidatable(obj, ['title']);
   Collectionable(obj, 'todoItem');
 
@@ -11,8 +10,8 @@ export function Project(attributes) {
 }
 
 //may change depending on storage data format
-export function ProjectsList(rawItemList) {
+export function ProjectsList(fromStorageList) {
   const obj = { itemFactory: Project, itemType: 'project' }
-  Listable(obj, rawItemList);
+  Listable(obj, fromStorageList);
   return obj;
 }
