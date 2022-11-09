@@ -10,6 +10,7 @@ export default function newChecklistItemView(_, data) {
   const newChecklistItemButtonSelector = `${data.todoItem ? `.todo-item[data-id="${data.todoItem}"] ` : ''}.new[data-type="checklistItem"]`,
         newChecklistItemButton = document.querySelector(newChecklistItemButtonSelector),
         checklistItemFormElement = newChecklistItemButton.closest('form'),
+        backButton = checklistItemFormElement.querySelector('.back'),
         submitButton = checklistItemFormElement.querySelector('.submit'),
         checklistItemFieldElement = document.createElement('div');
 
@@ -27,7 +28,7 @@ export default function newChecklistItemView(_, data) {
      <input type="hidden" name="${attrWrapper('status')}" id="${attrWrapper('status')}" value="${settings.statuses[0]}">
      <button class="hide" data-type="new-checklistItem" data-index="${index}" ${data.todoItem ? `data-todo-item=${data.todoItem}` : ''}>-</button>`;
 
-  submitButton.classList.remove('hidden');
+  [backButton, submitButton].forEach(button => button?.classList?.remove('hidden'));
   newChecklistItemButton.insertAdjacentElement('beforebegin', checklistItemFieldElement);
   renderSelectablesDisabled(checklistItemFormElement, false);
   PubSub.publish(data.todoItem ? NEW_COLLECTION_ITEM_RENDERED('todoItem') : NEW_RENDERED('checklistItem'));
@@ -37,8 +38,8 @@ PubSub.subscribe(HIDE('new-checklistItem'), hideNewChecklistItemView);
 function hideNewChecklistItemView(_, data) {
   const checklistItemFormElementSelector = 
     data.todoItem ? `.todo-item[data-id="${data.todoItem}"] form[data-collection-type="checklistItem"]` 
-                  : 'form[data-type="todoItem"]',
-        checklistItemFormElement = document.querySelector(checklistItemFormElementSelector);
+                  : 'form[data-type="todoItem"]';
+  const checklistItemFormElement = document.querySelector(checklistItemFormElementSelector);
   
   checklistItemFormElement.querySelector(`.checklist-item.field[data-index="${data.index}"]`).remove();
 
@@ -47,17 +48,26 @@ function hideNewChecklistItemView(_, data) {
   
   if(data.todoItem && remainingChecklistItemFieldElements.length == 0) {
     renderSelectablesDisabled(document, false);
-    checklistItemFormElement.querySelector('.submit').classList.add('hidden');
+
+    const backButton = checklistItemFormElement.querySelector('.back'),
+          submitButton = checklistItemFormElement.querySelector('.submit');
+    [backButton, submitButton].forEach(button => button?.classList?.add('hidden'));
   }
 
   remainingChecklistItemFieldElements.forEach((checklistItemElement, i) => {
     const index = i + offset;
-    const todoItemIndexAttr = checklistItemElement.querySelector('input[name*="todoItemIndex"]'),
-          label = checklistItemElement.querySelector('label[for*="title"]'),
+
+    const inputElements = checklistItemElement.querySelectorAll('input'),
+          todoItemIndexElement = checklistItemElement.querySelector('input[name*="todoItemIndex"]'),
+          labelElement = checklistItemElement.querySelector('label[for*="title"]'),
           hideButton = checklistItemElement.querySelector('.hide');
+
+    inputElements.forEach(inputElement => {
+      ['name', 'id'].forEach(attr => inputElement[attr] = inputElement[attr].replace(/\d+/, index));
+    })
     checklistItemElement.dataset.index = index;
-    todoItemIndexAttr.value = index;
-    label.textContent = `${index}.`;
+    todoItemIndexElement.value = index;
+    labelElement.textContent = `${index}.`;
     hideButton.dataset.index = index;
   })
 }

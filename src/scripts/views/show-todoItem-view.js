@@ -103,7 +103,8 @@ function _renderChecklistItems(todoItem, todoItemElement) {
   newChecklistItemFormElement.dataset.id = todoItem.id;
   newChecklistItemFormElement.dataset.collectionType = 'checklistItem';
   newChecklistItemFormElement.innerHTML =
-    `<button class="new" data-type="checklistItem" data-todo-item="${todoItem.id}">
+    `<button class="back hidden">←</button>
+     <button class="new" data-type="checklistItem" data-todo-item="${todoItem.id}">
       Add a Checklist Item
      </button>
      <button class="submit hidden">✓</button>`;
