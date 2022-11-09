@@ -41,23 +41,21 @@ function _renderProjectsHeading() {
 
 function _renderProjectsList() {
   renderData.projectsList.projects.forEach(project => {
-    const projectElement = document.createElement('div'),
+    const projectElement = document.createElement('button'),
           previewElement = document.createElement('ul');
     
-    projectElement.classList.add('project');
-    previewElement.classList.add('project-preview');
-    
-    projectElement.innerHTML =
-      `<button class="show link" data-type="${project.type}" 
-               data-id="${project.id}" data-todo-items-full="">
-        ${project.title}
-       </button>`;
+    projectElement.classList.add('project', 'show');
+    projectElement.dataset.type = project.type;
+    projectElement.dataset.id = project.id;
+    projectElement.dataset.todoItemsFull = '';
+    projectElement.innerHTML = `<h3>${project.title}</h3>`;
     if(project.id) projectElement.innerHTML += 
       `<button class="destroy" 
                data-type="${project.type}" data-id="${project.id}">
         Remove
        </button>`;
 
+    previewElement.classList.add('project-preview');
     renderData.todoItemsList.withIds(project.todoItems)
               .slice(0, settings.previewNum).forEach(todoItem => {
       const todoItemElement = document.createElement('li');
