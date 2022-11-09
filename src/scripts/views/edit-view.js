@@ -1,6 +1,6 @@
 import PubSub from 'pubsub-js';
 import { ANY_EDIT_ATTRIBUTE, EDIT_ATTRIBUTE_RENDERED, ANY_EDIT_BELONG, EDIT_BELONG_RENDERED } from '../pubsub-event-types';
-import { applicationData as renderData } from '../application';
+import { applicationData as renderData, applicationSettings as settings } from '../application';
 import { renderSelectablesDisabled } from './view-helpers';
 
 PubSub.subscribe(ANY_EDIT_ATTRIBUTE, editAttributeView)
@@ -17,7 +17,7 @@ function editAttributeView(_, { type, id, attribute, attributeType, attributeVal
   formElement.dataset.attribute = attribute;
   const isTextarea = attributeType == 'textarea';
   formElement.innerHTML =
-    `<button class="back">←</button>
+    `${settings.clickOut.includes(attributeType) ? '' : '<button class="back">←</button>'}
      <${isTextarea ? 'textarea' : 'input'} 
       type="${attributeType}" name="${attribute}" id="${attribute}" 
       value="${attributeValue}">${isTextarea ? `${attributeValue}</textarea>` : ''}

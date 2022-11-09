@@ -13,7 +13,7 @@ Composition Units
   //-sub update + type, updateAttrs(details of update)
   //-updateAttrs(details of update)
     //-return if item type and item id don't match the data
-    -for each detail in update, set the attribute; pub type + 'updated' (if successful) or pub updateFailed with error message(s), item type + id, and failed attr (if failed)
+    //-for each detail in update, set the attribute; pub type + 'updated' (if successful) or pub updateFailed with error message(s), item type + id, and failed attr (if failed)
 
 //-Belongable
 //-BelongUpdatable(belong type)
@@ -120,7 +120,7 @@ Modules
   //-sub editText, editTextView
   //-sub editDate, editDateView
   //-editTextView(item id, type)
-    -consider getting rid of back button for click-out edit views
+    //-consider getting rid of back button for click-out edit views
     //-pub editInputRendered, item type + id
   //-editDateView(item id, type)
     //-pub editInputRendered, item type + id
