@@ -6,7 +6,6 @@ export const INDEX = type => `index.${type}`;
 export const NEW = type => `new.${type}`;
 export const CREATE = type => `create.${type}`;
 export const CREATE_COLLECTION_ITEMS = (type, id, collectionType) => `create.collection.${collectionType}.${type}.${id}`;
-//export const CREATE_TO_COLLECTION = type => `create.to-collection.${type}`;
 export const SHOW = type => `show.${type}`;
 export const HIDE = type => `hide.${type}`;
 export const ANY_EDIT_ATTRIBUTE = 'edit.attribute';

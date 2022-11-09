@@ -20,7 +20,7 @@ function setCurrPageView(_, view) {
 
 PubSub.subscribe(DATA_UPDATED, updateView);
 PubSub.subscribe(BACK, updateView);
-function updateView(_) {
+function updateView() {
   document.body.innerHTML = '';
   currPageView();
 }
