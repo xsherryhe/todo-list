@@ -9,7 +9,6 @@ export function Project(attributes) {
   return obj;
 }
 
-//may change depending on storage data format
 export function ProjectsList(fromStorageList) {
   const obj = { itemFactory: Project, itemType: 'project' }
   Listable(obj, fromStorageList);

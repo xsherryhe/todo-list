@@ -1,7 +1,6 @@
 import PubSub from 'pubsub-js';
 import { INITIALIZE, DATA_INITIALIZED, ANY_UPDATED } from './pubsub-event-types';
 import { applicationData } from './application';
-//may change this depending on storageProvider implementation
 import * as localStorageProvider from './storage-providers/local-storage-provider';
 
 PubSub.subscribe(INITIALIZE, initializeDataFn(localStorageProvider.getData));

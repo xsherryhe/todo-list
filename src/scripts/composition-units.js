@@ -146,12 +146,9 @@ export function Collectionable(obj, collectionType, collectionTypeFactory) {
   }
 }
 
-//may change depending on storage
 export function Belongable(obj, belongType) {
   obj.belongs ||= { [belongType]: 0 };
   Object.keys(obj.belongs).forEach(key => obj.belongs[key] = +obj.belongs[key]);
-  //obj.belongs[belongType] = obj[belongType + 'Id'];
-  //delete obj[belongType + 'Id'];
 }
 
 export function BelongUpdatable(obj, belongType) {
