@@ -8,13 +8,11 @@ export default function newTodoItemView(_, data) {
   renderSelectablesDisabled();
   
   const newTodoItemButton = document.querySelector('.new[data-type="todoItem"]'),
-        backButton = document.createElement('button'),
         formElement = document.createElement('form');
-  backButton.classList.add('back');
-  backButton.textContent = 'Back';
   formElement.dataset.type = 'todoItem';
   formElement.innerHTML =
-    `<div class="field">
+    `<button class="back">Back</button>
+     <div class="field">
       <label for="title">New To-Do</label>
       <input type="text" name="title" id="title">
      </div>
@@ -51,6 +49,6 @@ export default function newTodoItemView(_, data) {
      <button class="new" data-type="checklistItem" data-index="1">Add a Checklist Item</button>
      <button class="submit">Submit</button>`;
 
-  newTodoItemButton.replaceWith(backButton, formElement);
+  newTodoItemButton.replaceWith(formElement);
   PubSub.publish(NEW_RENDERED('todoItem'));
 }

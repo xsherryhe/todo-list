@@ -40,11 +40,9 @@ function hideNewChecklistItemView(_, data) {
     data.todoItem ? `.todo-item[data-id="${data.todoItem}"] form[data-collection-type="checklistItem"]` 
                   : 'form[data-type="todoItem"]';
   const checklistItemFormElement = document.querySelector(checklistItemFormElementSelector);
-  
   checklistItemFormElement.querySelector(`.checklist-item.field[data-index="${data.index}"]`).remove();
 
-  const offset = 1 + (data.todoItem ? renderData.todoItemsList.withId(data.todoItem).checklistItems.length : 0),
-        remainingChecklistItemFieldElements = checklistItemFormElement.querySelectorAll('.checklist-item.field');
+  const remainingChecklistItemFieldElements = checklistItemFormElement.querySelectorAll('.checklist-item.field');
   
   if(data.todoItem && remainingChecklistItemFieldElements.length == 0) {
     renderSelectablesDisabled(document, false);
@@ -54,6 +52,7 @@ function hideNewChecklistItemView(_, data) {
     [backButton, submitButton].forEach(button => button?.classList?.add('hidden'));
   }
 
+  const offset = 1 + (data.todoItem ? renderData.todoItemsList.withId(data.todoItem).checklistItems.length : 0);
   remainingChecklistItemFieldElements.forEach((checklistItemElement, i) => {
     const index = i + offset;
 
