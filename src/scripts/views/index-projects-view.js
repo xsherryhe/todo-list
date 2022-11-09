@@ -12,17 +12,17 @@ export default function indexProjectsView() {
 }
 
 function _renderIntro() {
-  const headingElement = document.createElement('h1'),
-        bylineElement = document.createElement('h2'),
-        newTodoItemButton = document.createElement('button');
-  headingElement.textContent = 'Actionality';
-  bylineElement.textContent = 'Your one-stop to-do app';
-  newTodoItemButton.classList.add('new');
-  newTodoItemButton.dataset.type = 'todoItem';
-  newTodoItemButton.dataset.projectId = 0;
-  newTodoItemButton.textContent = 'Add a New To-Do';
-
-  document.body.append(headingElement, bylineElement, newTodoItemButton);
+  const introElement = document.createElement('div');
+  introElement.classList.add('intro');
+  introElement.innerHTML = 
+    `<div class="intro-heading">
+      <h1>Actionality</h1>
+      <h2>Your one-stop to-do app</h2>
+     </div>
+     <button class="new" data-type="todoItem" data-project-id="0">
+      Add a New To-Do
+     </button>`;
+  document.body.append(introElement);
 }
 
 function _renderProjects() {
@@ -31,46 +31,41 @@ function _renderProjects() {
 }
 
 function _renderProjectsHeading() {
-  const projectsHeadingElement = document.createElement('div'),
-        projectsHeadingTextElement = document.createElement('h2'),
-        newProjectButton = document.createElement('button');
-
-  projectsHeadingTextElement.textContent = 'My Projects';
-  newProjectButton.classList.add('new');
-  newProjectButton.dataset.type = 'project';
-  newProjectButton.textContent = '+';
-
-  projectsHeadingElement.append(projectsHeadingTextElement, newProjectButton);
+  const projectsHeadingElement = document.createElement('div');
+  projectsHeadingElement.classList.add('projects-heading');
+  projectsHeadingElement.innerHTML = 
+    `<h2>My Projects</h2>
+     <button class="new symbol" data-type="project">+</button>`;
   document.body.append(projectsHeadingElement);
 }
 
 function _renderProjectsList() {
   renderData.projectsList.projects.forEach(project => {
     const projectElement = document.createElement('div'),
-          showButton = document.createElement('button'),
-          destroyButton = document.createElement('button'),
           previewElement = document.createElement('ul');
-
-    [showButton, destroyButton].forEach(button => {
-      button.dataset.type = project.type;
-      button.dataset.id = project.id;
-    })
-    showButton.classList.add('show');
-    showButton.dataset.todoItemsFull = '';
-    showButton.textContent = project.title;
-    destroyButton.classList.add('destroy');
-    destroyButton.textContent = '-';
+    
+    projectElement.classList.add('project');
+    previewElement.classList.add('project-preview');
+    
+    projectElement.innerHTML =
+      `<button class="show link" data-type="${project.type}" 
+               data-id="${project.id}" data-todo-items-full="">
+        ${project.title}
+       </button>`;
+    if(project.id) projectElement.innerHTML += 
+      `<button class="destroy" 
+               data-type="${project.type}" data-id="${project.id}">
+        Remove
+       </button>`;
 
     renderData.todoItemsList.withIds(project.todoItems)
               .slice(0, settings.previewNum).forEach(todoItem => {
       const todoItemElement = document.createElement('li');
       todoItemElement.textContent = todoItem.title;
-      previewElement.appendChild(todoItemElement);
-    });
+      previewElement.append(todoItemElement);
+    })
 
-    projectElement.appendChild(showButton);
-    if(project.id) projectElement.appendChild(destroyButton);
     projectElement.append(previewElement);
-    document.body.appendChild(projectElement);
+    document.body.append(projectElement);
   })
 }

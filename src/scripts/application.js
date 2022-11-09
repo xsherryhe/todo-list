@@ -1,4 +1,5 @@
-import '../styles/application.css';
+import '../styles/all.css';
+import '../styles/index-projects.css';
 
 import './storage';
 import './views/views';

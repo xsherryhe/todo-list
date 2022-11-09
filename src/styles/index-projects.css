@@ -1,0 +1,34 @@
+.intro-heading h2 {
+  font-size: 1.25rem;
+}
+
+.intro .new {
+  display: block;
+  margin: 2rem auto;
+  padding: 1rem 1.5rem;
+  font-size: 1.25rem;
+  min-width: 35vw;
+}
+
+.projects-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.project {
+  margin: 1rem auto;
+  max-width: 65vw;
+  display: grid;
+  grid-template: repeat(2, 1fr) / 1fr max-content;
+  justify-items: start;
+  align-items: center;
+}
+
+.project .show {
+  font-size: 1.25rem;
+}
+
+.project-preview {
+  grid-row: 2;
+}
