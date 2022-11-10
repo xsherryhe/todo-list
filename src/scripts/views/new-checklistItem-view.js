@@ -26,7 +26,7 @@ export default function newChecklistItemView(_, data) {
      <label for="${attrWrapper('title')}">${index}.</label>
      <input type="text" name="${attrWrapper('title')}" id="${attrWrapper('title')}">
      <input type="hidden" name="${attrWrapper('status')}" id="${attrWrapper('status')}" value="${settings.statuses[0]}">
-     <button class="hide" data-type="new-checklistItem" data-index="${index}" ${data.todoItem ? `data-todo-item=${data.todoItem}` : ''}>-</button>`;
+     <button class="hide symbol" data-type="new-checklistItem" data-index="${index}" ${data.todoItem ? `data-todo-item=${data.todoItem}` : ''}>X</button>`;
 
   [backButton, submitButton].forEach(button => button?.classList?.remove('hidden'));
   newChecklistItemButton.insertAdjacentElement('beforebegin', checklistItemFieldElement);

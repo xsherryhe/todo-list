@@ -2,6 +2,7 @@ import '../styles/all.css';
 import '../styles/form.css';
 import '../styles/index-projects.css';
 import '../styles/new-todoItem.css';
+import '../styles/new-checklistItem.css';
 
 import './storage';
 import './views/views';

@@ -3,3 +3,7 @@ input:not([type="checkbox"],[type="radio"]),textarea,select {
   padding: 0.25rem;
   min-width: 15rem;
 }
+
+.error {
+  margin: 0;
+}

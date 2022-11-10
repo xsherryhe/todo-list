@@ -71,6 +71,16 @@ function bindCreateButtons() {
 PubSub.subscribe(ANY_NEW_COLLECTION_ITEM_RENDERED, bindCreateCollectionItemsButtons);
 function bindCreateCollectionItemsButtons() {
   _bindFormSubmitButtons(CREATE_COLLECTION_ITEMS, ['type', 'id', 'collectionType']);
+
+  inputElements().forEach(input => {
+    input = _clearEventListeners(input);
+    const form = input.closest('form');
+    input.addEventListener('keydown', e => {
+      if (!(e.key == 'Enter' && document.activeElement == input)) return;
+      PubSub.publish(CREATE_COLLECTION_ITEMS(form.dataset.type, form.dataset.id, form.dataset.collectionType), 
+                     Object.fromEntries(new FormData(form)));
+    })
+  })
 }
 
 PubSub.subscribe(ANY_EDIT_ATTRIBUTE_RENDERED, bindEditAttributeEvents);
