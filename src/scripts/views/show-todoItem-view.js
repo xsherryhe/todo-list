@@ -1,5 +1,5 @@
 import PubSub from 'pubsub-js';
-import { SHOW, SHOW_RENDERED } from '../pubsub-event-types';
+import { INDEX, SHOW, SHOW_RENDERED } from '../pubsub-event-types';
 import { applicationData as renderData, applicationSettings as settings } from '../application';
 import { renderEditableAttribute } from './view-helpers';
 import { formatRelative } from 'date-fns';
@@ -8,12 +8,12 @@ PubSub.subscribe(SHOW('todoItem'), showTodoItemView);
 
 export default function showTodoItemView(_, data) {
   const todoItem = renderData.todoItemsList.withId(data.id);
-  _renderTodoItem(todoItem, data.parentElement);
+  _renderTodoItem(todoItem, { parentElement: data.parentElement, belongType: data.belongType });
   if(data.full) _renderFull(todoItem, data.parentElement);
   PubSub.publish(SHOW_RENDERED('todoItem'));
 }
 
-function _renderTodoItem(todoItem, parentElement) {
+function _renderTodoItem(todoItem, options) {
   const prevTodoItemElement = document.querySelector(`.todo-item[data-id="${todoItem.id}"`),
         todoItemElement = document.createElement('div'),
         updateStatusButton = document.createElement('button'),
@@ -44,6 +44,7 @@ function _renderTodoItem(todoItem, parentElement) {
   [showButton, hideButton].forEach(button => {
     button.dataset.type = todoItem.type + 'Full';
     button.dataset.id = todoItem.id;
+    button.dataset.belongType = options.belongType || '';
   })
 
   showButton.classList.add('show');
@@ -58,7 +59,7 @@ function _renderTodoItem(todoItem, parentElement) {
   destroyButton.textContent = '-';
 
   todoItemElement.append(showButton, hideButton, destroyButton);
-  (parentElement || document.body).append(todoItemElement);
+  (options.parentElement || document.body).append(todoItemElement);
 }
 
 function _renderFull(todoItem, parentElement) {
@@ -94,54 +95,11 @@ function _renderFull(todoItem, parentElement) {
   hideButton.classList.remove('hidden');
   todoItemElement.append(editProjectButton, priorityElement);
 
-  _renderChecklistItems(todoItem, todoItemElement);
+  _renderChecklistItemsIndex(todoItem, todoItemElement);
 }
 
-function _renderChecklistItems(todoItem, todoItemElement) {
-  const newChecklistItemFormElement = document.createElement('form'); 
-  newChecklistItemFormElement.dataset.type = todoItem.type;
-  newChecklistItemFormElement.dataset.id = todoItem.id;
-  newChecklistItemFormElement.dataset.collectionType = 'checklistItem';
-  newChecklistItemFormElement.innerHTML =
-    `<button class="back hidden">←</button>
-     <button class="new" data-type="checklistItem" data-todo-item="${todoItem.id}">
-      Add a Checklist Item
-     </button>
-     <button class="submit hidden">✓</button>`;
-
-  const checklistItems = renderData.checklistItemsList
-                                   .withIds(todoItem.checklistItems)
-                                   .sort((a, b) => +a.todoItemIndex - +b.todoItemIndex);
-  if(!checklistItems.length) return todoItemElement.append(newChecklistItemFormElement);
-
-  const headingElement = document.createElement('h3'),
-        listElement = document.createElement('ol');
-  headingElement.textContent = 'Checklist';
-
-  checklistItems.forEach(checklistItem => {
-    const checklistItemElement = document.createElement('li'),
-          updateStatusButton = document.createElement('button'),
-          destroyButton = document.createElement('button');
-
-    checklistItemElement.classList.add(checklistItem.status, 'checklist-item');
-    checklistItemElement.dataset.id = checklistItem.id;
-
-    renderEditableAttribute(checklistItem, 'title', 'text', { parentElement: checklistItemElement });
-
-    [updateStatusButton, destroyButton].forEach(button => {
-      button.dataset.type = checklistItem.type;
-      button.dataset.id = checklistItem.id;
-    })
-    updateStatusButton.classList.add('update-status');
-    //TO DO: Change check to icon image
-    updateStatusButton.textContent = settings.statuses.indexOf(checklistItem.status) ? '✓' : '';
-
-    destroyButton.classList.add('destroy');
-    destroyButton.textContent = '-';
-
-    checklistItemElement.append(updateStatusButton, destroyButton);
-    listElement.append(checklistItemElement);
-  })
-
-  todoItemElement.append(headingElement, listElement, newChecklistItemFormElement);
+function _renderChecklistItemsIndex(todoItem, todoItemElement) {
+  PubSub.publish(INDEX('checklistItem'),
+                { belongType: todoItem.type, belongId: todoItem.id,
+                  ids: todoItem.checklistItems, parentElement: todoItemElement });
 }

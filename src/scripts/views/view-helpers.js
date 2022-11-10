@@ -37,3 +37,7 @@ export function parseNumberList(list) {
 export function capitalize(string) {
   return string[0].toUpperCase() + string.slice(1).toLowerCase()
 }
+
+export function snakeCase(string) {
+  return string.split(/(?=[A-Z])/).map(word => word.toLowerCase()).join('-');
+}

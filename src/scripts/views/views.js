@@ -1,4 +1,6 @@
 import './index-projects-view'
+import './index-todoItems-view'
+import './index-checklistItems-view'
 import './new-project-view'
 import './new-todoItem-view'
 import './new-checklistItem-view'
