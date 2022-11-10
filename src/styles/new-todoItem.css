@@ -1,0 +1,22 @@
+.new-form[data-type="todoItem"] {
+  margin: 1rem auto;
+  max-width: 50vw;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.new-form[data-type="todoItem"] button {
+  align-self: flex-start;
+}
+
+.new-form[data-type="todoItem"] .field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.new-form[data-type="todoItem"] .submit {
+  align-self: center;
+  padding: 0.5rem 4rem;
+}

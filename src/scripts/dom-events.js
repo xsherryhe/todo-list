@@ -14,7 +14,7 @@ const indexButtons = () => document.querySelectorAll('.index'),
       updatePriorityButtons = () => document.querySelectorAll('.update-priority'),
       destroyButtons = () => document.querySelectorAll('.destroy'),
       backButtons = () => document.querySelectorAll('.back'),
-      inputElements = () => document.querySelectorAll('input:not([type="checkbox"]):not([type="radio"]),textarea'),
+      inputElements = () => document.querySelectorAll('input:not([type="checkbox"],[type="radio"]),textarea'),
       submitButtons = () => document.querySelectorAll('.submit');
 
 function _bindButtons(buttons, pubSubEvent, options = {}) {

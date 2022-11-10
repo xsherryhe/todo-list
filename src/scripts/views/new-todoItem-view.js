@@ -9,6 +9,7 @@ export default function newTodoItemView(_, data) {
   
   const newTodoItemButton = document.querySelector('.new[data-type="todoItem"]'),
         formElement = document.createElement('form');
+  formElement.classList.add('new-form');
   formElement.dataset.type = 'todoItem';
   formElement.innerHTML =
     `<button class="back">Back</button>
@@ -21,11 +22,11 @@ export default function newTodoItemView(_, data) {
       <input type="datetime-local" name="dueDate" id="dueDate">
      </div>
      <div class="field">
-      <label for="description">Description</label>
+      <label for="description" class="textarea-label">Description</label>
       <textarea name="description" id="description"></textarea>
      </div>
      <div class="field">
-      <label for="notes">Notes</label>
+      <label for="notes" class="textarea-label">Notes</label>
       <textarea name="notes" id="notes"></textarea>
      </div>
      <div class="field">
@@ -46,7 +47,7 @@ export default function newTodoItemView(_, data) {
       </select>
      </div>
      <input type="hidden" name="status" id="status" value="${settings.statuses[0]}">
-     <button class="new" data-type="checklistItem" data-index="1">Add a Checklist Item</button>
+     <button class="new link" data-type="checklistItem" data-index="1">Add a Checklist Item</button>
      <button class="submit">Submit</button>`;
 
   newTodoItemButton.replaceWith(formElement);

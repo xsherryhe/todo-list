@@ -1,5 +1,7 @@
 import '../styles/all.css';
+import '../styles/form.css';
 import '../styles/index-projects.css';
+import '../styles/new-todoItem.css';
 
 import './storage';
 import './views/views';

@@ -2,10 +2,10 @@
   font-size: 1.25rem;
 }
 
-.intro .new {
+.intro .new[data-type="todoItem"] {
   display: block;
   margin: 2rem auto;
-  padding: 1rem 1.5rem;
+  padding: 1rem 1.5rem; 
   font-size: 1.25rem;
   min-width: 35vw;
 }

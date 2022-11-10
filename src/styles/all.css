@@ -22,6 +22,7 @@ button {
 
 button.link {
   background-color: transparent;
+  color: blue;
   border: none;
   padding: 0;
 }
@@ -36,7 +37,7 @@ button.symbol {
   min-height: 1.5rem;
 }
 
-button.destroy {
+button.destroy, button.back {
   font-size: 0.8rem;
   padding: 0.25rem 0.5rem;
 }
