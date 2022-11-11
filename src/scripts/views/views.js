@@ -6,6 +6,7 @@ import './new-todoItem-view'
 import './new-checklistItem-view'
 import './show-project-view'
 import './show-todoItem-view'
+import './show-checklistItem-view'
 import './edit-view'
 import './error-view'
 
