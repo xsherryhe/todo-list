@@ -8,9 +8,9 @@ export function Storageable(obj) {
   obj.tempKeys = [...(obj.tempKeys || []), 'tempKeys'];
   obj.toStorage = function() {
     const storageObj = {};
-    for(const key in obj) {
-      if(typeof obj[key] == 'function' || obj.tempKeys.includes(key)) continue;
-      storageObj[key] = obj[key];
+    for(const key in this) {
+      if(typeof this[key] == 'function' || this.tempKeys.includes(key)) continue;
+      storageObj[key] = this[key];
     }
     return storageObj;
   }
@@ -24,21 +24,21 @@ export function Validatable(obj) {
   obj.tempKeys = [...(obj.tempKeys || []), 'validations', 'associatedValidations', 'errors'];
 
   obj.validate = function(data = obj) {
-    obj.errors = [];
+    this.errors = [];
     for(const attribute in data)
-      obj.errors.push(..._attrErrors(attribute, obj[attribute]));
+      this.errors.push(..._attrErrors.call(this, attribute, obj[attribute]));
     if(data.associatedValidations) 
-      obj.errors.push(..._associatedErrors(data.associatedValidations));
+      this.errors.push(..._associatedErrors(data.associatedValidations));
   }
 
-  obj.validateAssociated = function (associatedValidations) {
-    obj.errors = [];
-    obj.errors.push(..._associatedErrors(associatedValidations));
+  obj.validateAssociated = function(associatedValidations) {
+    this.errors = [];
+    this.errors.push(..._associatedErrors(associatedValidations));
   }
 
   function _attrErrors(attribute, value, errors = []) {
-    obj.validations?.[attribute]?.forEach(validation => {
-      if (!validation.fn(value)) 
+    this.validations?.[attribute]?.forEach(validation => {
+      if(!validation.fn(value)) 
         errors.push({ objAttribute: attribute, objType: obj.type, 
                       attribute, message: validation.message });
     })
@@ -57,8 +57,8 @@ export function Validatable(obj) {
   }
 
   obj.valid = function() {
-    obj.validate();
-    return obj.errors.length == 0;
+    this.validate();
+    return this.errors.length == 0;
   }
 }
 
@@ -168,15 +168,15 @@ export function Listable(obj, fromStorageList = []) {
   obj[list] ||= fromStorageList.map(storageItem => obj.itemFactory(Object.assign({ id: nextId++ }, storageItem)));
 
   obj.withId = function(id) {
-    return obj[list].find(item => id == item.id);
+    return this[list].find(item => id == item.id);
   }
 
   obj.withIds = function(ids) {
-    return obj[list].filter(item => ids.includes(item.id));
+    return this[list].filter(item => ids.includes(item.id));
   }
 
   obj.toStorage = function() {
-    return obj[list].map(item => item.toStorage());
+    return this[list].map(item => item.toStorage());
   }
 
   PubSub.subscribe(BELONG_UPDATED(obj.itemType), publishCollectionsUpdate);
@@ -235,6 +235,7 @@ export function Listable(obj, fromStorageList = []) {
     })
     PubSub.publish(COLLECTION_UPDATED(obj.itemType), belongData);
   }
+  _publishCollectionUpdate(obj[list]);
 }
 
 function _assignNested(data) {
