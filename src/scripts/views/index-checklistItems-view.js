@@ -1,7 +1,6 @@
 import PubSub from 'pubsub-js';
 import { INDEX, SHOW } from '../pubsub-event-types';
 import { applicationData as renderData } from '../application';
-import { snakeCase } from './view-helpers';
 
 PubSub.subscribe(INDEX('checklistItem'), indexChecklistItemsView);
 function indexChecklistItemsView(_, data) {
@@ -36,7 +35,8 @@ function _renderNewChecklistItemsForm(belongType, belongId, parentElement) {
   newChecklistItemsFormElement.dataset.collectionType = 'checklistItem';
   newChecklistItemsFormElement.innerHTML =
     `<button class="back hidden">←</button>
-     <button class="new link" data-type="checklistItem" data-${snakeCase(belongType)}="${belongId}">
+     <button class="new link" data-type="checklistItem" 
+             data-belong-type="${belongType}" data-belong-id="${belongId}">
       Add a Checklist Item
      </button>
      <button class="submit hidden">Submit</button>`;

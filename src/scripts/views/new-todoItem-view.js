@@ -48,7 +48,7 @@ export default function newTodoItemView(_, data) {
      </div>
      <input type="hidden" name="status" id="status" value="${settings.statuses[0]}">
      <h3>Checklist</h3>
-     <button class="new link" data-type="checklistItem" data-index="1">Add a Checklist Item</button>
+     <button class="new link" data-belong-type="todoItem" data-type="checklistItem" data-index="1">Add a Checklist Item</button>
      <button class="submit">Submit</button>`;
 
   newTodoItemButton.replaceWith(formElement);
