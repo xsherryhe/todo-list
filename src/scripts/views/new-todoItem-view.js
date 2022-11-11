@@ -33,7 +33,7 @@ export default function newTodoItemView(_, data) {
       <label for="belongs[project]">Project</label>
       <select name="belongs[project]" id="belongs[project]">
         ${renderData.projectsList.projects.map(project => 
-          `<option value="${project.id}" ${project.id == data.projectId ? 'selected' : ''}>
+          `<option value="${project.id}" ${project.id == +data.projectId ? 'selected' : ''}>
             ${project.title}
           </option>`)
         .join('\n')}

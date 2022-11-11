@@ -155,7 +155,7 @@ export function BelongUpdatable(obj, belongType) {
   PubSub.subscribe(UPDATE_BELONG(obj.type, obj.id, belongType), updateBelong);
   function updateBelong(_, data) {
     const oldBelongId = obj.belongs[belongType], 
-          newBelongId = data.belongId;
+          newBelongId = +data.belongId;
     obj.belongs[belongType] = newBelongId;
     PubSub.publish(BELONG_UPDATED(obj.type), { id: obj.id, belongType, oldBelongId, newBelongId });
     PubSub.publish(ITEM_UPDATED(obj.type, obj.id));

@@ -16,20 +16,21 @@ export default function showProjectView(_, data) {
 
 function _renderIntro(project) {
   const indexButton = document.createElement('button'),
-        headingElement = document.createElement('div'),
-        newTodoItemButton = document.createElement('button');
+        projectHeadingElement = document.createElement('div'),
+        headingElement = document.createElement('div');
   indexButton.classList.add('index');
   indexButton.dataset.type = project.type;
   indexButton.textContent = 'All Projects';
 
-  renderEditableAttribute(project, 'title', 'text', { parentElement: headingElement });
+  projectHeadingElement.classList.add('project-heading');
+  renderEditableAttribute(project, 'title', 'text', { parentElement: projectHeadingElement });
+  headingElement.append(projectHeadingElement);
+  headingElement.innerHTML += 
+    `<div class="todo-items-heading">
+      <h2>To-Dos</h2>
+      <button class="new symbol" data-type="todoItem" data-project-id="${project.id}">+</button>
+    </div>`;
   
-  newTodoItemButton.classList.add('new');
-  newTodoItemButton.dataset.type = 'todoItem';
-  newTodoItemButton.dataset.projectId = project.id;
-  newTodoItemButton.textContent = '+';
-
-  headingElement.append(newTodoItemButton);
   document.body.append(indexButton, headingElement);
 }
 
