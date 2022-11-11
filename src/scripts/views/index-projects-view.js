@@ -6,6 +6,7 @@ PubSub.subscribe(INDEX('project'), indexProjectsView)
 export default function indexProjectsView() {
   document.body.innerHTML = '';
   _renderIntro();
+  _renderProjectsHeading();
   _renderProjects();
   PubSub.publish(PAGE_RENDERED, indexProjectsView);
   PubSub.publish(INDEX_RENDERED('project'));
@@ -25,11 +26,6 @@ function _renderIntro() {
   document.body.append(introElement);
 }
 
-function _renderProjects() {
-  _renderProjectsHeading();
-  _renderProjectsList();
-}
-
 function _renderProjectsHeading() {
   const projectsHeadingElement = document.createElement('div');
   projectsHeadingElement.classList.add('projects-heading');
@@ -39,7 +35,7 @@ function _renderProjectsHeading() {
   document.body.append(projectsHeadingElement);
 }
 
-function _renderProjectsList() {
+function _renderProjects() {
   renderData.projectsList.projects.forEach(project => {
     const projectElement = document.createElement('button'),
           previewElement = document.createElement('ul');

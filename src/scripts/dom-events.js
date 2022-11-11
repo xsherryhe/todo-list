@@ -22,11 +22,13 @@ function _bindButtons(buttons, pubSubEvent, options = {}) {
     button = _clearEventListeners(button);
     button.addEventListener('click', e => {
       e.preventDefault();
-      const args = [e.target.dataset.type]
-                   .concat((options.extraArgs || []).map(arg => e.target.dataset[arg]));
+      e.stopPropagation();
+      const target = e.target.closest('button');
+      const args = [target.dataset.type]
+                   .concat((options.extraArgs || []).map(arg => target.dataset[arg]));
       PubSub.publish(typeof pubSubEvent == 'function' ? 
                       pubSubEvent(...args) : pubSubEvent,
-                     e.target.dataset);
+                     target.dataset);
     })
   })
 }
