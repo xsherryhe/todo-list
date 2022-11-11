@@ -19,4 +19,5 @@
 .new-form[data-type="todoItem"] .submit {
   align-self: center;
   padding: 0.5rem 4rem;
+  margin-top: 0.25rem;
 }

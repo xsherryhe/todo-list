@@ -1,7 +1,3 @@
-button.new[data-type="checklistItem"] {
-  margin: 0.25rem 0;
-}
-
 .checklist-item.field[data-type="checklistItem"] {
   max-width: 50vw;
   display: flex;

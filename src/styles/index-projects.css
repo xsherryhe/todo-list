@@ -11,7 +11,9 @@
 }
 
 .projects-heading {
-  display: flex;
+  display: grid;
+  grid-template: repeat(2, max-content) / max-content 1fr;
+  justify-items: start;
   align-items: center;
   gap: 0.5rem;
 }

@@ -1,6 +1,6 @@
 import PubSub from 'pubsub-js';
-import { BACK, VIEW_RENDERED, INDEX, NEW, ANY_NEW_RENDERED, ANY_NEW_COLLECTION_ITEM_RENDERED, CREATE, SHOW, HIDE, 
-         EDIT_ATTRIBUTE, ANY_EDIT_ATTRIBUTE_RENDERED, EDIT_BELONG, ANY_EDIT_BELONG_RENDERED, 
+import { BACK, VIEW_RENDERED, INDEX, NEW, ANY_NEW_RENDERED, NEW_RENDERED, ANY_NEW_COLLECTION_ITEM_RENDERED, 
+         CREATE, SHOW, HIDE, EDIT_ATTRIBUTE, ANY_EDIT_ATTRIBUTE_RENDERED, EDIT_BELONG, ANY_EDIT_BELONG_RENDERED, 
          UPDATE, UPDATE_BELONG, UPDATE_STATUS, UPDATE_PRIORITY, DESTROY, CREATE_COLLECTION_ITEMS } from './pubsub-event-types';
 import { applicationSettings as settings } from './application';
 
@@ -57,6 +57,19 @@ function _bindFormSubmitButtons(pubSubEvent, dataAttrs) {
   })
 }
 
+function _bindFormSubmitEnterKey(pubSubEvent, dataAttrs) {
+  inputElements().forEach(input => {
+    input = _clearEventListeners(input);
+    const form = input.closest('form'),
+          args = dataAttrs.map(attr => form.dataset[attr]);
+    input.addEventListener('keydown', e => {
+      if (!(e.key == 'Enter' && document.activeElement == input)) return;
+      e.preventDefault();
+      PubSub.publish(pubSubEvent(...args), Object.fromEntries(new FormData(form)));
+    })
+  })
+}
+
 function _clearEventListeners(element) {
   const clearedElement = element.cloneNode(true);
   element.replaceWith(clearedElement);
@@ -68,39 +81,30 @@ function bindCreateButtons() {
   _bindFormSubmitButtons(CREATE, ['type']);
 }
 
+PubSub.subscribe(NEW_RENDERED('project'), bindNewProjectEvents);
+function bindNewProjectEvents() {
+  _bindFormSubmitEnterKey(CREATE, ['type']);
+}
+
 PubSub.subscribe(ANY_NEW_COLLECTION_ITEM_RENDERED, bindCreateCollectionItemsButtons);
 function bindCreateCollectionItemsButtons() {
   _bindFormSubmitButtons(CREATE_COLLECTION_ITEMS, ['type', 'id', 'collectionType']);
-
-  inputElements().forEach(input => {
-    input = _clearEventListeners(input);
-    const form = input.closest('form');
-    input.addEventListener('keydown', e => {
-      if (!(e.key == 'Enter' && document.activeElement == input)) return;
-      PubSub.publish(CREATE_COLLECTION_ITEMS(form.dataset.type, form.dataset.id, form.dataset.collectionType), 
-                     Object.fromEntries(new FormData(form)));
-    })
-  })
+  _bindFormSubmitEnterKey(CREATE_COLLECTION_ITEMS, ['type', 'id', 'collectionType']);
 }
 
 PubSub.subscribe(ANY_EDIT_ATTRIBUTE_RENDERED, bindEditAttributeEvents);
 function bindEditAttributeEvents(_, data) {
+  _bindFormSubmitButtons(UPDATE, ['type', 'id']);
+  _bindFormSubmitEnterKey(UPDATE, ['type', 'id']);
   inputElements().forEach(input => {
-    input = _clearEventListeners(input);
-    const form = input.closest('form');
+    const form = e.target.closest('form');
     if(Object.entries(data).every(([key, val]) => form.dataset[key] == val)) 
       _focusInput(input);
-    input.addEventListener('keydown', e => {
-      if(!(e.key == 'Enter' && document.activeElement == input)) return;
-      PubSub.publish(UPDATE(form.dataset.type, form.dataset.id), Object.fromEntries(new FormData(form)));
-    })
-
     if(settings.clickOut.includes(input.type)) 
       input.addEventListener('focusout', () => 
-        PubSub.publish(UPDATE(form.dataset.type, form.dataset.id), Object.fromEntries(new FormData(form))));
+        PubSub.publish(UPDATE(form.dataset.type, form.dataset.id), 
+                       Object.fromEntries(new FormData(form))));
   })
-
-  _bindFormSubmitButtons(UPDATE, ['type', 'id']);
 }
 
 function _focusInput(input) {
