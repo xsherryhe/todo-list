@@ -11,7 +11,7 @@ function editAttributeView(_, { type, id, attribute, attributeType, attributeVal
         attrElement = document.querySelector(attrElementSelector),
         formElement = document.createElement('form');
 
-  formElement.classList.add('edit-form');
+  formElement.classList.add('edit-attribute-form');
   formElement.dataset.type = type;
   formElement.dataset.id = id;
   formElement.dataset.attribute = attribute;
@@ -21,7 +21,7 @@ function editAttributeView(_, { type, id, attribute, attributeType, attributeVal
      <${isTextarea ? 'textarea' : 'input'} 
       type="${attributeType}" name="${attribute}" id="${attribute}" 
       value="${attributeValue}">${isTextarea ? `${attributeValue}</textarea>` : ''}
-     <button class="submit">✓</button>`;
+     <button class="submit symbol">✓</button>`;
 
   attrElement.replaceWith(formElement);
   PubSub.publish(EDIT_ATTRIBUTE_RENDERED(type), { type, id, attribute });

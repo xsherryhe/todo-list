@@ -4,6 +4,8 @@ import '../styles/index-projects.css';
 import '../styles/new-project.css';
 import '../styles/new-todoItem.css';
 import '../styles/new-checklistItem.css';
+import '../styles/show-project.css';
+import '../styles/edit.css';
 
 import './storage';
 import './views/views';

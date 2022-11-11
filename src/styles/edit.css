@@ -1,0 +1,11 @@
+.edit-attribute-form input {
+  min-width: 0;
+  border: none;
+  outline: none;
+  border-bottom: 1px black dashed;
+  padding: 0 0 0.1rem;
+}
+
+.edit-attribute-form input:focus {
+  border-bottom: 1px black solid;
+}

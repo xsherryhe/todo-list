@@ -1,0 +1,38 @@
+.project-heading {
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.project-heading * {
+  font-size: 1.75rem;
+}
+
+.project-heading.project-heading input {
+  font-size: 1.5rem;
+  border-bottom: 2px black dashed;
+}
+
+.project-heading.project-heading input:focus {
+  border-bottom: 2px black solid;
+}
+
+.project-heading .submit {
+  font-size: 1.25rem;
+  min-width: 2rem;
+  min-height: 2rem;
+}
+
+.todo-items-heading {
+  display: grid;
+  grid-template: repeat(2, max-content) / max-content 1fr;
+  justify-items: start;
+  align-items: center;
+  column-gap: 0.5rem;
+}
+
+.todo-items-heading .new-form {
+  grid-row: 2;
+  grid-column: 1 / span 2;
+  justify-self: center;
+}

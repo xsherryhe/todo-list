@@ -1,3 +1,7 @@
+.new[data-type="checklistItem"] {
+  color: blue;
+}
+
 .checklist-item.field[data-type="checklistItem"] {
   max-width: 50vw;
   display: flex;
