@@ -99,7 +99,7 @@ function bindEditAttributeEvents(_, data) {
   _bindFormSubmitButtons(UPDATE, ['type', 'id']);
   _bindFormSubmitEnterKey(UPDATE, ['type', 'id']);
   inputElements().forEach(input => {
-    const form = e.target.closest('form');
+    const form = input.closest('form');
     if(Object.entries(data).every(([key, val]) => form.dataset[key] == val)) 
       _focusInput(input);
     if(settings.clickOut.includes(input.type)) 
@@ -111,7 +111,7 @@ function bindEditAttributeEvents(_, data) {
 
 function _focusInput(input) {
   input.focus();
-  if(input.selectionStart)
+  if('selectionStart' in input)
     input.selectionStart = input.selectionEnd = input.value.length;
 }
 
