@@ -1,24 +1,24 @@
 import PubSub from 'pubsub-js';
-import { INDEX, SHOW, HIDE } from '../pubsub-event-types';
+import { INDEX, INDEX_RENDERED, SHOW, HIDE } from '../pubsub-event-types';
 import { applicationData as renderData } from '../application';
 import { parseNumberList } from './view-helpers';
 
 PubSub.subscribe(INDEX('todoItem'), indexTodoItemsView);
 function indexTodoItemsView(_, data) {
   const todoItemsFullArr = parseNumberList(data.full);
-  const todoItemsElement = document.createElement('div');
-  todoItemsElement.classList.add('todo-items');
-  todoItemsElement.dataset.full = data.full;
+  const prevTodoItemsIndexElement = document.querySelector('.todo-items-index');
+  prevTodoItemsIndexElement?.remove();
+  document.body.innerHTML += `<div class="todo-items-index todo-items" data-full="${data.full}"></div>`;
   renderData.todoItemsList.withIds(data.ids).forEach(todoItem =>
     PubSub.publish(SHOW('todoItem'), { id: todoItem.id, full: todoItemsFullArr.includes(todoItem.id), 
-                                       belongType: data.belongType, parentElement: todoItemsElement }));
-  document.body.append(todoItemsElement);
+                                       belongType: data.belongType, parentElementSelector: '.todo-items' }));
+  PubSub.publish(INDEX_RENDERED('todoItem'));
 }
 
 PubSub.subscribe(SHOW('todoItemFull'), updateTodoItemsFull);
 PubSub.subscribe(HIDE('todoItemFull'), updateTodoItemsFull);
 function updateTodoItemsFull(msg, data) {
-  const id = renderData.todoItemsList.withId(data.id).belongs[data.belongType],
+  const id = renderData.todoItemsList.withId(+data.id).belongs[data.belongType],
         oldTodoItemsFull = document.querySelector('.todo-items').dataset.full,
         todoItemsFull = msg.includes('show') ?
                         oldTodoItemsFull + ` ${data.id}`

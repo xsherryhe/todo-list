@@ -11,27 +11,26 @@ export default function newChecklistItemView(_, { belongType, belongId }) {
         newChecklistItemButton = document.querySelector(newChecklistItemButtonSelector),
         checklistItemFormElement = newChecklistItemButton.closest('form'),
         backButton = checklistItemFormElement.querySelector('.back'),
-        submitButton = checklistItemFormElement.querySelector('.submit'),
-        checklistItemFieldElement = document.createElement('div');
+        submitButton = checklistItemFormElement.querySelector('.submit');
+
+  renderSelectablesDisabled(checklistItemFormElement, false);
+  [backButton, submitButton].forEach(button => button?.classList?.remove('hidden'));
 
   const index = 1 + document.querySelectorAll('.checklist-item.field').length + 
                 (belongId ? renderData[belongType + 'sList'].withId(belongId).checklistItems.length : 0),
         attrWrapper = attribute => `checklistItemsCollectionData[${index}][${attribute}]`;
-  checklistItemFieldElement.classList.add('field', 'checklist-item');
-  checklistItemFieldElement.dataset.type = 'checklistItem';
-  checklistItemFieldElement.dataset.index = `${index}`;
+  
+  const checklistItemFieldHTML = 
+  `<div class="field checklist-item" data-type="checklistItem" data-index="${index}">
+      <input type="hidden" name="${attrWrapper(belongType + 'Index')}" id="${attrWrapper(belongType + 'Index')}" value="${index}">
+      <label for="${attrWrapper('title')}">${index}.</label>
+      <input type="text" name="${attrWrapper('title')}" id="${attrWrapper('title')}">
+      <input type="hidden" name="${attrWrapper('status')}" id="${attrWrapper('status')}" value="${settings.statuses[0]}">
+      <button class="hide symbol" data-type="new-checklistItem" data-index="${index}" 
+              data-belong-type="${belongType}" ${belongId ? `data-belong-id=${belongId}` : ''}>X</button>
+   </div>`;
 
-  checklistItemFieldElement.innerHTML =
-    `<input type="hidden" name="${attrWrapper(belongType + 'Index')}" id="${attrWrapper(belongType + 'Index')}" value="${index}">
-     <label for="${attrWrapper('title')}">${index}.</label>
-     <input type="text" name="${attrWrapper('title')}" id="${attrWrapper('title')}">
-     <input type="hidden" name="${attrWrapper('status')}" id="${attrWrapper('status')}" value="${settings.statuses[0]}">
-     <button class="hide symbol" data-type="new-checklistItem" data-index="${index}" 
-             data-belong-type="${belongType}" ${belongId ? `data-belong-id=${belongId}` : ''}>X</button>`;
-
-  [backButton, submitButton].forEach(button => button?.classList?.remove('hidden'));
-  newChecklistItemButton.insertAdjacentElement('beforebegin', checklistItemFieldElement);
-  renderSelectablesDisabled(checklistItemFormElement, false);
+  newChecklistItemButton.insertAdjacentHTML('beforebegin', checklistItemFieldHTML);
   PubSub.publish(belongId ? NEW_COLLECTION_ITEM_RENDERED(belongType) : NEW_RENDERED('checklistItem'));
 }
 
@@ -55,18 +54,21 @@ function hideNewChecklistItemView(_, { belongType, belongId, index }) {
 
   const offset = 1 + (belongId ? renderData[belongType + 'sList'].withId(belongId).checklistItems.length : 0);
   remainingChecklistItemFieldElements.forEach((checklistItemElement, i) => {
-    const newIndex = i + offset;
-    const inputElements = checklistItemElement.querySelectorAll('input'),
-          belongIndexElement = checklistItemElement.querySelector(`input[name*="${belongType}Index"]`),
-          labelElement = checklistItemElement.querySelector('label[for*="title"]'),
-          hideButton = checklistItemElement.querySelector('.hide');
-
-    inputElements.forEach(inputElement => {
-      ['name', 'id'].forEach(attr => inputElement[attr] = inputElement[attr].replace(/\d+/, newIndex));
-    })
-    checklistItemElement.dataset.index = newIndex;
-    belongIndexElement.value = newIndex;
-    labelElement.textContent = `${newIndex}.`;
-    hideButton.dataset.index = newIndex;
+    _updateIndex(checklistItemElement, belongType, i + offset);
   })
+}
+
+function _updateIndex(checklistItemElement, belongType, newIndex) {
+  const inputElements = checklistItemElement.querySelectorAll('input'),
+        belongIndexElement = checklistItemElement.querySelector(`input[name*="${belongType}Index"]`),
+        labelElement = checklistItemElement.querySelector('label[for*="title"]'),
+        hideButton = checklistItemElement.querySelector('.hide');
+
+  inputElements.forEach(inputElement => {
+    ['name', 'id'].forEach(attr => inputElement[attr] = inputElement[attr].replace(/\d+/, newIndex));
+  })
+  checklistItemElement.dataset.index = newIndex;
+  belongIndexElement.value = newIndex;
+  labelElement.textContent = `${newIndex}.`;
+  hideButton.dataset.index = newIndex;
 }

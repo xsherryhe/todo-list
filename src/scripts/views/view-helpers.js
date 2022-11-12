@@ -1,23 +1,19 @@
 import { applicationSettings as settings } from '../application';
 
-export function renderEditableAttribute(obj, attribute, attributeType, options = {}) {
-  const attrElement = document.createElement('div'),
-        separateEdit = settings.separateEditAttrButton[obj.type].includes(attribute),
+export function editableAttribute(obj, attribute, attributeType, options = {}) {
+  const separateEdit = settings.separateEditAttrButton[obj.type].includes(attribute),
         attrText = options.attributeText || obj[attribute] || 'None';
-  
-  attrElement.classList.add('attribute');
-  attrElement.dataset.type = obj.type;
-  attrElement.dataset.id = obj.id;
-  attrElement.dataset.attribute = attribute;
-  attrElement.innerHTML = 
-    `<div>${options.elementText || ''}${separateEdit ? attrText : ''}</div>
-     <button class="edit-attribute link" data-type="${obj.type}" data-id="${obj.id}"
-             data-attribute="${attribute}" data-attribute-type="${attributeType}"
-             data-attribute-value="${obj[attribute] || ''}">
-        ${separateEdit ? 'Edit' : attrText}
-     </button>`;
 
-  (options.parentElement || document.body).append(attrElement);
+  const editableAttributeHTML =
+  `<div class="attribute" data-type="${obj.type}" data-id="${obj.id}" data-attribute="${attribute}">
+      <div>${options.elementText || ''}${separateEdit ? attrText : ''}</div>
+      <button class="edit-attribute link" data-type="${obj.type}" data-id="${obj.id}"
+              data-attribute="${attribute}" data-attribute-type="${attributeType}"
+              data-attribute-value="${obj[attribute] || ''}">
+        ${separateEdit ? 'Edit' : attrText}
+      </button>
+   </div>`
+  return editableAttributeHTML;
 }
 
 export function renderSelectablesDisabled(node = document, disabled = true) {

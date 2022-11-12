@@ -9,21 +9,19 @@ function editAttributeView(_, { type, id, attribute, attributeType, attributeVal
 
   const attrElementSelector = `.attribute[data-type="${type}"][data-id="${id}"][data-attribute="${attribute}"]`,
         attrElement = document.querySelector(attrElementSelector),
-        formElement = document.createElement('form');
-
-  formElement.classList.add('edit-attribute-form');
-  formElement.dataset.type = type;
-  formElement.dataset.id = id;
-  formElement.dataset.attribute = attribute;
-  const isTextarea = attributeType == 'textarea';
-  formElement.innerHTML =
-    `${settings.clickOut.includes(attributeType) ? '' : '<button class="back">←</button>'}
-     <${isTextarea ? 'textarea' : 'input'} 
+        isTextarea = attributeType == 'textarea';
+  
+  const formHTML =
+  `<form class="edit-attribute-form" data-type="${type}" data-id="${id}" data-attribute="${attribute}">
+      ${settings.clickOut.includes(attributeType) ? '' : '<button class="back">←</button>'}
+      <${isTextarea ? 'textarea' : 'input'} 
       type="${attributeType}" name="${attribute}" id="${attribute}" 
       value="${attributeValue}">${isTextarea ? `${attributeValue}</textarea>` : ''}
-     <button class="submit symbol">✓</button>`;
-
-  attrElement.replaceWith(formElement);
+      <button class="submit symbol">✓</button>
+   </form>`;
+  
+  attrElement.insertAdjacentHTML('afterend', formHTML);
+  attrElement.remove();
   PubSub.publish(EDIT_ATTRIBUTE_RENDERED(type), { type, id, attribute });
 }
 
@@ -32,25 +30,23 @@ function editBelongView(_, { type, id, belongType, belongId }) {
   renderSelectablesDisabled();
   
   const editBelongButtonSelector = `.edit-belong[data-belong-type="${belongType}"][data-type="${type}"][data-id="${id}"]`,
-        editBelongButton = document.querySelector(editBelongButtonSelector),
-        formElement = document.createElement('form');
+        editBelongButton = document.querySelector(editBelongButtonSelector);
   
-  formElement.classList.add('edit-form');
-  formElement.dataset.type = type;
-  formElement.dataset.id = id;
-  formElement.dataset.belongType = belongType;
-  formElement.innerHTML = 
-    `<button class="back">←</button>
-     <label for="belongId">Project</label>
-     <select name="belongId" id="belongId">
-      ${renderData[belongType + 'sList'][belongType + 's'].map(obj =>
-        `<option value="${obj.id}" ${obj.id == belongId ? 'selected' : ''}>
+  const formHTML =
+  `<form class="edit-form" data-type="${type}" data-id="${id}" data-belong-type="${belongType}">
+      <button class="back">←</button>
+      <label for="belongId">Project</label>
+      <select name="belongId" id="belongId">
+        ${renderData[belongType + 'sList'][belongType + 's'].map(obj =>
+          `<option value="${obj.id}" ${obj.id == +belongId ? 'selected' : ''}>
             ${obj.title}
-          </option>`)
-      .join('\n')}
-     </select>
-     <button class="submit">Change</button>`;
+           </option>`)
+        .join('\n')}
+      </select>
+      <button class="submit">Change</button>
+   </form>`;
 
-  editBelongButton.replaceWith(formElement);
+  editBelongButton.insertAdjacentHTML('afterend', formHTML);
+  editBelongButton.remove();
   PubSub.publish(EDIT_BELONG_RENDERED(type), { type, id, belongType })
 }

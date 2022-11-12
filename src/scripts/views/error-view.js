@@ -17,11 +17,9 @@ function validationErrorView(_, data) {
       containerElement.querySelector(`input[name*="${error.attribute}"],textarea[name*="${error.attribute}"]`);
     if(!attrElement) continue;
 
-    const errorElement = document.createElement('p'),
-          typeText = capitalize(humanReadableNames[error.objType] || error.objType),
-          errorAttributeText = humanReadableNames[error.objAttribute] || error.objAttribute;
-    errorElement.classList.add('error');
-    errorElement.textContent = `${typeText} ${errorAttributeText} ${error.message}`;
-    attrElement.insertAdjacentElement('afterend', errorElement);
+    const typeText = capitalize(humanReadableNames[error.objType] || error.objType),
+          errorAttributeText = humanReadableNames[error.objAttribute] || error.objAttribute,
+          errorHTML = `<p class="error">${typeText} ${errorAttributeText} ${error.message}</p>`;
+    attrElement.insertAdjacentHTML('afterend', errorHTML);
   }
 }
