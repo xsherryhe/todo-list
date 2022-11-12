@@ -1,6 +1,28 @@
 .edit-attribute-form {
-  display: flex;
-  gap: 0.5rem;
+  display: grid;
+  grid-template-rows: repeat(2, max-content);
+  column-gap: 0.5rem;
+}
+
+.edit-attribute-form.click-out {
+  align-items: flex-end;
+}
+
+.edit-attribute-form:not(.click-out) {
+  align-items: center;
+}
+
+.edit-attribute-form.click-out:not(.with-label) {
+  grid-template-columns: repeat(2, max-content);
+}
+
+.edit-attribute-form.click-out.with-label,
+.edit-attribute-form:not(.click-out,.with-label) {
+  grid-template-columns: repeat(3, max-content);
+}
+
+.edit-attribute-form:not(.click-out).with-label {
+  grid-template-columns: repeat(4, max-content);
 }
 
 .edit-attribute-form input {
@@ -10,8 +32,27 @@
   outline: none;
   border-bottom: 1px black dashed;
   padding: 0;
+  height: max-content;
 }
 
 .edit-attribute-form input:focus {
   border-bottom: 1px black solid;
+}
+
+.edit-attribute-form .error {
+  grid-row: 2;
+  font-size: 1rem;
+}
+
+.edit-attribute-form.click-out:not(.with-label) .error {
+  grid-column: 1 / span 2;
+}
+
+.edit-attribute-form.click-out.with-label .error,
+.edit-attribute-form:not(.click-out,.with-label) .error {
+  grid-column: 2 / span 2;
+}
+
+.edit-attribute-form:not(.click-out).with-label .error {
+  grid-column: 3 / span 2;
 }

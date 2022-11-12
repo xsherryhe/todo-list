@@ -12,7 +12,7 @@ function showChecklistItemView(_, data) {
   prevChecklistItemElement?.remove();
   //TO DO: Change check to icon image
   parentElement.innerHTML += 
-  `<${data.elementType || 'div'} class="${checklistItem.status} checklist-item" data-id="${checklistItem.id}">
+  `<${data.elementType || 'div'} class="status-${settings.statuses.indexOf(checklistItem.status)} checklist-item" data-id="${checklistItem.id}">
       ${editableAttribute(checklistItem, 'title', 'text')}
       <button class="update-status" data-type="${checklistItem.type}" data-id="${checklistItem.id}">
         ${settings.statuses.indexOf(checklistItem.status) ? '✓' : ''}

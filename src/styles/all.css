@@ -52,7 +52,7 @@ button.submit.symbol img {
   max-height: 1.25rem;
 }
 
-button.destroy, button.back {
+button.destroy:not(.symbol), button.back:not(.symbol) {
   font-size: 0.8rem;
   padding: 0.25rem 0.5rem;
 }
@@ -75,8 +75,16 @@ button.destroy, button.back {
   max-height: 1.5rem;
 }
 
+.status-1, .status-1 button {
+  color: gray;
+}
+
 .disabled {
   color: gray;
+}
+
+.enabled.enabled, .enabled.enabled button {
+  color: black;
 }
 
 .hidden {

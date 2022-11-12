@@ -1,20 +1,25 @@
 import PubSub from 'pubsub-js';
 import { ANY_EDIT_ATTRIBUTE, EDIT_ATTRIBUTE_RENDERED, ANY_EDIT_BELONG, EDIT_BELONG_RENDERED } from '../pubsub-event-types';
 import { applicationData as renderData, applicationSettings as settings } from '../application';
-import { renderSelectablesDisabled } from './view-helpers';
+import { renderDisabled } from './view-helpers';
 import pencil from '../../images/pencil.svg';
 
 PubSub.subscribe(ANY_EDIT_ATTRIBUTE, editAttributeView)
 function editAttributeView(_, { type, id, attribute, attributeType, attributeValue }) {
-  renderSelectablesDisabled();
+  renderDisabled();
 
   const attrElementSelector = `.attribute[data-type="${type}"][data-id="${id}"][data-attribute="${attribute}"]`,
         attrElement = document.querySelector(attrElementSelector),
+        labelText = attrElement.querySelector('.element-text').textContent,
         isTextarea = attributeType == 'textarea';
   
   const formHTML =
-  `<form class="edit-attribute-form" data-type="${type}" data-id="${id}" data-attribute="${attribute}">
-      ${settings.clickOut.includes(attributeType) ? '' : '<button class="back">←</button>'}
+    `<form class="edit-attribute-form enabled 
+                  ${settings.clickOut.includes(attributeType) ? 'click-out' : ''}
+                  ${labelText ? 'with-label' : ''}" 
+           data-type="${type}" data-id="${id}" data-attribute="${attribute}">
+      ${settings.clickOut.includes(attributeType) ? '' : '<button class="back symbol">←</button>'}
+      ${labelText ? `<label for="${attribute}">${labelText}</label>` : ''}
       <${isTextarea ? 'textarea' : 'input'} 
       type="${attributeType}" name="${attribute}" id="${attribute}" 
       value="${attributeValue}">${isTextarea ? `${attributeValue}</textarea>` : ''}
@@ -28,7 +33,7 @@ function editAttributeView(_, { type, id, attribute, attributeType, attributeVal
 
 PubSub.subscribe(ANY_EDIT_BELONG, editBelongView)
 function editBelongView(_, { type, id, belongType, belongId }) {
-  renderSelectablesDisabled();
+  renderDisabled();
   
   const editBelongButtonSelector = `.edit-belong[data-belong-type="${belongType}"][data-type="${type}"][data-id="${id}"]`,
         editBelongButton = document.querySelector(editBelongButtonSelector);

@@ -1,6 +1,6 @@
 import PubSub from 'pubsub-js';
 import { INDEX, INDEX_RENDERED, SHOW, HIDE } from '../pubsub-event-types';
-import { applicationData as renderData } from '../application';
+import { applicationData as renderData, applicationSettings as settings } from '../application';
 import { parseNumberList } from './view-helpers';
 
 PubSub.subscribe(INDEX('todoItem'), indexTodoItemsView);
@@ -9,9 +9,11 @@ function indexTodoItemsView(_, data) {
   const prevTodoItemsIndexElement = document.querySelector('.todo-items-index');
   prevTodoItemsIndexElement?.remove();
   document.body.innerHTML += `<div class="todo-items-index todo-items" data-full="${data.full}"></div>`;
-  renderData.todoItemsList.withIds(data.ids).forEach(todoItem =>
-    PubSub.publish(SHOW('todoItem'), { id: todoItem.id, full: todoItemsFullArr.includes(todoItem.id), 
-                                       belongType: data.belongType, parentElementSelector: '.todo-items' }));
+  renderData.todoItemsList.withIds(data.ids)
+            .sort((a, b) => settings.statuses.indexOf(a.status) - settings.statuses.indexOf(b.status))
+            .forEach(todoItem =>
+                PubSub.publish(SHOW('todoItem'), { id: todoItem.id, full: todoItemsFullArr.includes(todoItem.id), 
+                                                   belongType: data.belongType, parentElementSelector: '.todo-items' }));
   PubSub.publish(INDEX_RENDERED('todoItem'));
 }
 

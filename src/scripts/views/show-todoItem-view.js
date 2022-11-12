@@ -21,7 +21,8 @@ function _renderTodoItem(todoItem, options) {
 
   //TO DO: Change check to icon image
   (options.parentElement || document.body).innerHTML +=
-  `<div class="${todoItem.priority} ${todoItem.status} todo-item" data-id="${todoItem.id}">
+  `<div class="priority-${settings.priorities.indexOf(todoItem.priority)} 
+               status-${settings.statuses.indexOf(todoItem.status)} todo-item" data-id="${todoItem.id}">
       <div class="todo-item-heading">
         ${editableAttribute(todoItem, 'title', 'text')}
         <button class="update-status symbol" data-type="${todoItem.type}" data-id="${todoItem.id}">

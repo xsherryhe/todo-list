@@ -26,7 +26,7 @@ export function Validatable(obj) {
   obj.validate = function(data = obj) {
     this.errors = [];
     for(const attribute in data)
-      this.errors.push(..._attrErrors.call(this, attribute, obj[attribute]));
+      this.errors.push(..._attrErrors.call(this, attribute, data[attribute]));
     if(data.associatedValidations) 
       this.errors.push(..._associatedErrors(data.associatedValidations));
   }

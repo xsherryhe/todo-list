@@ -8,7 +8,8 @@ export function editableAttribute(obj, attribute, attributeType, options = {}) {
 
   const editableAttributeHTML =
   `<div class="attribute" data-type="${obj.type}" data-id="${obj.id}" data-attribute="${attribute}">
-      <div>${options.elementText || ''}${separateEdit ? attrText : ''}</div>
+      <span class="element-text">${options.elementText || ''}</span>
+      <span class="attr-text">${separateEdit ? attrText : ''}</span>
       <button class="edit-attribute link" data-type="${obj.type}" data-id="${obj.id}"
               data-attribute="${attribute}" data-attribute-type="${attributeType}"
               data-attribute-value="${obj[attribute] || ''}">
@@ -18,9 +19,16 @@ export function editableAttribute(obj, attribute, attributeType, options = {}) {
   return editableAttributeHTML;
 }
 
-export function renderSelectablesDisabled(node = document.body, disabled = true) {
-  [...node.children].forEach(child => disabled ? child.classList.add('disabled') 
-                                               : child.classList.remove('disabled'));
+export function renderDisabled(node = document.body, disabled = true) {
+  [...node.children].forEach(child => {
+    if(disabled) {
+      child.classList.add('disabled');
+      child.classList.remove('enabled');
+    } else {
+      child.classList.remove('disabled');
+      child.classList.add('enabled');
+    }
+  });
   node.querySelectorAll('button,input[type="checkbox"],input[type="radio"]')
       .forEach(selectable => selectable.disabled = disabled);
   node.querySelectorAll('.check')

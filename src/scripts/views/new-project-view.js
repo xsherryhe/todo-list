@@ -1,15 +1,15 @@
 import PubSub from 'pubsub-js';
 import { NEW, NEW_RENDERED } from '../pubsub-event-types';
-import { renderSelectablesDisabled } from './view-helpers';
+import { renderDisabled } from './view-helpers';
 import pencil from '../../images/pencil.svg';
 
 PubSub.subscribe(NEW('project'), newProjectView);
 export default function newProjectView() {
-  renderSelectablesDisabled();
+  renderDisabled();
   
   const newProjectButton = document.querySelector('.new[data-type="project"]');
   const formHTML = 
-  `<form class="new-form" data-type="project">
+  `<form class="new-form enabled" data-type="project">
       <button class="back symbol">←</button>
       <label for="title">New Project</label>
       <input type="text" name="title" id="title">

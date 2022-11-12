@@ -1,11 +1,11 @@
 import PubSub from 'pubsub-js';
 import { NEW, NEW_RENDERED, NEW_COLLECTION_ITEM_RENDERED, HIDE } from '../pubsub-event-types';
 import { applicationData as renderData, applicationSettings as settings } from '../application';
-import { renderSelectablesDisabled, snakeCase } from './view-helpers'
+import { renderDisabled, snakeCase } from './view-helpers'
 
 PubSub.subscribe(NEW('checklistItem'), newChecklistItemView);
 export default function newChecklistItemView(_, { belongType, belongId }) {
-  if(belongId) renderSelectablesDisabled();
+  if(belongId) renderDisabled();
 
   const newChecklistItemButtonSelector = `${belongId ? `.${snakeCase(belongType)}[data-id="${belongId}"] ` : ''}.new[data-type="checklistItem"]`,
         newChecklistItemButton = document.querySelector(newChecklistItemButtonSelector),
@@ -13,7 +13,7 @@ export default function newChecklistItemView(_, { belongType, belongId }) {
         backButton = checklistItemFormElement.querySelector('.back'),
         submitButton = checklistItemFormElement.querySelector('.submit');
 
-  renderSelectablesDisabled(checklistItemFormElement, false);
+  renderDisabled(checklistItemFormElement, false);
   [backButton, submitButton].forEach(button => button?.classList?.remove('hidden'));
 
   const index = 1 + document.querySelectorAll('.checklist-item.field').length + 
@@ -21,7 +21,7 @@ export default function newChecklistItemView(_, { belongType, belongId }) {
         attrWrapper = attribute => `checklistItemsCollectionData[${index}][${attribute}]`;
   
   const checklistItemFieldHTML = 
-  `<div class="field checklist-item" data-type="checklistItem" data-index="${index}">
+  `<div class="field enabled checklist-item" data-type="checklistItem" data-index="${index}">
       <input type="hidden" name="${attrWrapper(belongType + 'Index')}" id="${attrWrapper(belongType + 'Index')}" value="${index}">
       <label for="${attrWrapper('title')}">${index}.</label>
       <input type="text" name="${attrWrapper('title')}" id="${attrWrapper('title')}">
@@ -45,7 +45,7 @@ function hideNewChecklistItemView(_, { belongType, belongId, index }) {
   const remainingChecklistItemFieldElements = checklistItemFormElement.querySelectorAll('.checklist-item.field');
   
   if(belongId && remainingChecklistItemFieldElements.length == 0) {
-    renderSelectablesDisabled(document, false);
+    renderDisabled(document, false);
 
     const backButton = checklistItemFormElement.querySelector('.back'),
           submitButton = checklistItemFormElement.querySelector('.submit');
