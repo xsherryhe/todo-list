@@ -111,7 +111,7 @@ function bindEditAttributeEvents(_, data) {
 
 function _focusInput(input) {
   input.focus();
-  if('selectionStart' in input)
+  if(typeof input.selectionStart == 'number')
     input.selectionStart = input.selectionEnd = input.value.length;
 }
 

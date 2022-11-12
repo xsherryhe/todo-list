@@ -168,10 +168,11 @@ export function Listable(obj, fromStorageList = []) {
   obj[list] ||= fromStorageList.map(storageItem => obj.itemFactory(Object.assign({ id: nextId++ }, storageItem)));
 
   obj.withId = function(id) {
-    return this[list].find(item => id == item.id);
+    return this[list].find(item => +id == item.id);
   }
 
   obj.withIds = function(ids) {
+    ids = ids.map(Number);
     return this[list].filter(item => ids.includes(item.id));
   }
 
@@ -182,7 +183,7 @@ export function Listable(obj, fromStorageList = []) {
   PubSub.subscribe(BELONG_UPDATED(obj.itemType), publishCollectionsUpdate);
   function publishCollectionsUpdate(_, data) {
     const belongType = data.belongType, oldBelongId = data.oldBelongId, newBelongId = data.newBelongId;
-    const item = obj[list].find(item => item.id == data.id);
+    const item = obj[list].find(item => item.id == +data.id);
     item.belongs[belongType] = newBelongId;
     PubSub.publish(COLLECTION_UPDATED(obj.itemType), 
                   { [belongType]: { 
@@ -206,7 +207,7 @@ export function Listable(obj, fromStorageList = []) {
   PubSub.subscribe(COLLECTION_ITEMS_CREATED(obj.itemType), createListItemsFromCollectionItems)
   function createListItemsFromCollectionItems(_, data) {
     const newListItems = data.collectionItems.map(item => {
-      const listItem = Object.assign({ id: nextId++ }, item);
+      const listItem = obj.itemFactory(Object.assign({ id: nextId++ }, (item.toStorage ? item.toStorage() : item)));
       obj[list].unshift(listItem);
       return listItem;
     })
@@ -217,9 +218,9 @@ export function Listable(obj, fromStorageList = []) {
 
   PubSub.subscribe(DESTROY(obj.itemType), destroyListItem);
   function destroyListItem(_, data) {
-    if(data.id == 0) return;
+    if(+data.id == 0) return;
     
-    const item = obj[list].find(item => item.id == data.id);
+    const item = obj[list].find(item => item.id == +data.id);
     obj[list].splice(obj[list].indexOf(item), 1);
     _publishCollectionUpdate([item]);
     PubSub.publish(LIST_UPDATED(obj.itemType));
