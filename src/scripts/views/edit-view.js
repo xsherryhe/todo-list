@@ -2,6 +2,7 @@ import PubSub from 'pubsub-js';
 import { ANY_EDIT_ATTRIBUTE, EDIT_ATTRIBUTE_RENDERED, ANY_EDIT_BELONG, EDIT_BELONG_RENDERED } from '../pubsub-event-types';
 import { applicationData as renderData, applicationSettings as settings } from '../application';
 import { renderSelectablesDisabled } from './view-helpers';
+import pencil from '../../images/pencil.svg';
 
 PubSub.subscribe(ANY_EDIT_ATTRIBUTE, editAttributeView)
 function editAttributeView(_, { type, id, attribute, attributeType, attributeValue }) {
@@ -17,7 +18,7 @@ function editAttributeView(_, { type, id, attribute, attributeType, attributeVal
       <${isTextarea ? 'textarea' : 'input'} 
       type="${attributeType}" name="${attribute}" id="${attribute}" 
       value="${attributeValue}">${isTextarea ? `${attributeValue}</textarea>` : ''}
-      <button class="submit symbol">✓</button>
+      <button class="submit symbol"><img src="${pencil}" alt="Submit"></button>
    </form>`;
   
   attrElement.insertAdjacentHTML('afterend', formHTML);

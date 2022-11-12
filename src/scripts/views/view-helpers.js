@@ -1,4 +1,6 @@
 import { applicationSettings as settings } from '../application';
+import checkmark from '../../images/check.svg';
+import disabledCheckmark from '../../images/check-gray.svg';
 
 export function editableAttribute(obj, attribute, attributeType, options = {}) {
   const separateEdit = settings.separateEditAttrButton[obj.type].includes(attribute),
@@ -12,13 +14,17 @@ export function editableAttribute(obj, attribute, attributeType, options = {}) {
               data-attribute-value="${obj[attribute] || ''}">
         ${separateEdit ? 'Edit' : attrText}
       </button>
-   </div>`
+   </div>`;
   return editableAttributeHTML;
 }
 
-export function renderSelectablesDisabled(node = document, disabled = true) {
+export function renderSelectablesDisabled(node = document.body, disabled = true) {
+  [...node.children].forEach(child => disabled ? child.classList.add('disabled') 
+                                               : child.classList.remove('disabled'));
   node.querySelectorAll('button,input[type="checkbox"],input[type="radio"]')
       .forEach(selectable => selectable.disabled = disabled);
+  node.querySelectorAll('.check')
+      .forEach(check => check.src = disabled ? disabledCheckmark : checkmark);
 }
 
 export function parseNumberList(list) {

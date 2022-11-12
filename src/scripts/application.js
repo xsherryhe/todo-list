@@ -5,6 +5,7 @@ import '../styles/new-project.css';
 import '../styles/new-todoItem.css';
 import '../styles/new-checklistItem.css';
 import '../styles/show-project.css';
+import '../styles/show-todoItem.css';
 import '../styles/edit.css';
 
 import './storage';

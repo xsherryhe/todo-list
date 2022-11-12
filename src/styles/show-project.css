@@ -17,10 +17,13 @@
   border-bottom: 2px black solid;
 }
 
-.project-heading .submit {
-  font-size: 1.25rem;
+.project-heading .submit.submit {
   min-width: 2rem;
   min-height: 2rem;
+}
+
+.project-heading .submit.submit img {
+  max-height: 1.5rem;
 }
 
 .todo-items-heading {

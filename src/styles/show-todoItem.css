@@ -1,0 +1,14 @@
+.todo-item {
+  background-color: lightgray;
+  padding: 1.5rem;
+  margin: 1rem auto;
+  width: 65vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.todo-item-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

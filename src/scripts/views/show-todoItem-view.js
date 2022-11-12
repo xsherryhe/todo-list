@@ -3,6 +3,7 @@ import { INDEX, SHOW, SHOW_RENDERED } from '../pubsub-event-types';
 import { applicationData as renderData, applicationSettings as settings } from '../application';
 import { editableAttribute } from './view-helpers';
 import { formatRelative } from 'date-fns';
+import checkmark from '../../images/check.svg';
 
 PubSub.subscribe(SHOW('todoItem'), showTodoItemView);
 
@@ -21,10 +22,13 @@ function _renderTodoItem(todoItem, options) {
   //TO DO: Change check to icon image
   (options.parentElement || document.body).innerHTML +=
   `<div class="${todoItem.priority} ${todoItem.status} todo-item" data-id="${todoItem.id}">
-      ${editableAttribute(todoItem, 'title', 'text')}
-      <button class="update-status" data-type="${todoItem.type}" data-id="${todoItem.id}">
-        ${settings.statuses.indexOf(todoItem.status) ? '✓' : ''}
-      </button>
+      <div class="todo-item-heading">
+        ${editableAttribute(todoItem, 'title', 'text')}
+        <button class="update-status symbol" data-type="${todoItem.type}" data-id="${todoItem.id}">
+          ${settings.statuses.indexOf(todoItem.status) ? 
+            `<img class="check" src="${checkmark}" alt="${settings.statuses[1]}">` : ''}
+        </button>
+      </div>
       ${editableAttribute(todoItem, 'dueDate', 'datetime-local',
         { elementText: 'Due: ',
           attributeText: todoItem.dueDate ? formatRelative(new Date(todoItem.dueDate), new Date())
