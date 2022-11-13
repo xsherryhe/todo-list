@@ -176,9 +176,11 @@ export function Listable(obj, fromStorageList = []) {
     return this[list].find(item => +id == item.id);
   }
 
-  obj.withIds = function(ids) {
+  obj.withIds = function(ids, options = {}) {
     ids = ids.map(Number);
-    return this[list].filter(item => ids.includes(item.id));
+    return this[list].filter(item => 
+      ids.includes(item.id) && 
+      (Object.entries(options.conditions || {})).every(([key, val]) => item[key] == val));
   }
 
   obj.toStorage = function() {

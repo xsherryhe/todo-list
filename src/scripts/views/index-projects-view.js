@@ -26,9 +26,7 @@ export default function indexProjectsView() {
 
 function _renderProjects() {
   renderData.projectsList.projects.forEach(project => {
-    const projectElement = document.createElement('button'),
-          previewElement = document.createElement('ul');
-    
+    const projectElement = document.createElement('button');
     projectElement.classList.add('project', 'show');
     projectElement.dataset.type = project.type;
     projectElement.dataset.id = project.id;
@@ -37,16 +35,21 @@ function _renderProjects() {
     if(project.id) projectElement.innerHTML += 
     `<button class="destroy" 
              data-type="${project.type}" data-id="${project.id}">
-        Remove
+        Delete
      </button>`;
 
-    previewElement.classList.add('project-preview');
-    renderData.todoItemsList.withIds(project.todoItems)
-              .slice(0, settings.previewNum).forEach(todoItem => {
-      previewElement.innerHTML += `<li>${todoItem.title}</li>`;
-    })
+    const previewItems = 
+      renderData.todoItemsList
+                .withIds(project.todoItems, { conditions: { status: settings.statuses[0] } });
+    const elementType = previewItems.length ? 'ul' : 'div';
+    projectElement.innerHTML +=
+    `<${elementType} class="project-preview status-${previewItems.length ? 0 : 1}">
+        ${previewItems.length ? 
+          previewItems.slice(0, settings.previewNum).map(todoItem =>
+            `<li>${todoItem.title}</li>`).join('')
+        : 'Everything done!' }
+     </${elementType}>`
 
-    projectElement.append(previewElement);
     document.body.append(projectElement);
   })
 }
