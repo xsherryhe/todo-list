@@ -1,3 +1,4 @@
+import 'normalize.css';
 import '../styles/all.css';
 import '../styles/form.css';
 import '../styles/index-projects.css';
