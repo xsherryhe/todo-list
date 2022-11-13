@@ -1,4 +1,5 @@
 export function getData() {
+  if(!localStorage.data) return;
   const JSONData = JSON.parse(localStorage.data),
         data = {};
   for(const key in JSONData)

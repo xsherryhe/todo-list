@@ -2,7 +2,8 @@ import PubSub from 'pubsub-js';
 import { CREATE, DESTROY, UPDATE, ITEM_UPDATED, UPDATE_STATUS, UPDATE_PRIORITY, 
          UPDATE_BELONG, BELONG_UPDATED, CREATE_COLLECTION_ITEMS, COLLECTION_ITEMS_CREATED, 
          COLLECTION_UPDATED, LIST_UPDATED, VALIDATION_ERROR } from './pubsub-event-types';
-import { applicationSettings as settings } from './application'
+import { applicationSettings as settings } from './application';
+import sanitizeHtml from 'sanitize-html';
 
 export function Storageable(obj) {
   obj.tempKeys = [...(obj.tempKeys || []), 'tempKeys'];
@@ -72,6 +73,7 @@ export function PresenceValidatable(obj, attrs) {
 export function Updatable(obj) {
   PubSub.subscribe(UPDATE(obj.type, obj.id), update);
   function update(_, data) {
+    _prepare(data);
     obj.validate(data);
     if(obj.errors.length) 
       return PubSub.publish(VALIDATION_ERROR, { type: obj.type, id: obj.id, errors: obj.errors });
@@ -141,7 +143,7 @@ export function Collectionable(obj, collectionType, collectionTypeFactory) {
 
   PubSub.subscribe(CREATE_COLLECTION_ITEMS(obj.type, obj.id, collectionType), createCollectionItemsFromData);
   function createCollectionItemsFromData(_, data) {
-    _assignNested(data);
+    _prepare(data);
     createCollectionItems(data);
   }
 }
@@ -165,7 +167,10 @@ export function BelongUpdatable(obj, belongType) {
 export function Listable(obj, fromStorageList = []) {
   let nextId = 1;
   const list = obj.itemType + 's';
-  obj[list] ||= fromStorageList.map(storageItem => obj.itemFactory(Object.assign({ id: nextId++ }, storageItem)));
+  obj[list] ||= fromStorageList.map(storageItem => {
+    _prepare(storageItem);
+    return obj.itemFactory(Object.assign({ id: nextId++ }, storageItem));
+  });
 
   obj.withId = function(id) {
     return this[list].find(item => +id == item.id);
@@ -194,7 +199,7 @@ export function Listable(obj, fromStorageList = []) {
 
   PubSub.subscribe(CREATE(obj.itemType), createListItem);
   function createListItem(_, data) {
-    _assignNested(data);
+    _prepare(data);
     const newListItem = obj.itemFactory(Object.assign({ id: nextId++ }, data));
     if(!newListItem.valid())
       return PubSub.publish(VALIDATION_ERROR, { type: obj.itemType, errors: newListItem.errors });
@@ -237,6 +242,23 @@ export function Listable(obj, fromStorageList = []) {
     PubSub.publish(COLLECTION_UPDATED(obj.itemType), belongData);
   }
   _publishCollectionUpdate(obj[list]);
+}
+
+function _prepare(data) {
+  _sanitize(data);
+  _assignNested(data);
+}
+
+function _sanitize(data) {
+  if(typeof data == 'string') 
+    return sanitizeHtml(data, { allowedTags: [], allowedAttributes: {} });
+  if(Array.isArray(data))
+    return data.map(elem => _sanitize(elem));
+  if(typeof data == 'object') {
+    for(const key in data) data[key] = _sanitize(data[key]);
+    return data;
+  }
+  return data;
 }
 
 function _assignNested(data) {
