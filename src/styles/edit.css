@@ -1,3 +1,9 @@
+.edit-attribute.separate {
+  display: block;
+  font-size: 0.9rem;
+  color: blue;
+}
+
 .edit-attribute-form {
   display: grid;
   grid-template-rows: repeat(2, max-content);
@@ -25,6 +31,12 @@
   grid-template-columns: repeat(4, max-content);
 }
 
+.edit-attribute-form.textarea.textarea {
+  grid-template-columns: 1fr;
+  justify-items: start;
+  row-gap: 0.5rem;
+}
+
 .edit-attribute-form input {
   background-color: transparent;
   min-width: 0;
@@ -37,6 +49,15 @@
 
 .edit-attribute-form input:focus {
   border-bottom: 1px black solid;
+}
+
+.edit-attribute-form.textarea textarea {
+  justify-self: stretch;
+}
+
+.edit-attribute-form.textarea .submit {
+  justify-self: center;
+  padding: 0.5rem 3rem;
 }
 
 .edit-attribute-form .error {
@@ -55,4 +76,14 @@
 
 .edit-attribute-form:not(.click-out).with-label .error {
   grid-column: 3 / span 2;
+}
+
+.edit-belong-form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.edit-belong-form .submit {
+  padding: 0.25rem 1rem;
 }

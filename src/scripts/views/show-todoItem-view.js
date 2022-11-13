@@ -3,6 +3,8 @@ import { INDEX, SHOW, SHOW_RENDERED } from '../pubsub-event-types';
 import { applicationData as renderData, applicationSettings as settings } from '../application';
 import { editableAttribute } from './view-helpers';
 import { formatRelative } from 'date-fns';
+import down from '../../images/down.svg';
+import up from '../../images/up.svg';
 import checkmark from '../../images/check.svg';
 
 PubSub.subscribe(SHOW('todoItem'), showTodoItemView);
@@ -19,13 +21,12 @@ function _renderTodoItem(todoItem, options) {
   const prevTodoItemElement = document.querySelector(`.todo-item[data-id="${todoItem.id}"]`);
   prevTodoItemElement?.remove();
 
-  //TO DO: Change check to icon image
   (options.parentElement || document.body).innerHTML +=
   `<div class="priority-${settings.priorities.indexOf(todoItem.priority)} 
                status-${settings.statuses.indexOf(todoItem.status)} todo-item" data-id="${todoItem.id}">
       <div class="todo-item-heading">
         ${editableAttribute(todoItem, 'title', 'text')}
-        <button class="update-status symbol" data-type="${todoItem.type}" data-id="${todoItem.id}">
+        <button class="update-status symbol icon" data-type="${todoItem.type}" data-id="${todoItem.id}">
           ${settings.statuses.indexOf(todoItem.status) ? 
             `<img class="check" src="${checkmark}" alt="${settings.statuses[1]}">` : ''}
         </button>
@@ -42,7 +43,7 @@ function _renderTodoItem(todoItem, options) {
               data-belong-type="${options.belongType || ''}">
         Shrink
       </button>
-      <button class="destroy" data-type="${todoItem.type}" data-id="${todoItem.id}">-</button>
+      <button class="destroy" data-type="${todoItem.type}" data-id="${todoItem.id}">Delete</button>
    </div>`;
 }
 
@@ -54,18 +55,18 @@ function _renderFull(todoItem, options) {
   hideButton.classList.remove('hidden');
 
   todoItemElement.innerHTML +=
-    `${editableAttribute(todoItem, 'description', 'textarea', { elementText: 'Description: ' })}
-     ${editableAttribute(todoItem, 'notes', 'textarea', { elementText: 'Notes: ' }) }
-      <button class="edit-belong" data-type="${todoItem.type}" data-id="${todoItem.id}"
+    `<button class="edit-belong" data-type="${todoItem.type}" data-id="${todoItem.id}"
              data-belong-type="project" data-belong-id="${todoItem.belongs.project}">
       Change Project
      </button>
-     <div>
-      Priority: ${todoItem.priority || 'None'}
-      <button class="update-priority symbol" data-type="${todoItem.type}" data-id="${todoItem.id}" 
-              direction="-1">v</button>
-      <button class="update-priority symbol" data-type="${todoItem.type}" data-id="${todoItem.id}"
-              direction="1">^</button>
+     ${editableAttribute(todoItem, 'description', 'textarea', { elementText: 'Description: ' })}
+     ${editableAttribute(todoItem, 'notes', 'textarea', { elementText: 'Notes: ' }) }
+     <div class="priority">
+      <div>Priority: ${todoItem.priority || 'None'}</div>
+      <button class="update-priority symbol icon" data-type="${todoItem.type}" data-id="${todoItem.id}" 
+              data-direction="-1"><img src="${down}" alt="Down"></button>
+      <button class="update-priority symbol icon" data-type="${todoItem.type}" data-id="${todoItem.id}"
+              data-direction="1"><img src="${up}" alt="Up"></button>
      </div>`;
 
   _renderChecklistItemsIndex(todoItem);

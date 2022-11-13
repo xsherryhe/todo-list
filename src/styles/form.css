@@ -4,6 +4,10 @@ input:not([type="checkbox"],[type="radio"]),textarea,select {
   min-width: 15rem;
 }
 
+textarea {
+  min-height: 5rem;
+}
+
 .error {
   margin: 0;
 }

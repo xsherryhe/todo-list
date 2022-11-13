@@ -15,7 +15,8 @@ export function editableAttribute(obj, attribute, attributeType, options = {}) {
   `<div class="attribute" data-type="${obj.type}" data-id="${obj.id}" data-attribute="${attribute}">
       <span class="element-text">${options.elementText || ''}</span>
       <span class="attr-text">${separateEdit ? attrText : ''}</span>
-      <button class="edit-attribute link" data-type="${obj.type}" data-id="${obj.id}"
+      <button class="edit-attribute link ${separateEdit ? 'separate' : ''}" 
+              data-type="${obj.type}" data-id="${obj.id}"
               data-attribute="${attribute}" data-attribute-type="${attributeType}"
               data-attribute-value="${obj[attribute] || ''}">
         ${separateEdit ? 'Edit' : attrText}

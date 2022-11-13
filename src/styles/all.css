@@ -6,7 +6,7 @@ body {
   padding: 1rem 3rem;
 }
 
-h1, h2, h3, ol {
+h1, h2, h3, ol, ul {
   margin: 0.25rem 0;
 }
 
@@ -40,7 +40,7 @@ button.symbol {
   min-height: 1.5rem;
 }
 
-button.submit.symbol {
+button.symbol.icon {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -48,7 +48,7 @@ button.submit.symbol {
   min-height: 1.75rem;
 }
 
-button.submit.symbol img {
+button.symbol.icon img {
   max-height: 1.25rem;
 }
 
@@ -57,21 +57,18 @@ button.destroy:not(.symbol), button.back:not(.symbol) {
   padding: 0.25rem 0.5rem;
 }
 
-.update-status.update-status {
+button.update-status.update-status {
   min-height: 2rem;
   min-width: 2rem;
   border: 1px solid black;
   border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
-.update-status.update-status:disabled {
+button.update-status.update-status:disabled {
   border: 1px solid gray;
 }
 
-.update-status img {
+button.update-status.update-status img {
   max-height: 1.5rem;
 }
 

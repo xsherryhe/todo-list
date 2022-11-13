@@ -1,12 +1,13 @@
 .todo-item {
   background-color: lightgray;
   border-radius: 0.2rem;
-  padding: 1.5rem;
+  padding: 1rem 1.5rem;
   margin: 1rem auto;
   width: 65vw;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  justify-items: start;
+  align-items: start;
   gap: 1rem;
 }
 
@@ -19,4 +20,24 @@
 .todo-item-heading *,
 .todo-item-heading input {
   font-size: 1.25rem;
+}
+
+.todo-item > *:not(.destroy[data-type="todoItem"]) {
+  grid-column: 1;
+}
+
+.todo-item > .edit-attribute-form.textarea {
+  grid-column: 1 / span 2;
+  justify-self: stretch;
+}
+
+.todo-item > .destroy[data-type="todoItem"] {
+  grid-row: 1;
+  grid-column: 2;
+}
+
+.todo-item .priority {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }

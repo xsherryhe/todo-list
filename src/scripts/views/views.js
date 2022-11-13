@@ -1,14 +1,14 @@
-import './index-projects-view'
-import './index-todoItems-view'
-import './index-checklistItems-view'
-import './new-project-view'
-import './new-todoItem-view'
-import './new-checklistItem-view'
-import './show-project-view'
-import './show-todoItem-view'
-import './show-checklistItem-view'
-import './edit-view'
-import './error-view'
+import './index-projects-view';
+import './index-todoItems-view';
+import './index-checklistItems-view';
+import './new-project-view';
+import './new-todoItem-view';
+import './new-checklistItem-view';
+import './show-project-view';
+import './show-todoItem-view';
+import './show-checklistItem-view';
+import './edit-view';
+import './error-view';
 
 import PubSub from 'pubsub-js';
 import { PAGE_RENDERED, DATA_UPDATED, BACK } from '../pubsub-event-types';
