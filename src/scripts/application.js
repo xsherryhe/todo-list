@@ -2,11 +2,13 @@ import 'normalize.css';
 import '../styles/all.css';
 import '../styles/form.css';
 import '../styles/index-projects.css';
+import '../styles/index-checklistItems.css';
 import '../styles/new-project.css';
 import '../styles/new-todoItem.css';
 import '../styles/new-checklistItem.css';
 import '../styles/show-project.css';
 import '../styles/show-todoItem.css';
+import '../styles/show-checklistItem.css';
 import '../styles/edit.css';
 
 import './storage';

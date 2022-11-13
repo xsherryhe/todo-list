@@ -1,4 +1,8 @@
 import { applicationSettings as settings } from '../application';
+import down from '../../images/down.svg';
+import up from '../../images/up.svg';
+import disabledDown from '../../images/down-gray.svg';
+import disabledUp from '../../images/up-gray.svg';
 import checkmark from '../../images/check.svg';
 import disabledCheckmark from '../../images/check-gray.svg';
 
@@ -37,8 +41,17 @@ export function renderDisabled(node = document.body, disabled = true) {
   });
   node.querySelectorAll('button,input[type="checkbox"],input[type="radio"]')
       .forEach(selectable => selectable.disabled = disabled);
+  
+  _renderDisabledIcons(node, disabled);
+}
+
+function _renderDisabledIcons(node, disabled) {
   node.querySelectorAll('.check')
       .forEach(check => check.src = disabled ? disabledCheckmark : checkmark);
+  node.querySelectorAll('.down')
+      .forEach(down => down.src = disabled ? disabledDown : down);
+  node.querySelectorAll('.up')
+      .forEach(up => up.src = disabled ? disabledUp : up);
 }
 
 export function parseNumberList(list) {

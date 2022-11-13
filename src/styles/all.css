@@ -85,5 +85,5 @@ button.update-status.update-status img {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }

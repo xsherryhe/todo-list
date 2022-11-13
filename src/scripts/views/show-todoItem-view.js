@@ -64,9 +64,9 @@ function _renderFull(todoItem, options) {
      <div class="priority">
       <div>Priority: ${todoItem.priority || 'None'}</div>
       <button class="update-priority symbol icon" data-type="${todoItem.type}" data-id="${todoItem.id}" 
-              data-direction="-1"><img src="${down}" alt="Down"></button>
+              data-direction="-1"><img class="down" src="${down}" alt="Down"></button>
       <button class="update-priority symbol icon" data-type="${todoItem.type}" data-id="${todoItem.id}"
-              data-direction="1"><img src="${up}" alt="Up"></button>
+              data-direction="1"><img class="up" src="${up}" alt="Up"></button>
      </div>`;
 
   _renderChecklistItemsIndex(todoItem);

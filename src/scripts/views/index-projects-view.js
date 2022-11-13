@@ -47,7 +47,7 @@ function _renderProjects() {
         ${previewItems.length ? 
           previewItems.slice(0, settings.previewNum).map(todoItem =>
             `<li>${todoItem.title}</li>`).join('')
-        : 'Everything done!' }
+        : "Everything’s done!" }
      </${elementType}>`
 
     document.body.append(projectElement);

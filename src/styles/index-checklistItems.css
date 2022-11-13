@@ -1,0 +1,21 @@
+.checklist-items-index {
+  background-color: white;
+  border-radius: 0.2rem;
+  padding: 1rem;
+}
+
+.todo-item.todo-item > .checklist-items-index.checklist-items-index {
+  justify-self: stretch;
+  grid-column: 1 / span 2;
+}
+
+.checklist-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-left: 1rem;
+}
+
+.checklist-items-index .new-form[data-type="todoItem"] {
+  margin: 1rem 0 0;
+}

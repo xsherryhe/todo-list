@@ -11,7 +11,7 @@
 }
 
 .edit-attribute-form.click-out {
-  align-items: flex-end;
+  align-items: end;
 }
 
 .edit-attribute-form:not(.click-out) {
@@ -39,7 +39,6 @@
 
 .edit-attribute-form input {
   background-color: transparent;
-  min-width: 0;
   border: none;
   outline: none;
   border-bottom: 1px black dashed;
@@ -53,6 +52,10 @@
 
 .edit-attribute-form.textarea textarea {
   justify-self: stretch;
+}
+
+.edit-attribute-form .submit {
+  justify-self: start;
 }
 
 .edit-attribute-form.textarea .submit {
