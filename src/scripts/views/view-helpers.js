@@ -2,6 +2,11 @@ import { applicationSettings as settings } from '../application';
 import checkmark from '../../images/check.svg';
 import disabledCheckmark from '../../images/check-gray.svg';
 
+export function clearBody() {
+  document.body.style = `min-height: ${window.scrollY + window.innerHeight}px`;
+  document.body.innerHTML = '';
+}
+
 export function editableAttribute(obj, attribute, attributeType, options = {}) {
   const separateEdit = settings.separateEditAttrButton[obj.type].includes(attribute),
         attrText = options.attributeText || obj[attribute] || 'None';

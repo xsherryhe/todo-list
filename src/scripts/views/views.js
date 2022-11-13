@@ -12,6 +12,7 @@ import './error-view'
 
 import PubSub from 'pubsub-js';
 import { PAGE_RENDERED, DATA_UPDATED, BACK } from '../pubsub-event-types';
+import { clearBody } from './view-helpers';
 import defaultView from './index-projects-view';
 
 let currPageView = defaultView;
@@ -24,6 +25,6 @@ function setCurrPageView(_, view) {
 PubSub.subscribe(DATA_UPDATED, updateView);
 PubSub.subscribe(BACK, updateView);
 function updateView() {
-  document.body.innerHTML = '';
+  clearBody();
   currPageView();
 }
