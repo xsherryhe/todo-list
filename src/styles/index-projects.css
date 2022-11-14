@@ -41,10 +41,10 @@
   border: none;
   box-shadow: 0 0 5px var(--font-color);
   margin: 0.5rem auto 1.5rem;
-  min-width: 65vw;
+  width: 65vw;
   min-height: 9rem;
   display: grid;
-  grid-template: 1fr 2fr / 1fr max-content;
+  grid-template: 1fr 2fr max-content / 1fr max-content;
   justify-items: start;
   align-items: center;
 }
@@ -58,6 +58,10 @@
   line-height: 2;
 }
 
+.project-preview li {
+  max-width: 50vw;
+}
+
 .project-preview.status-1 {
   font-style: italic;
   font-size: 1.5rem;
@@ -65,4 +69,34 @@
   color: var(--font-color);
   justify-self: center;
   align-self: start;
+}
+
+@media (max-width: 540px) {
+  .intro-heading {
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .intro .new[data-type="todoItem"] {
+    margin: 1rem auto;
+    min-width: 90vw;
+  }
+
+  .project {
+    width: 90vw;
+  }
+
+  .project button.destroy {
+    grid-row: 3;
+    grid-column: 1 / span 2;
+    justify-self: stretch;
+  }
+
+  ul.project-preview {
+    padding-left: 1.5rem;
+  }
+
+  .project-preview li {
+    max-width: 70vw;
+  }
 }

@@ -5,6 +5,18 @@
   gap: 0.5rem;
 }
 
+.checklist-item:not(.field) .edit-attribute {
+  max-width: 40vw;
+}
+
+.checklist-item:not(.field) .edit-attribute-form .submit {
+  background-color: var(--dark-background-color);
+}
+
+.checklist-item:not(.field) .edit-attribute-form .submit:hover {
+  background-color: var(--background-color);
+}
+
 .checklist-item:not(.field) .update-status {
   min-height: 1.5rem;
   min-width: 1.5rem;
@@ -16,4 +28,14 @@
 
 .checklist-item:not(.field) .destroy {
   justify-self: end;
+}
+
+@media (max-width: 740px) {
+  .checklist-item:not(.field) .edit-attribute {
+    max-width: 30vw;
+  }
+
+  .checklist-item:not(.field) .edit-attribute-form input {
+    max-width: 20vw;
+  }
 }

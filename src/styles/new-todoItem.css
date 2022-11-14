@@ -27,3 +27,13 @@
   padding: 0.5rem 4rem;
   margin-top: 0.25rem;
 }
+
+@media (max-width: 540px) {
+  .new-form-wrapper[data-type="todoItem"] {
+    padding: 1rem;
+  }
+
+  .new-form[data-type="todoItem"] {
+    width: 90vw;
+  }
+}

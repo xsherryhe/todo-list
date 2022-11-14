@@ -1,9 +1,10 @@
 .new-form[data-type="project"] {
+  margin-top: 0.5rem;
   grid-row: 2;
   grid-column: 1 / span 2;
   justify-self: center;
-  grid-template: repeat(2, max-content) / repeat(4, max-content);
   display: grid;
+  grid-template: repeat(2, max-content) / repeat(4, max-content);
   column-gap: 0.5rem;
   align-items: center;
 }
@@ -11,5 +12,18 @@
 .new-form[data-type="project"] .error {
   grid-row: 2;
   grid-column: 3;
+}
+
+@media (max-width: 540px) {
+  .new-form[data-type="project"] {
+    justify-self: stretch;
+    grid-template: repeat(5, max-content) / 1fr;
+    row-gap: 0.5rem;
+  }
+
+  .new-form[data-type="project"] .error {
+    grid-row: 4;
+    grid-column: 1;
+  }
 }
 

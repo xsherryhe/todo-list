@@ -1,3 +1,9 @@
+.edit-attribute {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 45vw;
+}
+
 .edit-attribute.separate {
   display: block;
   font-size: 0.9rem;
@@ -5,6 +11,7 @@
 }
 
 .edit-attribute-form {
+  max-width: 90vw;
   display: grid;
   grid-template-rows: repeat(2, max-content);
   column-gap: 0.5rem;
@@ -89,4 +96,46 @@
 
 .edit-belong-form .submit {
   padding: 0.25rem 1rem;
+}
+
+@media (max-width: 740px) {
+  .edit-attribute {
+    max-width: 35vw;
+  }
+
+  .edit-attribute-form.click-out input {
+    max-width: 30vw;
+  }
+}
+
+@media (max-width: 540px) {
+  .edit-attribute {
+    max-width: 65vw;
+  }
+
+  .edit-attribute-form.click-out input {
+    max-width: 80vw;
+  }
+
+  .edit-attribute-form .error {
+    font-size: 0.8rem;
+  }
+
+  .edit-attribute-form:not(.click-out, .with-label),
+  .edit-attribute-form:not(.click-out).with-label {
+    justify-self: stretch;
+    grid-template-columns: 1fr;
+    row-gap: 0.5rem;
+  }
+
+  .edit-attribute-form:not(.click-out, .with-label) button:not(.link),
+  .edit-attribute-form:not(.click-out).with-label button:not(.link) {
+    justify-self: stretch;
+  }
+
+  .edit-belong-form {
+    justify-self: stretch;
+    flex-direction: column;
+    align-items: stretch;
+  }
 }

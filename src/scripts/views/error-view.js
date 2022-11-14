@@ -1,7 +1,7 @@
 import PubSub from 'pubsub-js';
 import { VALIDATION_ERROR } from '../pubsub-event-types';
 import { humanReadableNames } from '../settings';
-import { capitalize } from './view-helpers';
+import { centerOnPage, capitalize } from './view-helpers';
 
 PubSub.subscribe(VALIDATION_ERROR, validationErrorView);
 function validationErrorView(_, data) {
@@ -17,6 +17,7 @@ function validationErrorView(_, data) {
       containerElement.querySelector(`input[name*="${error.attribute}"],textarea[name*="${error.attribute}"]`);
     if(!attrElement) continue;
 
+    if(data.errors.indexOf(error) == 0) centerOnPage(attrElement.parentNode);
     const typeText = capitalize(humanReadableNames[error.objType] || error.objType),
           errorAttributeText = humanReadableNames[error.objAttribute] || error.objAttribute,
           errorHTML = `<p class="error">${typeText} ${errorAttributeText} ${error.message}</p>`;

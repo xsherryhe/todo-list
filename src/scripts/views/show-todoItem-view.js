@@ -56,6 +56,7 @@ function _renderFull(todoItem, parentElement) {
   const todoItemElement = parentElement.querySelector(`.todo-item[data-id="${todoItem.id}"]`),
         showButton = todoItemElement.querySelector(`.show[data-type="${todoItem.type}Full"]`),
         hideButton = todoItemElement.querySelector(`.hide[data-type="${todoItem.type}Full"]`);
+  todoItemElement.classList.add('full');
   showButton.classList.add('hidden');
   hideButton.classList.remove('hidden');
 

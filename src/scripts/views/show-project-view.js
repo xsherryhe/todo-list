@@ -21,8 +21,7 @@ export default function showProjectView(_, data, updateData = data.updateData ||
    </div>`;
   _renderTodoItemsIndex(project, data.todoItemsFull, updateData);
 
-  Object.assign(data, { updateData })
-  PubSub.publish(PAGE_RENDERED, showProjectView.bind(null, _, data));
+  PubSub.publish(PAGE_RENDERED, showProjectView.bind(null, _, Object.assign({}, data, { updateData })));
   PubSub.publish(SHOW_RENDERED('project'));
 }
 

@@ -42,6 +42,10 @@ ul {
   list-style-type: '⦾  ';
 }
 
+ul, ol {
+  overflow: hidden;
+}
+
 li {
   text-align: start;
 }
@@ -64,6 +68,7 @@ button.link {
   background-color: transparent;
   border: none;
   padding: 0;
+  text-align: start;
 }
 
 button.link:hover {
@@ -160,4 +165,14 @@ button:not(.link):disabled:hover {
 
 .hidden {
   display: none !important;
+}
+
+@media (max-width: 540px) {
+  html {
+    font-size: 16px;
+  }
+
+  body > * {
+    padding: 1rem;
+  }
 }

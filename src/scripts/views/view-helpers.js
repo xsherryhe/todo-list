@@ -15,8 +15,9 @@ export function setBodyHeight() {
   document.body.style = `min-height: ${window.scrollY + window.innerHeight}px`;
 }
 
-export function centerOnPage(selector) {
-  document.querySelector(selector)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+export function centerOnPage(element) {
+  (typeof element == 'string' ? document.querySelector(element) : element)
+  ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 export function editableAttribute(obj, attribute, attributeType, options = {}) {

@@ -34,3 +34,21 @@
   background-color: var(--background-color);
   color: black;
 }
+
+@media (max-width: 540px) {
+  .todo-item.todo-item > .checklist-items-index.checklist-items-index {
+    grid-column: 1 / span 1;
+  }
+
+  .checklist-items-index .new-form[data-type="todoItem"] {
+    width: 100%;
+  }
+
+  .checklist-items-index .new-form[data-type="todoItem"] > button:not(.link) {
+    align-self: stretch;
+  }
+
+  .checklist-items-index .checklist-item.field input {
+    max-width: 50vw;
+  }
+}

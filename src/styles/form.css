@@ -12,3 +12,9 @@ textarea {
   margin: 0;
   color: var(--dark-red-color);
 }
+
+@media (max-width: 740px) {
+  input:not([type="checkbox"], [type="radio"]), textarea, select {
+    min-width: 0;
+  }
+}
