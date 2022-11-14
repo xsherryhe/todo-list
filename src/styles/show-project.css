@@ -36,7 +36,7 @@
 }
 
 .project-heading .submit.submit {
-  background-color: var(--light-background-color);
+  background-color: var(--font-color);
   min-width: 2rem;
   min-height: 2rem;
 }

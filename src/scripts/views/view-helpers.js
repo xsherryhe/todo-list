@@ -26,7 +26,11 @@ export function editableAttribute(obj, attribute, attributeType, options = {}) {
       <button class="edit-attribute link ${separateEdit ? 'separate' : ''}" 
               data-type="${obj.type}" data-id="${obj.id}"
               data-attribute="${attribute}" data-attribute-type="${attributeType}"
-              data-attribute-value="${obj[attribute] || ''}">
+              data-attribute-value="${obj[attribute] || ''}" 
+              ${options.data ? 
+                Object.entries(options.data)
+                      .map(([key, val]) => `data-${snakeCase(key)}="${val}"`) 
+              : ''}>
         ${separateEdit ? 'Edit' : attrText}
       </button>
    </div>`;

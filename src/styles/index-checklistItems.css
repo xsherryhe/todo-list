@@ -26,9 +26,11 @@
 }
 
 .checklist-items-index .new-form[data-type="todoItem"] button:not(.link) {
-  background-color: var(--light-background-color);
+  background-color: var(--dark-background-color);
+  color: white;
 }
 
 .checklist-items-index .new-form[data-type="todoItem"] button:not(.link):hover {
   background-color: var(--background-color);
+  color: black;
 }

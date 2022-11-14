@@ -7,19 +7,18 @@
 :root {
   --site-font: 'Manrope', sans-serif;
   --font-color: black;
-  --light-background-color: #89ddda;
   --background-color: #4ec5c1;
   --dark-background-color: #006965;
-  --secondary-color: #e5e338;
-  --dark-secondary-color: #fffd74;
+  --secondary-color: #d0ff61;
+  --dark-secondary-color: #a9f100;
   --green-color: #c2ffa1;
+  --orange-color: #ffeb69;
   --yellow-color: #fcff42;
-  --orange-color: #ffc889;
   --red-color: #e24e42;
   --dark-red-color: #b00e00;
   --disabled-color: gray;
   --light-disabled-color: lightgray;
-  --very-light-disabled-color: rgb(238, 238, 238);
+  --very-light-disabled-color: #eeeeee;
 }
 
 html {
@@ -67,7 +66,7 @@ button.link {
   padding: 0;
 }
 
-button.link.link:hover {
+button.link:hover {
   background-color: transparent;
   text-decoration: underline;
 }
@@ -90,12 +89,12 @@ button.symbol.icon img {
   max-height: 1.25rem;
 }
 
-button.destroy.destroy {
+button.destroy:not(:disabled) {
   background-color: var(--red-color);
   color: white;
 }
 
-button.destroy.destroy:hover {
+button.destroy:not(:disabled):hover {
   background-color: var(--dark-red-color);
 }
 
@@ -141,8 +140,18 @@ button.update-status.update-status img {
   color: var(--disabled-color);
 }
 
-.disabled, .disabled button {
+.disabled, button:disabled:disabled {
   color: var(--disabled-color);
+}
+
+button:disabled:hover {
+  cursor: auto;
+  text-decoration: none;
+}
+
+button:not(.link):disabled,
+button:not(.link):disabled:hover {
+  background-color: var(--light-disabled-color);
 }
 
 .enabled.enabled, .enabled button {

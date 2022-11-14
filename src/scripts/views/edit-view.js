@@ -3,10 +3,11 @@ import { ANY_EDIT_ATTRIBUTE, EDIT_ATTRIBUTE_RENDERED, ANY_EDIT_BELONG, EDIT_BELO
 import { applicationData as renderData, applicationSettings as settings } from '../application';
 import { renderDisabled } from './view-helpers';
 import back from '../../images/back.svg';
+import whitePencil from '../../images/pencil-white.svg';
 import pencil from '../../images/pencil.svg';
 
 PubSub.subscribe(ANY_EDIT_ATTRIBUTE, editAttributeView)
-function editAttributeView(_, { type, id, attribute, attributeType, attributeValue }) {
+function editAttributeView(_, { type, id, attribute, attributeType, attributeValue, iconColor }) {
   renderDisabled();
 
   const attrElementSelector = `.attribute[data-type="${type}"][data-id="${id}"][data-attribute="${attribute}"]`,
@@ -29,7 +30,7 @@ function editAttributeView(_, { type, id, attribute, attributeType, attributeVal
       type="${attributeType}" name="${attribute}" id="${attribute}" 
       value="${attributeValue}">${isTextarea ? `${attributeValue}</textarea>` : ''}
       <button class="submit ${isTextarea ? '' : 'symbol icon'}">
-        ${isTextarea ? 'Submit' : `<img src="${pencil}" alt="Submit">`}
+        ${isTextarea ? 'Submit' : `<img src="${iconColor == 'white' ? whitePencil : pencil}" alt="Submit">`}
       </button>
    </form>`;
   

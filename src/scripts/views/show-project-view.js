@@ -12,7 +12,7 @@ export default function showProjectView(_, data) {
   `<div class="project-intro">
       <button class="index" data-type="${project.type}">All Projects</button>
       <div class="project-heading">
-        ${editableAttribute(project, 'title', 'text')}
+        ${editableAttribute(project, 'title', 'text', { data: { iconColor: 'white' } } ) }
       </div>
    </div>
    <div class="todo-items-heading">
