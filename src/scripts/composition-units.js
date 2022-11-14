@@ -90,7 +90,7 @@ export function Statusable(obj) {
   PubSub.subscribe(UPDATE_STATUS(obj.type, obj.id), incrementStatus)
   function incrementStatus() {
     obj.status = statuses[(statuses.indexOf(obj.status )+ 1) % statuses.length];
-    PubSub.publish(ITEM_UPDATED(obj.type, obj.id));
+    PubSub.publish(ITEM_UPDATED(obj.type, obj.id), { [obj.type]: obj.id });
   }
 }
 
@@ -99,7 +99,7 @@ export function Prioritizable(obj) {
   PubSub.subscribe(UPDATE_PRIORITY(obj.type, obj.id), updatePriority)
   function updatePriority(_, data) {
     obj.priority = priorities[Math.min(Math.max(priorities.indexOf(obj.priority) + +data.direction, 0), priorities.length - 1)];
-    PubSub.publish(ITEM_UPDATED(obj.type, obj.id));
+    PubSub.publish(ITEM_UPDATED(obj.type, obj.id), { [obj.type]: obj.id });
   }
 }
 

@@ -5,16 +5,21 @@ import { parseNumberList } from './view-helpers';
 
 PubSub.subscribe(INDEX('todoItem'), indexTodoItemsView);
 function indexTodoItemsView(_, data) {
-  const todoItemsFullArr = parseNumberList(data.full);
   const prevTodoItemsIndexElement = document.querySelector('.todo-items-index');
   prevTodoItemsIndexElement?.remove();
-  document.body.innerHTML += `<div class="todo-items-index todo-items" data-full="${data.full}"></div>`;
+
+  let todoItemsFullArr = parseNumberList(data.full);
+  if('updated' in data) todoItemsFullArr = todoItemsFullArr.filter(id => id == data.updated);
+  document.body.innerHTML += 
+  `<div class="todo-items-index todo-items" data-full="${todoItemsFullArr.join(' ')}"></div>`;
   renderData.todoItemsList.withIds(data.ids)
             .sort((a, b) => settings.statuses.indexOf(a.status) - settings.statuses.indexOf(b.status) || 
                             settings.priorities.indexOf(b.priority) - settings.priorities.indexOf(a.priority))
             .forEach(todoItem =>
                 PubSub.publish(SHOW('todoItem'), { id: todoItem.id, full: todoItemsFullArr.includes(todoItem.id), 
-                                                   belongType: data.belongType, parentElementSelector: '.todo-items' }));
+                                                   center: todoItem.id == (data.updated && +data.updated), 
+                                                   belongType: data.belongType, 
+                                                   parentElementSelector: '.todo-items' }));
   PubSub.publish(INDEX_RENDERED('todoItem'));
 }
 

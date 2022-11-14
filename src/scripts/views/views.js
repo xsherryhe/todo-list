@@ -24,7 +24,7 @@ function setCurrPageView(_, view) {
 
 PubSub.subscribe(DATA_UPDATED, updateView);
 PubSub.subscribe(BACK, updateView);
-function updateView() {
+function updateView(_, data) {
   clearBody();
-  currPageView();
+  currPageView(data);
 }

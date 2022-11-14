@@ -21,17 +21,17 @@ function indexChecklistItemsView(_, data) {
         <button class="submit hidden">Submit</button>
      </form>
   </div>`;
-  _renderChecklistItems(data.ids, data.belongType);
+  _renderChecklistItems(data.ids, data.belongType, data.parentElementSelector);
   PubSub.publish(INDEX_RENDERED('checklistItem'));
 }
 
-function _renderChecklistItems(ids, belongType) {
+function _renderChecklistItems(ids, belongType, grandparentElementSelector) {
   renderData.checklistItemsList.withIds(ids)
             .sort((a, b) => +a[belongType + 'Index'] - +b[belongType + 'Index'])
             .forEach(checklistItem => {
               PubSub.publish(SHOW('checklistItem'), 
                              { id: checklistItem.id, 
                                elementWrapper: 'li',
-                               parentElementSelector: '.checklist-items' });
+                               parentElementSelector: `${grandparentElementSelector} .checklist-items` });
             });
 }

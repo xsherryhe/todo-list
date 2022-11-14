@@ -1,7 +1,7 @@
 import PubSub from 'pubsub-js';
 import { INDEX, SHOW, SHOW_RENDERED } from '../pubsub-event-types';
 import { applicationData as renderData, applicationSettings as settings } from '../application';
-import { editableAttribute } from './view-helpers';
+import { editableAttribute, centerOnPage } from './view-helpers';
 import { formatRelative } from 'date-fns';
 import down from '../../images/down.svg';
 import up from '../../images/up.svg';
@@ -12,16 +12,19 @@ PubSub.subscribe(SHOW('todoItem'), showTodoItemView);
 export default function showTodoItemView(_, data) {
   const todoItem = renderData.todoItemsList.withId(data.id);
   const parentElement = document.querySelector(data.parentElementSelector || 'body');
-  _renderTodoItem(todoItem, { parentElement, belongType: data.belongType });
-  if(data.full) _renderFull(todoItem, { parentElement });
+  _renderTodoItem(todoItem, parentElement, data.belongType);
+  if(data.full) _renderFull(todoItem, parentElement);
+  if(data.center) centerOnPage(`.todo-item[data-id="${data.id}"]`);
   PubSub.publish(SHOW_RENDERED('todoItem'));
 }
 
-function _renderTodoItem(todoItem, options) {
-  const prevTodoItemElement = document.querySelector(`.todo-item[data-id="${todoItem.id}"]`);
+function _renderTodoItem(todoItem, parentElement, belongType) {
+  if(!parentElement) return;
+
+  const prevTodoItemElement = parentElement.querySelector(`.todo-item[data-id="${todoItem.id}"]`);
   prevTodoItemElement?.remove();
 
-  (options.parentElement || document.body).innerHTML +=
+  parentElement.innerHTML +=
   `<div class="priority-${settings.priorities.indexOf(todoItem.priority)} 
                status-${settings.statuses.indexOf(todoItem.status)} todo-item" data-id="${todoItem.id}">
       <div class="todo-item-heading">
@@ -36,19 +39,21 @@ function _renderTodoItem(todoItem, options) {
           attributeText: todoItem.dueDate ? formatRelative(new Date(todoItem.dueDate), new Date())
                                           : 'None' })}
       <button class="show" data-type="${todoItem.type}Full" data-id="${todoItem.id}" 
-             data-belong-type="${options.belongType || ''}">
+             data-belong-type="${belongType || ''}">
         Expand
       </button>
       <button class="hide hidden" data-type="${todoItem.type}Full" data-id="${todoItem.id}"
-              data-belong-type="${options.belongType || ''}">
+              data-belong-type="${belongType || ''}">
         Shrink
       </button>
       <button class="destroy" data-type="${todoItem.type}" data-id="${todoItem.id}">Delete</button>
    </div>`;
 }
 
-function _renderFull(todoItem, options) {
-  const todoItemElement = (options.parentElement || document).querySelector(`.todo-item[data-id="${todoItem.id}"]`),
+function _renderFull(todoItem, parentElement) {
+  if(!parentElement) return;
+
+  const todoItemElement = parentElement.querySelector(`.todo-item[data-id="${todoItem.id}"]`),
         showButton = todoItemElement.querySelector(`.show[data-type="${todoItem.type}Full"]`),
         hideButton = todoItemElement.querySelector(`.hide[data-type="${todoItem.type}Full"]`);
   showButton.classList.add('hidden');

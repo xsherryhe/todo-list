@@ -5,7 +5,7 @@ import { setBodyHeight, editableAttribute } from './view-helpers';
 
 PubSub.subscribe(SHOW('project'), showProjectView);
 
-export default function showProjectView(_, data) {
+export default function showProjectView(_, data, updateData = data.updateData || {}) {
   const project = renderData.projectsList.withId(data.id);
   setBodyHeight();
   document.body.innerHTML =
@@ -19,12 +19,19 @@ export default function showProjectView(_, data) {
       <h2>To-Dos</h2>
       <button class="new symbol" data-type="todoItem" data-project-id="${project.id}">+</button>
    </div>`;
-  _renderTodoItemsIndex(project, data.todoItemsFull);
+  _renderTodoItemsIndex(project, data.todoItemsFull, updateData);
+
+  Object.assign(data, { updateData })
   PubSub.publish(PAGE_RENDERED, showProjectView.bind(null, _, data));
   PubSub.publish(SHOW_RENDERED('project'));
 }
 
-function _renderTodoItemsIndex(project, todoItemsFull) {
-  PubSub.publish(INDEX('todoItem'), 
-                { belongType: project.type, ids: project.todoItems, full: todoItemsFull })
+function _renderTodoItemsIndex(project, todoItemsFull, updateData) {
+  const indexData = 
+    { belongType: project.type,
+      ids: project.todoItems,
+      full: todoItemsFull };
+  if('todoItem' in updateData) indexData.updated = updateData.todoItem;
+  
+  PubSub.publish(INDEX('todoItem'), indexData);
 }

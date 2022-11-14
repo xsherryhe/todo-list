@@ -47,7 +47,10 @@ function _renderProjects() {
     projectElement.innerHTML +=
     `<${elementType} class="project-preview status-${previewItems.length ? 0 : 1}">
         ${previewItems.length ? 
-          previewItems.slice(0, settings.previewNum).map(todoItem =>
+          previewItems
+          .sort((a, b) => settings.priorities.indexOf(b.priority) - 
+                          settings.priorities.indexOf(a.priority))
+          .slice(0, settings.previewNum).map(todoItem =>
             `<li>${todoItem.title}</li>`).join('')
         : "Everything’s done!" }
      </${elementType}>`

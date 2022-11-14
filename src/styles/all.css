@@ -110,8 +110,8 @@ button.update-status {
   border: 1px solid var(--dark-background-color);
 }
 
-button.update-priority:hover,
-button.update-status:hover {
+button.update-priority:not(:disabled):hover,
+button.update-status:not(:disabled):hover {
   outline: 1px solid var(--dark-background-color);
 }
 
