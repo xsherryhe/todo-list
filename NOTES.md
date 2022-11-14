@@ -125,5 +125,3 @@ Modules
   //-editDateView(item id, type)
     //-pub editInputRendered, item type + id
   //-sub newChecklistItem, newChecklistItemView: pub newChecklistItemRendered (use replaceWith to replace the button -- and add a new button after)
-
-  -getColors(array, color1, color2): split color range evenly and divide between number of items in array, return array items mapped to colors
