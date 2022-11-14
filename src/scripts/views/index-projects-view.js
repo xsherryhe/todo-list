@@ -1,9 +1,11 @@
 import PubSub from 'pubsub-js';
 import { INDEX, INDEX_RENDERED, PAGE_RENDERED } from '../pubsub-event-types';
 import { applicationData as renderData, applicationSettings as settings } from '../application';
+import { setBodyHeight } from './view-helpers';
 
 PubSub.subscribe(INDEX('project'), indexProjectsView)
 export default function indexProjectsView() {
+  setBodyHeight();
   document.body.innerHTML =
   `<div class="intro">
       <div class="intro-heading">

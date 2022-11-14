@@ -1,7 +1,7 @@
 .edit-attribute.separate {
   display: block;
   font-size: 0.9rem;
-  color: blue;
+  color: var(--dark-background-color);
 }
 
 .edit-attribute-form {

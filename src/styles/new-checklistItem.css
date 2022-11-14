@@ -1,5 +1,5 @@
 .new.new[data-type="checklistItem"] {
-  color: blue;
+  color: var(--dark-background-color);
 }
 
 .checklist-item.field[data-type="checklistItem"] {
@@ -12,6 +12,15 @@
 
 .checklist-item.field[data-type="checklistItem"] button {
   align-self: center;
+}
+
+.checklist-item.field[data-type="checklistItem"] button.hide {
+  background-color: var(--red-color);
+  color: white;
+}
+
+.checklist-item.field[data-type="checklistItem"] button.hide:hover {
+  background-color: var(--dark-red-color);
 }
 
 .checklist-item.field[data-type="checklistItem"] > *:not(.error) {

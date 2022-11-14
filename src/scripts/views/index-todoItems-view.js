@@ -10,7 +10,8 @@ function indexTodoItemsView(_, data) {
   prevTodoItemsIndexElement?.remove();
   document.body.innerHTML += `<div class="todo-items-index todo-items" data-full="${data.full}"></div>`;
   renderData.todoItemsList.withIds(data.ids)
-            .sort((a, b) => settings.statuses.indexOf(a.status) - settings.statuses.indexOf(b.status))
+            .sort((a, b) => settings.statuses.indexOf(a.status) - settings.statuses.indexOf(b.status) || 
+                            settings.priorities.indexOf(b.priority) - settings.priorities.indexOf(a.priority))
             .forEach(todoItem =>
                 PubSub.publish(SHOW('todoItem'), { id: todoItem.id, full: todoItemsFullArr.includes(todoItem.id), 
                                                    belongType: data.belongType, parentElementSelector: '.todo-items' }));

@@ -45,7 +45,7 @@ function hideNewChecklistItemView(_, { belongType, belongId, index }) {
   const remainingChecklistItemFieldElements = checklistItemFormElement.querySelectorAll('.checklist-item.field');
   
   if(belongId && remainingChecklistItemFieldElements.length == 0) {
-    renderDisabled(document, false);
+    renderDisabled(document.body, false);
 
     const backButton = checklistItemFormElement.querySelector('.back'),
           submitButton = checklistItemFormElement.querySelector('.submit');

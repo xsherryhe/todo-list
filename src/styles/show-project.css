@@ -1,4 +1,18 @@
+.project-intro {
+  background-color: var(--background-color);
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--font-color);
+}
+
+.project-intro .index {
+  margin-left: 3rem;
+}
+
 .project-heading {
+  background-color: var(--secondary-color);
+  border-top: 5px solid white;
+  border-bottom: 5px solid white;
+  padding: 1rem 3rem;
   margin: 1rem 0;
   display: flex;
   justify-content: center;
@@ -6,6 +20,10 @@
 
 .project-heading * {
   font-size: 1.75rem;
+}
+
+.project-heading .edit-attribute {
+  font-weight: 700;
 }
 
 .project-heading.project-heading input {
@@ -18,8 +36,13 @@
 }
 
 .project-heading .submit.submit {
+  background-color: var(--light-background-color);
   min-width: 2rem;
   min-height: 2rem;
+}
+
+.project-heading .submit:hover {
+  background-color: var(--background-color);
 }
 
 .project-heading .submit.submit img {
@@ -32,10 +55,12 @@
   justify-items: start;
   align-items: center;
   column-gap: 0.5rem;
+  padding-bottom: 0;
 }
 
-.todo-items-heading .new-form {
+.todo-items-heading .new-form-wrapper {
   grid-row: 2;
   grid-column: 1 / span 2;
+  padding-top: 0;
   justify-self: center;
 }

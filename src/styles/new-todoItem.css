@@ -1,5 +1,11 @@
+.new-form-wrapper[data-type="todoItem"] {
+  background-color: white;
+  margin-top: 1rem;
+  padding: 2rem;
+}
+
 .new-form[data-type="todoItem"] {
-  margin: 1rem auto;
+  margin: 0 auto;
   width: 50vw;
   display: flex;
   flex-direction: column;

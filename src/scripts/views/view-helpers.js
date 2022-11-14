@@ -7,8 +7,12 @@ import checkmark from '../../images/check.svg';
 import disabledCheckmark from '../../images/check-gray.svg';
 
 export function clearBody() {
-  document.body.style = `min-height: ${window.scrollY + window.innerHeight}px`;
+  setBodyHeight();
   document.body.innerHTML = '';
+}
+
+export function setBodyHeight() {
+  document.body.style = `min-height: ${window.scrollY + window.innerHeight}px`;
 }
 
 export function editableAttribute(obj, attribute, attributeType, options = {}) {
@@ -49,9 +53,9 @@ function _renderDisabledIcons(node, disabled) {
   node.querySelectorAll('.check')
       .forEach(check => check.src = disabled ? disabledCheckmark : checkmark);
   node.querySelectorAll('.down')
-      .forEach(down => down.src = disabled ? disabledDown : down);
+      .forEach(downBtn => downBtn.src = disabled ? disabledDown : down);
   node.querySelectorAll('.up')
-      .forEach(up => up.src = disabled ? disabledUp : up);
+      .forEach(upBtn => upBtn.src = disabled ? disabledUp : up);
 }
 
 export function parseNumberList(list) {

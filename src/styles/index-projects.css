@@ -1,3 +1,16 @@
+.intro {
+  background-color: var(--background-color);
+  padding: 1rem 0 0;
+  border-bottom: 1px solid var(--font-color);
+}
+
+.intro-heading {
+  background-color: var(--secondary-color);
+  border-top: 5px solid white;
+  border-bottom: 5px solid white;
+  padding: 1rem 3rem;
+}
+
 .intro-heading h2 {
   font-size: 1.25rem;
 }
@@ -7,7 +20,7 @@
   margin: 2rem auto;
   padding: 1rem 1.5rem; 
   font-size: 1.25rem;
-  min-width: 35vw;
+  min-width: 15rem;
 }
 
 .projects-heading {
@@ -15,11 +28,15 @@
   grid-template: repeat(2, max-content) / max-content 1fr;
   justify-items: start;
   align-items: center;
-  gap: 0.5rem;
+  column-gap: 0.5rem;
+  padding-bottom: 0;
+  margin-bottom: 1rem;
 }
 
 .project {
-  margin: 1rem auto;
+  border: none;
+  box-shadow: 0 0 5px var(--font-color);
+  margin: 0.5rem auto 1.5rem;
   min-width: 65vw;
   min-height: 9rem;
   display: grid;
@@ -40,7 +57,8 @@
 .project-preview.status-1 {
   font-style: italic;
   font-size: 1.5rem;
-  color: black;
+  background-color: transparent;
+  color: var(--font-color);
   justify-self: center;
   align-self: start;
 }

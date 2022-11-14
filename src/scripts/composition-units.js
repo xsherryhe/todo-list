@@ -171,6 +171,7 @@ export function Listable(obj, fromStorageList = []) {
     _prepare(storageItem);
     return obj.itemFactory(Object.assign({ id: nextId++ }, storageItem));
   });
+  nextId = Math.max(...obj[list].map(item => item.id)) + 1;
 
   obj.withId = function(id) {
     return this[list].find(item => +id == item.id);

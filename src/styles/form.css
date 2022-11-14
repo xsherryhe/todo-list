@@ -10,4 +10,5 @@ textarea {
 
 .error {
   margin: 0;
+  color: var(--dark-red-color);
 }

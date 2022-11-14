@@ -1,8 +1,37 @@
+@font-face {
+  font-family: 'Manrope';
+  src: url(../fonts/Manrope-VariableFont_wght.ttf) format('truetype-variations');
+  font-weight: 1 999;
+}
+
+:root {
+  --site-font: 'Manrope', sans-serif;
+  --font-color: black;
+  --background-color: #008f95;
+  --dark-background-color: #006367;
+  --light-background-color: #40a8ab;
+  --secondary-color: #efc6cc;
+  --dark-secondary-color: #ea94a1;
+  --yellow-color: #ffd24a;
+  --orange-color: #ffc889;
+  --teal-color: #c4fdff;
+  --red-color: #e24e42;
+  --dark-red-color: #b00e00;
+  --disabled-color: gray;
+  --light-disabled-color: lightgray;
+  --very-light-disabled-color: rgb(238, 238, 238);
+}
+
 html {
   font-size: 18px;
 }
 
 body {
+  font-family: var(--site-font);
+  color: var(--font-color);
+}
+
+body > * {
   padding: 1rem 3rem;
 }
 
@@ -22,6 +51,14 @@ button {
   font-size: 1rem;
   cursor: pointer;
   padding: 0.5rem 1rem;
+  border: 1px solid var(--font-color);
+  border-radius: 0.2rem;
+  background-color: var(--secondary-color);
+  color: var(--font-color);
+}
+
+button:hover {
+  background-color: var(--dark-secondary-color);
 }
 
 button.link {
@@ -30,7 +67,8 @@ button.link {
   padding: 0;
 }
 
-button.link:hover {
+button.link.link:hover {
+  background-color: transparent;
   text-decoration: underline;
 }
 
@@ -52,36 +90,67 @@ button.symbol.icon img {
   max-height: 1.25rem;
 }
 
+button.destroy.destroy {
+  background-color: var(--red-color);
+  color: white;
+}
+
+button.destroy.destroy:hover {
+  background-color: var(--dark-red-color);
+}
+
 button.destroy:not(.symbol), button.back:not(.symbol) {
   font-size: 0.8rem;
   padding: 0.25rem 0.5rem;
 }
 
+button.update-priority,
+button.update-status {
+  background-color: white;
+  border-radius: 50%;
+  border: 1px solid var(--background-color);
+}
+
+button.update-priority:hover,
+button.update-status:hover {
+  outline: 1px solid var(--background-color);
+}
+
 button.update-status.update-status {
   min-height: 2rem;
   min-width: 2rem;
-  border: 1px solid black;
-  border-radius: 50%;
-}
-
-button.update-status.update-status:disabled {
-  border: 1px solid gray;
 }
 
 button.update-status.update-status img {
   max-height: 1.5rem;
 }
 
+.priority-0 {
+  background-color: var(--teal-color);
+}
+
+.priority-1 {
+  background-color: var(--orange-color);
+}
+
+.priority-2 {
+  background-color: var(--yellow-color);
+}
+
 .status-1, .status-1 button {
-  color: gray;
+  color: var(--disabled-color);
 }
 
-.disabled {
-  color: gray;
+.status-1 {
+  background-color: var(--light-disabled-color);
 }
 
-.enabled.enabled, .enabled.enabled button {
-  color: black;
+.disabled, .disabled button {
+  color: var(--disabled-color);
+}
+
+.enabled.enabled, .enabled button {
+  color: var(--font-color);
 }
 
 .hidden {
