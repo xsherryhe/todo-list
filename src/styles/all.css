@@ -7,14 +7,14 @@
 :root {
   --site-font: 'Manrope', sans-serif;
   --font-color: black;
-  --background-color: #008f95;
-  --dark-background-color: #006367;
-  --light-background-color: #40a8ab;
-  --secondary-color: #efc6cc;
-  --dark-secondary-color: #ea94a1;
-  --yellow-color: #ffd24a;
+  --light-background-color: #89ddda;
+  --background-color: #4ec5c1;
+  --dark-background-color: #006965;
+  --secondary-color: #e5e338;
+  --dark-secondary-color: #fffd74;
+  --green-color: #c2ffa1;
+  --yellow-color: #fcff42;
   --orange-color: #ffc889;
-  --teal-color: #c4fdff;
   --red-color: #e24e42;
   --dark-red-color: #b00e00;
   --disabled-color: gray;
@@ -108,12 +108,12 @@ button.update-priority,
 button.update-status {
   background-color: white;
   border-radius: 50%;
-  border: 1px solid var(--background-color);
+  border: 1px solid var(--dark-background-color);
 }
 
 button.update-priority:hover,
 button.update-status:hover {
-  outline: 1px solid var(--background-color);
+  outline: 1px solid var(--dark-background-color);
 }
 
 button.update-status.update-status {
@@ -126,7 +126,7 @@ button.update-status.update-status img {
 }
 
 .priority-0 {
-  background-color: var(--teal-color);
+  background-color: var(--green-color);
 }
 
 .priority-1 {

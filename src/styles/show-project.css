@@ -11,7 +11,7 @@
 .project-heading {
   background-color: var(--secondary-color);
   border-top: 5px solid white;
-  border-bottom: 5px solid white;
+  border-bottom: 5px solid var(--font-color);
   padding: 1rem 3rem;
   margin: 1rem 0;
   display: flex;
@@ -42,7 +42,7 @@
 }
 
 .project-heading .submit:hover {
-  background-color: var(--background-color);
+  background-color: var(--dark-background-color);
 }
 
 .project-heading .submit.submit img {

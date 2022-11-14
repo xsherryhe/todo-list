@@ -7,7 +7,7 @@
 .intro-heading {
   background-color: var(--secondary-color);
   border-top: 5px solid white;
-  border-bottom: 5px solid white;
+  border-bottom: 5px solid var(--font-color);
   padding: 1rem 3rem;
 }
 
@@ -21,6 +21,10 @@
   padding: 1rem 1.5rem; 
   font-size: 1.25rem;
   min-width: 15rem;
+}
+
+.intro .new-form-wrapper[data-type="todoItem"] {
+  margin-bottom: 1rem;
 }
 
 .projects-heading {
