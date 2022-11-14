@@ -141,10 +141,6 @@ button.update-status.update-status img {
   color: var(--disabled-color);
 }
 
-.status-1 {
-  background-color: var(--light-disabled-color);
-}
-
 .disabled, .disabled button {
   color: var(--disabled-color);
 }

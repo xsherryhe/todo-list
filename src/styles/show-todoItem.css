@@ -22,6 +22,10 @@
   font-size: 1.25rem;
 }
 
+.todo-item.status-1 {
+  background-color: var(--light-disabled-color);
+}
+
 .todo-item > *:not(.destroy[data-type="todoItem"]) {
   grid-column: 1;
 }
